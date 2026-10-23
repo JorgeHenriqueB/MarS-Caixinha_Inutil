@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MarS - Caixinha Teimosa | Código Arduino</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col justify-between">
+
+    <nav class="sticky top-0 z-50 glass-card border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-600/30 flex items-center justify-center border border-indigo-500/30 overflow-hidden">
+                        <img src="logo.jpg" alt="Logo MarS" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\'font-extrabold text-indigo-400 font-mono\'>M</span>';">
+                    </div>
+                    <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
+                        MarS <span class="text-xs font-normal text-slate-400">| Caixinha Teimosa</span>
+                    </span>
+                </a>
+                <div class="hidden md:flex space-x-6 text-sm font-medium text-slate-300">
+                    <a href="index.html" class="hover:text-indigo-400 transition">Início & Simulador</a>
+                    <a href="sobre.html" class="hover:text-indigo-400 transition">Sobre</a>
+                    <a href="gestao.html" class="hover:text-indigo-400 transition">Gestão & Planejamento</a>
+                    <a href="circuito.html" class="hover:text-indigo-400 transition">Esquema & Materiais</a>
+                    <a href="fluxograma.html" class="hover:text-indigo-400 transition">Fluxograma</a>
+                    <a href="codigo.html" class="text-indigo-400 font-semibold border-b-2 border-indigo-500 pb-1">Código Arduino</a>
+                    <a href="equipe.html" class="hover:text-indigo-400 transition">Equipe</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="py-12 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 flex-grow">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <h1 class="text-3xl font-bold text-white">Código Fonte C++ (.ino)</h1>
+                <p class="text-slate-400 text-sm mt-1">Código original mantido integralmente sem alterações de lógica.</p>
+            </div>
+            <button onclick="copyCode()" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold transition flex items-center gap-2 self-start">
+                <i class="fa-regular fa-copy"></i> <span id="copy-text">Copiar Código</span>
+            </button>
+        </div>
+
+        <div class="glass-card rounded-2xl border border-slate-800 overflow-hidden">
+            <div class="bg-slate-900 px-6 py-3 border-b border-slate-800 flex items-center justify-between">
+                <span class="text-xs font-mono text-slate-400">code_MarS.ino</span>
+                <span class="text-xs text-slate-500 font-mono">Arduino C++</span>
+            </div>
+            <pre class="p-6 text-xs sm:text-sm font-mono text-slate-300 overflow-x-auto leading-relaxed bg-slate-950/80"><code id="code-block">#include &lt;Servo.h&gt;
+
+Servo servo_base;
+Servo servo_braco;
+
+int i;
+// Pinos das alavancas (use INPUT_PULLUP para evitar resistores externos)
+int pinSwitch1 = 6;
+int pinSwitch2 = 5;
+int pinSwitch3 = 4;
+
+// Pinos dos servos SG90
+int pinServo_base = 2;
+int pinServo_braco = 3;
+
+// Posições padrão 
+//(sistema desativado)
+int posOff_base = 90;
+int posOff_braco = 0;
+
+//(Base)
+int pos_e2 = 90;
+int pos_e1 = 45;
+int pos_e3 = 135;
+
+// Variaveis de estado dos switchs
+bool e1, e2, e3;
+
+// Posição atual do servo base
+int posAtual_base = posOff_base;
+
+// Função de ativação do BRAÇO
+void ativar_braco(){
+  for(i = posOff_braco; i &lt;= 180; i++){
+    servo_braco.write(i);
+    delay(5);
+  }
+  for(i = 180; i &gt;= posOff_braco; i--){
+    servo_braco.write(i);
+    delay(5);
+  }
+}
+
+// Função para mover a base
+void mover_base(int e, int pos){
+  if(e == LOW){
+    if(posAtual_base &gt; pos){
+      for(i = posAtual_base; i &gt;= pos; i--){
+        servo_base.write(i);
+        posAtual_base = i;
+        delay(5);
+      }
+    } else if(posAtual_base &lt; pos){
+       for(i = posAtual_base; i &lt;= pos; i++){
+         servo_base.write(i);
+         posAtual_base = i;
+         delay(5);
+       }
+    }
+  }  
+}
+
+void setup() {
+  servo_base.attach(pinServo_base);
+  servo_braco.attach(pinServo_braco);
+  
+  pinMode(pinSwitch1, INPUT_PULLUP);
+  pinMode(pinSwitch2, INPUT_PULLUP);
+  pinMode(pinSwitch3, INPUT_PULLUP);
+  
+  servo_base.write(posOff_base);
+  servo_braco.write(posOff_braco);
+}
+
+void loop() {
+  e1 = digitalRead(pinSwitch1);
+  e2 = digitalRead(pinSwitch2);
+  e3 = digitalRead(pinSwitch3);
+  
+  if(e2 == LOW){
+    mover_base(e2, pos_e2);
+    ativar_braco();
+  } else if(e1 == LOW){
+    mover_base(e1, pos_e1);
+    ativar_braco();
+  } else if(e3 == LOW){
+    mover_base(e3, pos_e3);
+    ativar_braco();
+  } else {
+    servo_base.write(posOff_base);
+  }
+}</code></pre>
+        </div>
+    </main>
+
+    <footer class="border-t border-slate-800 bg-slate-950 py-6 text-xs text-slate-500 text-center">
+        <p>© 2026 Projeto MarS - Caixinha Teimosa | Engenharia</p>
+    </footer>
+
+    <script>
+        function copyCode() {
+            const codeText = document.getElementById('code-block').innerText;
+            navigator.clipboard.writeText(codeText);
+            document.getElementById('copy-text').innerText = 'Copiado!';
+            setTimeout(() => { document.getElementById('copy-text').innerText = 'Copiar Código'; }, 2000);
+        }
+    </script>
+</body>
+</html>

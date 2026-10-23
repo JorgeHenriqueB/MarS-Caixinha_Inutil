@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MarS - Caixinha Teimosa | Circuito & Materiais</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col justify-between">
+
+    <nav class="sticky top-0 z-50 glass-card border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-600/30 flex items-center justify-center border border-indigo-500/30 overflow-hidden">
+                        <img src="logo.jpg" alt="Logo MarS" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\'font-extrabold text-indigo-400 font-mono\'>M</span>';">
+                    </div>
+                    <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
+                        MarS <span class="text-xs font-normal text-slate-400">| Caixinha Teimosa</span>
+                    </span>
+                </a>
+                <div class="hidden md:flex space-x-6 text-sm font-medium text-slate-300">
+                    <a href="index.html" class="hover:text-indigo-400 transition">Início & Simulador</a>
+                    <a href="sobre.html" class="hover:text-indigo-400 transition">Sobre</a>
+                    <a href="gestao.html" class="hover:text-indigo-400 transition">Gestão & Planejamento</a>
+                    <a href="circuito.html" class="text-indigo-400 font-semibold border-b-2 border-indigo-500 pb-1">Esquema & Materiais</a>
+                    <a href="fluxograma.html" class="hover:text-indigo-400 transition">Fluxograma</a>
+                    <a href="codigo.html" class="hover:text-indigo-400 transition">Código Arduino</a>
+                    <a href="equipe.html" class="hover:text-indigo-400 transition">Equipe</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 flex-grow">
+        <div class="text-center max-w-2xl mx-auto">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-white mb-3">Esquema Eletrônico & Materiais</h1>
+            <p class="text-slate-400 text-sm sm:text-base">
+                Mapeamento completo de pinagem, componentes utilizados e o esquematico do circuito.
+            </p>
+        </div>
+
+        <!-- Lista de Materiais -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="glass-card p-5 rounded-2xl border border-slate-800">
+                <div class="text-indigo-400 text-2xl mb-2"><i class="fa-solid fa-microchip"></i></div>
+                <h3 class="text-base font-bold text-white">1x Arduino Nano</h3>
+                <p class="text-slate-400 text-xs mt-1">Microcontrolador central do sistema.</p>
+            </div>
+
+            <div class="glass-card p-5 rounded-2xl border border-slate-800">
+                <div class="text-amber-400 text-2xl mb-2"><i class="fa-solid fa-toggle-off"></i></div>
+                <h3 class="text-base font-bold text-white">3x Chaves ON/OFF</h3>
+                <p class="text-slate-400 text-xs mt-1">Conectadas nos pinos D6, D5 e D4.</p>
+            </div>
+
+            <div class="glass-card p-5 rounded-2xl border border-slate-800">
+                <div class="text-purple-400 text-2xl mb-2"><i class="fa-solid fa-grip"></i></div>
+                <h3 class="text-base font-bold text-white">1x Vector Board</h3>
+                <p class="text-slate-400 text-xs mt-1">Placa perfurada para soldagem.</p>
+            </div>
+
+            <div class="glass-card p-5 rounded-2xl border border-slate-800">
+                <div class="text-cyan-400 text-2xl mb-2"><i class="fa-solid fa-gears"></i></div>
+                <h3 class="text-base font-bold text-white">2x Servos SG90 9g</h3>
+                <p class="text-slate-400 text-xs mt-1">Atuadores da base (D2) e braço (D3).</p>
+            </div>
+
+            <div class="glass-card p-5 rounded-2xl border border-slate-800">
+                <div class="text-emerald-400 text-2xl mb-2"><i class="fa-solid fa-plug"></i></div>
+                <h3 class="text-base font-bold text-white">1x Fonte 5V 2A</h3>
+                <p class="text-slate-400 text-xs mt-1">Alimentação dedicada para servos.</p>
+            </div>
+
+            <div class="glass-card p-5 rounded-2xl border border-slate-800">
+                <div class="text-rose-400 text-2xl mb-2"><i class="fa-solid fa-power-off"></i></div>
+                <h3 class="text-base font-bold text-white">1x Chave Liga/Desliga</h3>
+                <p class="text-slate-400 text-xs mt-1">Interruptor geral da fonte.</p>
+            </div>
+
+            <div class="glass-card p-5 rounded-2xl border border-slate-800 md:col-span-2">
+                <div class="text-blue-400 text-2xl mb-2"><i class="fa-solid fa-bolt"></i></div>
+                <h3 class="text-base font-bold text-white">Fios Diversos</h3>
+                <p class="text-slate-400 text-xs mt-1">Jumpers e cabos para conexões no circuito.</p>
+            </div>
+        </div>
+
+        <!-- Mapeamento e Imagem -->
+        <div class="grid lg:grid-cols-2 gap-8 items-center">
+            <div class="glass-card p-6 rounded-2xl border border-slate-800">
+                <h3 class="text-lg font-bold text-white mb-4">Tabela de Pinagem</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-xs sm:text-sm font-mono">
+                        <tr class="border-b border-slate-800 text-slate-400">
+                            <th class="py-2">Componente</th>
+                            <th class="py-2">Pino / Conexão</th>
+                        </tr>
+                        <tr class="border-b border-slate-800/60">
+                            <td class="py-2 text-white">Chave S1</td>
+                            <td class="py-2 text-amber-400">D6 (INPUT_PULLUP)</td>
+                        </tr>
+                        <tr class="border-b border-slate-800/60">
+                            <td class="py-2 text-white">Chave S2</td>
+                            <td class="py-2 text-amber-400">D5 (INPUT_PULLUP)</td>
+                        </tr>
+                        <tr class="border-b border-slate-800/60">
+                            <td class="py-2 text-white">Chave S3</td>
+                            <td class="py-2 text-amber-400">D4 (INPUT_PULLUP)</td>
+                        </tr>
+                        <tr class="border-b border-slate-800/60">
+                            <td class="py-2 text-white">Servo Base</td>
+                            <td class="py-2 text-cyan-400">D2 (PWM)</td>
+                        </tr>
+                        <tr class="border-b border-slate-800/60">
+                            <td class="py-2 text-white">Servo Braço</td>
+                            <td class="py-2 text-cyan-400">D3 (PWM)</td>
+                        </tr>
+                        <tr>
+                            <td class="py-2 text-white">Alimentação VCC</td>
+                            <td class="py-2 text-emerald-400">Fonte Externa 5V/2A</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="glass-card p-6 rounded-2xl border border-slate-800 flex flex-col items-center">
+                <h3 class="text-sm font-semibold text-slate-400 mb-4 self-start">Diagrama do Circuito Tinkercad</h3>
+                <div class="w-full bg-white p-2 rounded-xl border border-slate-700">
+                    <img src="diagrama.jpg" alt="Diagrama Eletrônico" class="w-full h-auto rounded object-contain max-h-[350px]">
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-slate-800 bg-slate-950 py-6 text-xs text-slate-500 text-center">
+        <p>© 2026 Projeto MarS - Caixinha Teimosa | Engenharia</p>
+    </footer>
+</body>
+</html>

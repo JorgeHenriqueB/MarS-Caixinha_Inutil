@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MarS - Caixinha Teimosa | Fluxograma</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col justify-between">
+
+    <nav class="sticky top-0 z-50 glass-card border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-600/30 flex items-center justify-center border border-indigo-500/30 overflow-hidden">
+                        <img src="logo.jpg" alt="Logo MarS" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\'font-extrabold text-indigo-400 font-mono\'>M</span>';">
+                    </div>
+                    <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
+                        MarS <span class="text-xs font-normal text-slate-400">| Caixinha Teimosa</span>
+                    </span>
+                </a>
+                <div class="hidden md:flex space-x-6 text-sm font-medium text-slate-300">
+                    <a href="index.html" class="hover:text-indigo-400 transition">Início & Simulador</a>
+                    <a href="sobre.html" class="hover:text-indigo-400 transition">Sobre</a>
+                    <a href="gestao.html" class="hover:text-indigo-400 transition">Gestão & Planejamento</a>
+                    <a href="circuito.html" class="hover:text-indigo-400 transition">Esquema & Materiais</a>
+                    <a href="fluxograma.html" class="text-indigo-400 font-semibold border-b-2 border-indigo-500 pb-1">Fluxograma</a>
+                    <a href="codigo.html" class="hover:text-indigo-400 transition">Código Arduino</a>
+                    <a href="equipe.html" class="hover:text-indigo-400 transition">Equipe</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="py-12 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 flex-grow">
+        <div class="text-center max-w-2xl mx-auto">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-white mb-3">Fluxograma do Algoritmo</h1>
+            <p class="text-slate-400 text-sm sm:text-base">
+                Diagrama visual de tomada de decisão, verificação de prioridades e ciclo de movimento do robô.
+            </p>
+        </div>
+
+        <div class="glass-card p-6 sm:p-8 rounded-2xl border border-slate-800 flex flex-col items-center">
+            <div class="w-full bg-white p-4 rounded-xl border border-slate-700 shadow-xl flex justify-center">
+                <img src="fluxograma.jpg" alt="Fluxograma Oficial MarS" class="w-full h-auto rounded object-contain max-h-[600px]">
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-slate-800 bg-slate-950 py-6 text-xs text-slate-500 text-center">
+        <p>© 2026 Projeto MarS - Caixinha Teimosa | Engenharia</p>
+    </footer>
+</body>
+</html>

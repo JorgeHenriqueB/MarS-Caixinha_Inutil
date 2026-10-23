@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MarS - Caixinha Teimosa | Gestão & Planejamento</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col justify-between">
+
+    <nav class="sticky top-0 z-50 glass-card border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <a href="index.html" class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-600/30 flex items-center justify-center border border-indigo-500/30 overflow-hidden">
+                        <img src="logo.jpg" alt="Logo MarS" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\'font-extrabold text-indigo-400 font-mono\'>M</span>';">
+                    </div>
+                    <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
+                        MarS <span class="text-xs font-normal text-slate-400">| Caixinha Teimosa</span>
+                    </span>
+                </a>
+                <div class="hidden md:flex space-x-6 text-sm font-medium text-slate-300">
+                    <a href="index.html" class="hover:text-indigo-400 transition">Início & Simulador</a>
+                    <a href="sobre.html" class="hover:text-indigo-400 transition">Sobre</a>
+                    <a href="gestao.html" class="text-indigo-400 font-semibold border-b-2 border-indigo-500 pb-1">Gestão & Planejamento</a>
+                    <a href="circuito.html" class="hover:text-indigo-400 transition">Esquema & Materiais</a>
+                    <a href="fluxograma.html" class="hover:text-indigo-400 transition">Fluxograma</a>
+                    <a href="codigo.html" class="hover:text-indigo-400 transition">Código Arduino</a>
+                    <a href="equipe.html" class="hover:text-indigo-400 transition">Equipe</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 flex-grow">
+        <div class="text-center max-w-2xl mx-auto">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-white mb-3">Gestão & Planejamento do Projeto</h1>
+            <p class="text-slate-400 text-sm sm:text-base">
+                Acompanhamento das diretrizes de controle de ação (5W2H) e cronograma temporal de execução (Gráfico de Gantt).
+            </p>
+        </div>
+
+        <!-- Tabela 5W2H -->
+        <div class="glass-card p-6 sm:p-8 rounded-2xl border border-slate-800 space-y-4">
+            <h2 class="text-xl font-bold text-indigo-400 flex items-center gap-2">
+                <i class="fa-solid fa-list-check text-indigo-500"></i> Matriz de Ação 5W2H
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs sm:text-sm">
+                    <thead>
+                        <tr class="border-b border-slate-800 text-slate-400 font-mono">
+                            <th class="py-3 px-3">O quê? (What)</th>
+                            <th class="py-3 px-3">Por quê? (Why)</th>
+                            <th class="py-3 px-3">Onde? (Where)</th>
+                            <th class="py-3 px-3">Quem? (Who)</th>
+                            <th class="py-3 px-3">Quando? (When)</th>
+                            <th class="py-3 px-3">Como? (How)</th>
+                            <th class="py-3 px-3">Quanto? (How Much)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/60 text-slate-300">
+                        <tr>
+                            <td class="py-3 px-3 font-semibold text-white">Especificação do Hardware</td>
+                            <td class="py-3 px-3">Definir componentes e dimensionar atuadores.</td>
+                            <td class="py-3 px-3">Laboratório</td>
+                            <td class="py-3 px-3 text-indigo-400">Toda Equipe</td>
+                            <td class="py-3 px-3">Etapa 1</td>
+                            <td class="py-3 px-3">Pesquisa de componentes e cálculo de torque/corrente.</td>
+                            <td class="py-3 px-3 font-mono text-emerald-400">R$ 0,00</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-3 font-semibold text-white">Aquisição de Materiais</td>
+                            <td class="py-3 px-3">Garantir peças (Arduino Nano, Servos, Fonte 5V/2A).</td>
+                            <td class="py-3 px-3">Fornecedores</td>
+                            <td class="py-3 px-3 text-cyan-400">Matheus & Stephane</td>
+                            <td class="py-3 px-3">Etapa 1</td>
+                            <td class="py-3 px-3">Compra de componentes homologados.</td>
+                            <td class="py-3 px-3 font-mono text-emerald-400">R$ 130,00</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-3 font-semibold text-white">Desenvolvimento do Código .ino</td>
+                            <td class="py-3 px-3">Criar rotina de movimentação em 2 eixos e prioridade.</td>
+                            <td class="py-3 px-3">IDE Arduino</td>
+                            <td class="py-3 px-3 text-purple-400">Bruno & Jorge</td>
+                            <td class="py-3 px-3">Etapa 2</td>
+                            <td class="py-3 px-3">Escrita em C++ utilizando a biblioteca Servo.h.</td>
+                            <td class="py-3 px-3 font-mono text-emerald-400">R$ 0,00</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-3 font-semibold text-white">Montagem em Vector Board</td>
+                            <td class="py-3 px-3">Conectar o circuito de forma sólida e sem mau contato.</td>
+                            <td class="py-3 px-3">Bancada de Solda</td>
+                            <td class="py-3 px-3 text-amber-400">Gabrielly & Matheus</td>
+                            <td class="py-3 px-3">Etapa 2</td>
+                            <td class="py-3 px-3">Soldagem na vector board e fixação das chaves.</td>
+                            <td class="py-3 px-3 font-mono text-emerald-400">R$ 15,00</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 px-3 font-semibold text-white">Validação & Testes de Bancada</td>
+                            <td class="py-3 px-3">Ajustar os ângulos de alcance da base e do braço.</td>
+                            <td class="py-3 px-3">Laboratório</td>
+                            <td class="py-3 px-3 text-indigo-400">Toda Equipe</td>
+                            <td class="py-3 px-3">Etapa 3</td>
+                            <td class="py-3 px-3">Ajuste de atrasos (delays) e calibração de limites.</td>
+                            <td class="py-3 px-3 font-mono text-emerald-400">R$ 0,00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Cronograma Gantt -->
+        <div class="glass-card p-6 sm:p-8 rounded-2xl border border-slate-800 space-y-6">
+            <h2 class="text-xl font-bold text-cyan-400 flex items-center gap-2">
+                <i class="fa-solid fa-chart-gantt text-cyan-500"></i> Cronograma de Tempo (Método Gantt)
+            </h2>
+            
+            <div class="space-y-4 text-xs sm:text-sm">
+                <!-- Linha 1 -->
+                <div>
+                    <div class="flex justify-between text-slate-300 font-semibold mb-1">
+                        <span>1. Concepção & Pesquisa de Hardware</span>
+                        <span class="text-slate-500 font-mono">Semanas 1 - 2</span>
+                    </div>
+                    <div class="w-full bg-slate-900 rounded-full h-3 overflow-hidden border border-slate-800">
+                        <div class="bg-indigo-500 h-full rounded-full" style="width: 25%"></div>
+                    </div>
+                </div>
+
+                <!-- Linha 2 -->
+                <div>
+                    <div class="flex justify-between text-slate-300 font-semibold mb-1">
+                        <span>2. Esquemático Elétrico & Código Base (.ino)</span>
+                        <span class="text-slate-500 font-mono">Semanas 2 - 4</span>
+                    </div>
+                    <div class="w-full bg-slate-900 rounded-full h-3 overflow-hidden border border-slate-800 flex">
+                        <div class="w-[20%]"></div>
+                        <div class="bg-cyan-500 h-full rounded-full" style="width: 35%"></div>
+                    </div>
+                </div>
+
+                <!-- Linha 3 -->
+                <div>
+                    <div class="flex justify-between text-slate-300 font-semibold mb-1">
+                        <span>3. Montagem na Vector Board & Soldagem</span>
+                        <span class="text-slate-500 font-mono">Semanas 4 - 5</span>
+                    </div>
+                    <div class="w-full bg-slate-900 rounded-full h-3 overflow-hidden border border-slate-800 flex">
+                        <div class="w-[50%]"></div>
+                        <div class="bg-purple-500 h-full rounded-full" style="width: 25%"></div>
+                    </div>
+                </div>
+
+                <!-- Linha 4 -->
+                <div>
+                    <div class="flex justify-between text-slate-300 font-semibold mb-1">
+                        <span>4. Calibração Angular & Testes Finais</span>
+                        <span class="text-slate-500 font-mono">Semanas 5 - 6</span>
+                    </div>
+                    <div class="w-full bg-slate-900 rounded-full h-3 overflow-hidden border border-slate-800 flex">
+                        <div class="w-[70%]"></div>
+                        <div class="bg-emerald-500 h-full rounded-full" style="width: 30%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-slate-800 bg-slate-950 py-6 text-xs text-slate-500 text-center">
+        <p>© 2026 Projeto MarS - Caixinha Teimosa | Engenharia</p>
+    </footer>
+</body>
+</html>
