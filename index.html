@@ -30,8 +30,8 @@
                     </span>
                 </a>
                 <div class="hidden md:flex space-x-6 text-sm font-medium text-slate-300">
-                    <a href="index.html" class="text-indigo-400 font-semibold border-b-2 border-indigo-500 pb-1">Início & Simulador</a>
-                    <a href="sobre.html" class="hover:text-indigo-400 transition">Sobre</a>
+                    <a href="index.html" class="text-indigo-400 font-semibold border-b-2 border-indigo-500 pb-1">Início & Sobre</a>
+                    <a href="sobre.html" class="hover:text-indigo-400 transition">Simulador</a>
                     <a href="gestao.html" class="hover:text-indigo-400 transition">Gestão & Planejamento</a>
                     <a href="circuito.html" class="hover:text-indigo-400 transition">Esquema & Materiais</a>
                     <a href="fluxograma.html" class="hover:text-indigo-400 transition">Fluxograma</a>
@@ -56,10 +56,9 @@
                     <p class="text-slate-400 text-sm sm:text-base mb-6 leading-relaxed">
                         Mecanismo robótico de 2 eixos controlado por Arduino Nano. Escolha uma das chaves alavancas para ver a base girar (45°, 90° ou 135°) e o braço estender para desligar o interruptor ativado.
                     </p>
-                    <!-- Subsitua o trecho das rotas/botoes dentro da div do header principal no index.html por este: -->
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                         <a href="sobre.html" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm font-semibold transition shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2 text-center">
-                            <i class="fa-solid fa-circle-info"></i> Sobre o Projeto
+                            <i class="fa-solid fa-circle-info"></i> Simulador do Projeto
                         </a>
                         <a href="gestao.html" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-semibold border border-slate-700 transition flex items-center justify-center gap-2 text-center">
                             <i class="fa-solid fa-chart-gantt"></i> Gestão 5W2H
@@ -99,213 +98,83 @@
         </div>
     </header>
 
-    <!-- Simulador Completo -->
-    <main class="py-12 flex-grow">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid lg:grid-cols-3 gap-8 items-start">
-                <div class="glass-card p-6 rounded-2xl border border-slate-800">
-                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                        <i class="fa-solid fa-toggle-on text-indigo-400"></i> Painel de Chaves
-                    </h3>
-                    <p class="text-xs text-slate-400 mb-6">
-                        Acione as alavancas para interagir com o robô (Entradas digitais com <code>INPUT_PULLUP</code>).
-                    </p>
+    <main class="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16 flex-grow">
+        
+        <!-- 1. Conteúdo da aba "Sobre" (Posicionado no início do main) -->
+        <section class="space-y-8">
+            <div class="text-center max-w-2xl mx-auto">
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-3">Sobre o Projeto MarS</h2>
+                <p class="text-slate-400 text-sm sm:text-base">
+                    Entenda os objetivos práticos, a finalidade pedagógica e os conceitos de engenharia assimilados durante o desenvolvimento da Caixinha Teimosa.
+                </p>
+            </div>
 
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between p-4 bg-slate-900/80 rounded-xl border border-slate-800">
-                            <div>
-                                <div class="font-semibold text-sm text-slate-200">Chave S1 (Pino D6)</div>
-                                <div class="text-xs text-slate-400">Ângulo da Base: 45°</div>
-                            </div>
-                            <button id="toggle-s1" onclick="toggleSwitch(1)" class="w-14 h-8 rounded-full bg-slate-700 transition-colors p-1 flex items-center relative focus:outline-none">
-                                <div id="dot-s1" class="w-6 h-6 rounded-full bg-slate-300 transition-transform transform translate-x-0"></div>
-                            </button>
-                        </div>
+            <!-- Seção: Finalidade do Projeto -->
+            <div class="glass-card p-8 rounded-2xl border border-slate-800 space-y-4">
+                <h3 class="text-xl font-bold text-indigo-400 flex items-center gap-2">
+                    <i class="fa-solid fa-bullseye text-indigo-500"></i> Finalidade do Projeto
+                </h3>
+                <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                    A proposta central do <strong>MarS - Caixinha Teimosa</strong> é criar uma versão aprimorada da clássica <i>Useless Box</i> ("Caixa Inútil"). Enquanto o conceito tradicional utiliza apenas uma chave e um único atuador direcional, o projeto MarS evolui essa mecânica ao implementar <strong>controle de 2 eixos articulados</strong> (rotação da base e extensão do braço) integrados a um arranjo de <strong>3 chaves alavancas independentes</strong>.
+                </p>
+                <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                    Sua finalidade acadêmica é servir como demonstrador prático de sistemas mecatrônicos, combinando microcontroladores, malha aberta de controle de posição via PWM e lógica condicionada por hardware.
+                </p>
+            </div>
 
-                        <div class="flex items-center justify-between p-4 bg-slate-900/80 rounded-xl border border-slate-800">
-                            <div>
-                                <div class="font-semibold text-sm text-slate-200">Chave S2 (Pino D5)</div>
-                                <div class="text-xs text-slate-400">Ângulo da Base: 90° (Centro)</div>
-                            </div>
-                            <button id="toggle-s2" onclick="toggleSwitch(2)" class="w-14 h-8 rounded-full bg-slate-700 transition-colors p-1 flex items-center relative focus:outline-none">
-                                <div id="dot-s2" class="w-6 h-6 rounded-full bg-slate-300 transition-transform transform translate-x-0"></div>
-                            </button>
-                        </div>
-
-                        <div class="flex items-center justify-between p-4 bg-slate-900/80 rounded-xl border border-slate-800">
-                            <div>
-                                <div class="font-semibold text-sm text-slate-200">Chave S3 (Pino D4)</div>
-                                <div class="text-xs text-slate-400">Ângulo da Base: 135°</div>
-                            </div>
-                            <button id="toggle-s3" onclick="toggleSwitch(3)" class="w-14 h-8 rounded-full bg-slate-700 transition-colors p-1 flex items-center relative focus:outline-none">
-                                <div id="dot-s3" class="w-6 h-6 rounded-full bg-slate-300 transition-transform transform translate-x-0"></div>
-                            </button>
-                        </div>
+            <!-- Seção: O que Aprendemos com o Projeto -->
+            <div class="glass-card p-8 rounded-2xl border border-slate-800 space-y-6">
+                <h3 class="text-xl font-bold text-cyan-400 flex items-center gap-2">
+                    <i class="fa-solid fa-graduation-cap text-cyan-500"></i> Principais Aprendizados
+                </h3>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-slate-900/60 p-5 rounded-xl border border-slate-800 space-y-2">
+                        <h4 class="font-bold text-white text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-bolt text-amber-400"></i> Eletrônica & Alimentação
+                        </h4>
+                        <p class="text-slate-400 text-xs leading-relaxed">
+                            Esquematização e dimensionamento de fontes externas dedicadas (5V / 2A) para evitar picos de corrente (<i>brownout</i>) no Arduino Nano durante a operação simultânea de dois micro servos SG90. Uso de resistores internos de pull-up (<code>INPUT_PULLUP</code>).
+                        </p>
                     </div>
 
-                    <div class="mt-6 p-4 rounded-xl bg-indigo-950/40 border border-indigo-900/50">
-                        <div class="text-xs font-semibold text-indigo-300 mb-1">Status do Arduino:</div>
-                        <div id="sim-status" class="font-mono text-xs text-indigo-200">Sistema em repouso. Aguardando alavanca...</div>
-                    </div>
-                </div>
-
-                <div class="lg:col-span-2 glass-card p-6 rounded-2xl border border-slate-800 flex flex-col items-center justify-center min-h-[400px]">
-                    <div class="w-full flex justify-between items-center mb-4">
-                        <span class="text-sm font-semibold text-slate-300 flex items-center gap-2">
-                            <i class="fa-solid fa-cube text-cyan-400"></i> Visualização do Mecanismo em Tempo Real
-                        </span>
-                        <span id="angle-display" class="font-mono text-xs text-slate-400 bg-slate-800 px-3 py-1 rounded-full">
-                            Base: 90° | Braço: 0°
-                        </span>
+                    <div class="bg-slate-900/60 p-5 rounded-xl border border-slate-800 space-y-2">
+                        <h4 class="font-bold text-white text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-code text-indigo-400"></i> Lógica de Programação & Controle
+                        </h4>
+                        <p class="text-slate-400 text-xs leading-relaxed">
+                            Implementação de temporização suave sem trancos (<i>ramping</i> incremental de ângulos em C++), controle prioritário entre múltiplas entradas e estruturação de rotinas em funções moduladas (<code>mover_base</code> e <code>ativar_braco</code>).
+                        </p>
                     </div>
 
-                    <div class="relative w-full max-w-lg aspect-square sm:aspect-[4/3] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center p-2">
-                        <canvas id="simCanvas" class="w-full h-full block"></canvas>
+                    <div class="bg-slate-900/60 p-5 rounded-xl border border-slate-800 space-y-2">
+                        <h4 class="font-bold text-white text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-gears text-purple-400"></i> Cinemática & Design Mecânico
+                        </h4>
+                        <p class="text-slate-400 text-xs leading-relaxed">
+                            Mapeamento polar de coordenadas para alcance angular exato das chaves alavancas em 45°, 90° e 135°, ajustando o braço mecânico para aplicar força mecânica suficiente no desligamento físico.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-900/60 p-5 rounded-xl border border-slate-800 space-y-2">
+                        <h4 class="font-bold text-white text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-users text-emerald-400"></i> Trabalho em Equipe & Gestão
+                        </h4>
+                        <p class="text-slate-400 text-xs leading-relaxed">
+                            Organização de entregas através de metodologias como 5W2H e cronograma Gantt, divisão eficiente de tarefas de montagem, testes de bancada e documentação técnica.
+                        </p>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
+
+        
     </main>
 
     <footer class="border-t border-slate-800 bg-slate-950 py-6 text-xs text-slate-500 text-center">
         <p>© 2026 Projeto MarS - Caixinha Teimosa | Engenharia</p>
     </footer>
 
-    <script>
-        const switches = { 1: false, 2: false, 3: false };
-        let currentBaseAngle = 90, targetBaseAngle = 90, currentArmAngle = 0;
-        let isBusy = false, activeSwitchNum = null;
-
-        const canvas = document.getElementById('simCanvas');
-        const ctx = canvas.getContext('2d');
-
-        function resizeCanvas() {
-            canvas.width = canvas.parentElement.clientWidth;
-            canvas.height = canvas.parentElement.clientHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        function toggleSwitch(num) {
-            if (isBusy) return;
-            switches[num] = !switches[num];
-            const dot = document.getElementById(`dot-s${num}`);
-            const btn = document.getElementById(`toggle-s${num}`);
-            if (switches[num]) {
-                btn.classList.replace('bg-slate-700', 'bg-indigo-600');
-                dot.classList.add('translate-x-6');
-            } else {
-                btn.classList.replace('bg-indigo-600', 'bg-slate-700');
-                dot.classList.remove('translate-x-6');
-            }
-            processLogic();
-        }
-
-        async function processLogic() {
-            if (isBusy) return;
-            if (switches[2]) { activeSwitchNum = 2; targetBaseAngle = 90; }
-            else if (switches[1]) { activeSwitchNum = 1; targetBaseAngle = 45; }
-            else if (switches[3]) { activeSwitchNum = 3; targetBaseAngle = 135; }
-            else {
-                activeSwitchNum = null; targetBaseAngle = 90;
-                document.getElementById('sim-status').innerText = 'Sistema em repouso. Aguardando alavanca...';
-                return;
-            }
-
-            isBusy = true;
-            document.getElementById('sim-status').innerText = `Girando base para Chave S${activeSwitchNum} (${targetBaseAngle}°)...`;
-            await animateBaseTo(targetBaseAngle);
-
-            document.getElementById('sim-status').innerText = `Estendendo braço em ${targetBaseAngle}°...`;
-            await animateArmTo(180);
-
-            if (activeSwitchNum !== null) {
-                switches[activeSwitchNum] = false;
-                const dot = document.getElementById(`dot-s${activeSwitchNum}`);
-                const btn = document.getElementById(`toggle-s${activeSwitchNum}`);
-                btn.classList.replace('bg-indigo-600', 'bg-slate-700');
-                dot.classList.remove('translate-x-6');
-            }
-
-            document.getElementById('sim-status').innerText = `Recolhendo braço...`;
-            await animateArmTo(0);
-
-            isBusy = false;
-            activeSwitchNum = null;
-            document.getElementById('sim-status').innerText = 'Chave desligada! Pronto.';
-            processLogic();
-        }
-
-        function animateBaseTo(target) {
-            return new Promise((resolve) => {
-                const interval = setInterval(() => {
-                    if (currentBaseAngle < target) currentBaseAngle++;
-                    else if (currentBaseAngle > target) currentBaseAngle--;
-                    else { clearInterval(interval); resolve(); }
-                    updateAngleDisplay();
-                }, 6);
-            });
-        }
-
-        function animateArmTo(target) {
-            return new Promise((resolve) => {
-                const interval = setInterval(() => {
-                    if (currentArmAngle < target) currentArmAngle += 3;
-                    else if (currentArmAngle > target) currentArmAngle -= 3;
-                    else { clearInterval(interval); resolve(); }
-                    updateAngleDisplay();
-                }, 8);
-            });
-        }
-
-        function updateAngleDisplay() {
-            document.getElementById('angle-display').innerText = `Base: ${Math.round(currentBaseAngle)}° | Braço: ${Math.round(currentArmAngle)}°`;
-        }
-
-        function drawSimulation() {
-            const w = canvas.width, h = canvas.height;
-            const centerX = w / 2, centerY = h / 2 + 50;
-
-            ctx.clearRect(0, 0, w, h);
-            ctx.fillStyle = '#0f172a'; ctx.strokeStyle = '#334155'; ctx.lineWidth = 3;
-            ctx.beginPath(); ctx.roundRect(centerX - 160, centerY - 150, 320, 220, 16); ctx.fill(); ctx.stroke();
-
-            const switchPos = [
-                { id: 1, x: centerX - 90, y: centerY - 120 },
-                { id: 2, x: centerX, y: centerY - 130 },
-                { id: 3, x: centerX + 90, y: centerY - 120 }
-            ];
-
-            switchPos.forEach(sw => {
-                const isActive = switches[sw.id];
-                ctx.fillStyle = '#334155'; ctx.beginPath(); ctx.arc(sw.x, sw.y, 9, 0, Math.PI * 2); ctx.fill();
-                ctx.strokeStyle = isActive ? '#6366f1' : '#94a3b8'; ctx.lineWidth = 4;
-                ctx.beginPath(); ctx.moveTo(sw.x, sw.y);
-                ctx.lineTo(sw.x + (isActive ? 0 : 6), sw.y - (isActive ? 18 : 10));
-                ctx.stroke();
-                ctx.fillStyle = isActive ? '#818cf8' : '#64748b'; ctx.font = '11px Inter, sans-serif'; ctx.textAlign = 'center';
-                ctx.fillText(`S${sw.id}`, sw.x, sw.y + 22);
-            });
-
-            ctx.save();
-            ctx.translate(centerX, centerY);
-            ctx.fillStyle = '#1e293b'; ctx.strokeStyle = '#475569'; ctx.lineWidth = 2;
-            ctx.beginPath(); ctx.arc(0, 0, 32, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-
-            const radBase = (currentBaseAngle - 180) * (Math.PI / 180) - (Math.PI / 2);
-            ctx.rotate(radBase);
-
-            ctx.fillStyle = '#4f46e5'; ctx.beginPath(); ctx.roundRect(-10, -10, 20, 45, 4); ctx.fill();
-
-            const armReach = (currentArmAngle / 180) * 85;
-            ctx.fillStyle = '#22d3ee'; ctx.beginPath(); ctx.roundRect(-6, 0, 12, 35 + armReach, 4); ctx.fill();
-            ctx.fillStyle = '#f59e0b'; ctx.beginPath(); ctx.arc(0, 35 + armReach, 7, 0, Math.PI * 2); ctx.fill();
-
-            ctx.restore();
-            requestAnimationFrame(drawSimulation);
-        }
-
-        window.onload = function() { drawSimulation(); };
-    </script>
+    
 </body>
 </html>
