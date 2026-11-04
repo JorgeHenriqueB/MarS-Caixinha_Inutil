@@ -13,6 +13,18 @@
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
         .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        
+        /* Animação para apresentação de slides */
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(30px) scale(0.98); }
+            to { opacity: 1; transform: translateX(0) scale(1); }
+        }
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px) scale(0.98); }
+            to { opacity: 1; transform: translateX(0) scale(1); }
+        }
+        .animate-slide-right { animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .animate-slide-left { animation: slideInLeft 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between">
@@ -58,7 +70,7 @@
                     </p>
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                         <a href="sobre.html" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm font-semibold transition shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2 text-center">
-                            <i class="fa-solid fa-circle-info"></i> Simulador do Projeto
+                            <i class="fa-solid fa-circle-info"></i> Sobre o Projeto
                         </a>
                         <a href="gestao.html" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-semibold border border-slate-700 transition flex items-center justify-center gap-2 text-center">
                             <i class="fa-solid fa-chart-gantt"></i> Gestão 5W2H
@@ -124,43 +136,64 @@
 
             <!-- Seção: O que Aprendemos com o Projeto -->
             <div class="glass-card p-8 rounded-2xl border border-slate-800 space-y-6">
-                <h3 class="text-xl font-bold text-cyan-400 flex items-center gap-2">
-                    <i class="fa-solid fa-graduation-cap text-cyan-500"></i> Principais Aprendizados
-                </h3>
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                    <h3 class="text-xl font-bold text-cyan-400 flex items-center gap-2">
+                        <i class="fa-solid fa-graduation-cap text-cyan-500"></i> Principais Aprendizados
+                    </h3>
+                    <span class="text-xs text-indigo-400 bg-indigo-500/10 px-3 py-1 rounded-full border border-indigo-500/20 flex items-center gap-1.5">
+                        <i class="fa-solid fa-desktop"></i> Clique em um cartão para abrir a Apresentação de Slides
+                    </span>
+                </div>
                 
                 <div class="grid md:grid-cols-2 gap-6">
-                    <div class="bg-slate-900/60 p-5 rounded-xl border border-slate-800 space-y-2">
+                    <div onclick="openSlide(0)" class="bg-slate-900/60 p-5 rounded-xl border border-slate-800 space-y-2 cursor-pointer hover:border-amber-500/50 hover:bg-slate-900/90 transition-all duration-200 group relative">
+                        <div class="absolute top-4 right-4 text-slate-600 group-hover:text-amber-400 transition-colors flex items-center gap-1 text-xs">
+                            <span class="opacity-0 group-hover:opacity-100 transition-opacity font-semibold">Ver Slide</span>
+                            <i class="fa-solid fa-expand"></i>
+                        </div>
                         <h4 class="font-bold text-white text-sm flex items-center gap-2">
                             <i class="fa-solid fa-bolt text-amber-400"></i> Eletrônica & Alimentação
                         </h4>
-                        <p class="text-slate-400 text-xs leading-relaxed">
+                        <p class="text-slate-400 text-xs leading-relaxed line-clamp-3">
                             Esquematização e dimensionamento de fontes externas dedicadas (5V / 2A) para evitar picos de corrente (<i>brownout</i>) no Arduino Nano durante a operação simultânea de dois micro servos SG90. Uso de resistores internos de pull-up (<code>INPUT_PULLUP</code>).
                         </p>
                     </div>
 
-                    <div class="bg-slate-900/60 p-5 rounded-xl border border-slate-800 space-y-2">
+                    <div onclick="openSlide(1)" class="bg-slate-900/60 p-5 rounded-xl border border-slate-800 space-y-2 cursor-pointer hover:border-indigo-500/50 hover:bg-slate-900/90 transition-all duration-200 group relative">
+                        <div class="absolute top-4 right-4 text-slate-600 group-hover:text-indigo-400 transition-colors flex items-center gap-1 text-xs">
+                            <span class="opacity-0 group-hover:opacity-100 transition-opacity font-semibold">Ver Slide</span>
+                            <i class="fa-solid fa-expand"></i>
+                        </div>
                         <h4 class="font-bold text-white text-sm flex items-center gap-2">
                             <i class="fa-solid fa-code text-indigo-400"></i> Lógica de Programação & Controle
                         </h4>
-                        <p class="text-slate-400 text-xs leading-relaxed">
+                        <p class="text-slate-400 text-xs leading-relaxed line-clamp-3">
                             Implementação de temporização suave sem trancos (<i>ramping</i> incremental de ângulos em C++), controle prioritário entre múltiplas entradas e estruturação de rotinas em funções moduladas (<code>mover_base</code> e <code>ativar_braco</code>).
                         </p>
                     </div>
 
-                    <div class="bg-slate-900/60 p-5 rounded-xl border border-slate-800 space-y-2">
+                    <div onclick="openSlide(2)" class="bg-slate-900/60 p-5 rounded-xl border border-slate-800 space-y-2 cursor-pointer hover:border-purple-500/50 hover:bg-slate-900/90 transition-all duration-200 group relative">
+                        <div class="absolute top-4 right-4 text-slate-600 group-hover:text-purple-400 transition-colors flex items-center gap-1 text-xs">
+                            <span class="opacity-0 group-hover:opacity-100 transition-opacity font-semibold">Ver Slide</span>
+                            <i class="fa-solid fa-expand"></i>
+                        </div>
                         <h4 class="font-bold text-white text-sm flex items-center gap-2">
                             <i class="fa-solid fa-gears text-purple-400"></i> Cinemática & Design Mecânico
                         </h4>
-                        <p class="text-slate-400 text-xs leading-relaxed">
+                        <p class="text-slate-400 text-xs leading-relaxed line-clamp-3">
                             Mapeamento polar de coordenadas para alcance angular exato das chaves alavancas em 45°, 90° e 135°, ajustando o braço mecânico para aplicar força mecânica suficiente no desligamento físico.
                         </p>
                     </div>
 
-                    <div class="bg-slate-900/60 p-5 rounded-xl border border-slate-800 space-y-2">
+                    <div onclick="openSlide(3)" class="bg-slate-900/60 p-5 rounded-xl border border-slate-800 space-y-2 cursor-pointer hover:border-emerald-500/50 hover:bg-slate-900/90 transition-all duration-200 group relative">
+                        <div class="absolute top-4 right-4 text-slate-600 group-hover:text-emerald-400 transition-colors flex items-center gap-1 text-xs">
+                            <span class="opacity-0 group-hover:opacity-100 transition-opacity font-semibold">Ver Slide</span>
+                            <i class="fa-solid fa-expand"></i>
+                        </div>
                         <h4 class="font-bold text-white text-sm flex items-center gap-2">
                             <i class="fa-solid fa-users text-emerald-400"></i> Trabalho em Equipe & Gestão
                         </h4>
-                        <p class="text-slate-400 text-xs leading-relaxed">
+                        <p class="text-slate-400 text-xs leading-relaxed line-clamp-3">
                             Organização de entregas através de metodologias como 5W2H e cronograma Gantt, divisão eficiente de tarefas de montagem, testes de bancada e documentação técnica.
                         </p>
                     </div>
@@ -171,10 +204,286 @@
         
     </main>
 
+    <!-- Modal Apresentação de Slides (Full Width / Expanded) -->
+    <div id="modal-container" onclick="closeModalOnBackdrop(event)" class="fixed inset-0 z-50 hidden bg-slate-950/90 backdrop-blur-xl flex items-center justify-center p-3 sm:p-6">
+        <div class="w-full max-w-5xl h-[92vh] sm:h-[88vh] glass-card rounded-3xl border border-slate-700/80 flex flex-col justify-between overflow-hidden shadow-2xl relative">
+            
+            <!-- Barra Superior da Apresentação -->
+            <div class="px-6 py-4 border-b border-slate-800 bg-slate-900/70 flex items-center justify-between shrink-0">
+                <div class="flex items-center gap-3">
+                    <span class="px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center gap-2">
+                        <i class="fa-solid fa-sliders"></i> Apresentação do Projeto MarS
+                    </span>
+                    <span id="slide-indicator-top" class="font-mono text-xs text-slate-400 hidden sm:inline">Slide 1 de 4</span>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <span class="text-xs text-slate-500 hidden md:inline"><kbd class="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-400">←</kbd> <kbd class="px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-slate-400">→</kbd> Usar setas</span>
+                    <button onclick="closeModal()" class="w-9 h-9 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition border border-slate-700">
+                        <i class="fa-solid fa-xmark text-base"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Conteúdo Principal do Slide Expandido -->
+            <div class="flex-grow overflow-y-auto p-6 sm:p-10 relative" id="slide-content-wrapper">
+                <div id="slide-card" class="space-y-6 max-w-4xl mx-auto">
+                    <!-- Inserido dinamicamente via JS -->
+                </div>
+            </div>
+
+            <!-- Rodapé com Navegação dos Slides -->
+            <div class="px-6 py-4 border-t border-slate-800 bg-slate-900/80 flex items-center justify-between shrink-0">
+                <button id="btn-prev" onclick="prevSlide()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs sm:text-sm font-semibold border border-slate-700 transition flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed">
+                    <i class="fa-solid fa-arrow-left"></i> Anterior
+                </button>
+
+                <!-- Indicadores de bolinhas -->
+                <div class="flex items-center gap-2" id="slide-dots">
+                    <button onclick="goToSlide(0)" class="w-3 h-3 rounded-full bg-slate-700 transition-all duration-300"></button>
+                    <button onclick="goToSlide(1)" class="w-3 h-3 rounded-full bg-slate-700 transition-all duration-300"></button>
+                    <button onclick="goToSlide(2)" class="w-3 h-3 rounded-full bg-slate-700 transition-all duration-300"></button>
+                    <button onclick="goToSlide(3)" class="w-3 h-3 rounded-full bg-slate-700 transition-all duration-300"></button>
+                </div>
+
+                <button id="btn-next" onclick="nextSlide()" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm font-semibold transition shadow-lg shadow-indigo-600/30 flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed">
+                    Próximo <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <footer class="border-t border-slate-800 bg-slate-950 py-6 text-xs text-slate-500 text-center">
         <p>© 2026 Projeto MarS - Caixinha Teimosa | Engenharia</p>
     </footer>
 
-    
+    <script>
+        const slides = [
+            {
+                category: "Domínio Hardware & Eletrônica",
+                title: "Eletrônica & Alimentação Dedicada",
+                subtitle: "Dimensionamento energético e estabilidade do microcontrolador Arduino Nano.",
+                icon: '<i class="fa-solid fa-bolt text-amber-400"></i>',
+                themeColor: 'amber',
+                badgeText: 'Alimentação 5V / 2A Dedicada',
+                overview: "Para garantir a operação robótica contínua dos dois micro servos SG90 sem reinicializações indesejadas (*brownouts*), o projeto utilizou uma malha elétrica com barramentos de alimentação isolados e resistores de pull-up internos.",
+                highlights: [
+                    {
+                        title: "Prevenção de Picos de Corrente (Brownouts)",
+                        desc: "Servos motores exigem surtos de corrente no acionamento inicial. A separação do canal VCC dos servos e do pino 5V do Arduino impediu instabilidades de tensão no controlador."
+                    },
+                    {
+                        title: "Resistores de Pull-Up Internos (INPUT_PULLUP)",
+                        desc: "Garantia de leitura estável sem flutuações digitais (*floating state*) nos pinos D4, D5 e D6 conectados às chaves alavancas."
+                    },
+                    {
+                        title: "GND Compartilhado",
+                        desc: "Unificação de aterramentos garantindo referência zero comum entre fonte externa, circuito de controle e servomotores."
+                    }
+                ],
+                metric: "5V / 2A de pico sem queda de sinal no microcontrolador"
+            },
+            {
+                category: "Engenharia de Software Embedded",
+                title: "Lógica de Programação & Controle de Servo",
+                subtitle: "Lógica condicionada em C++ com suavização de ângulos e prioridade entre interruptores.",
+                icon: '<i class="fa-solid fa-code text-indigo-400"></i>',
+                themeColor: 'indigo',
+                badgeText: 'Algoritmo C++ Modular',
+                overview: "Desenvolvimento de funções modulares em linguagem C++ para orquestrar a rotação da base polar de 2 eixos de forma precisa, suave e sem trancos mecânicos.",
+                highlights: [
+                    {
+                        title: "Ramping Angular Gradual (Suavização)",
+                        desc: "Controle de incremento passo a passo dos ângulos (1° a cada 6ms na base, 3° a cada 8ms no braço) para prevenir desgastes nas engrenagens mecânicas."
+                    },
+                    {
+                        title: "Hierarquia de Prioridades (S2 > S1 > S3)",
+                        desc: "Sistema de escolha inteligente: a Chave Central S2 (90°) tem precedência de atuação sobre as extremidades (45° e 135°)."
+                    },
+                    {
+                        title: "Arquitetura Não Bloqueante",
+                        desc: "Estruturação modular (mover_base e ativar_braco) facilitando a manutenção e adição de novos padrões comportamentais."
+                    }
+                ],
+                metric: "Tempo de resposta < 1.2s entre acionamento e retorno"
+            },
+            {
+                category: "Mecatrônica & Cinemática",
+                title: "Cinemática & Design Mecânico 2D/3D",
+                subtitle: "Mapeamento polar de trajetória e braço extensor articulado de alta precisão.",
+                icon: '<i class="fa-solid fa-gears text-purple-400"></i>',
+                themeColor: 'purple',
+                badgeText: 'Mapeamento Angular 45° / 90° / 135°',
+                overview: "Diferente da Useless Box convencional de 1 pino, a Caixinha Teimosa MarS combina um eixo azimutal de base giratória com um raio de atuação variável de acionamento.",
+                highlights: [
+                    {
+                        title: "Mapeamento Polar de Coordenadas",
+                        desc: "Alinhamento exato do efetuador final do braço nas posições físicas das chaves S1 (45°), S2 (90°) e S3 (135°)."
+                    },
+                    {
+                        title: "Braço com Torque de Alavanca Mecânica",
+                        desc: "Dimensionamento do comprimento da haste para exercer força de desligamento física perfeita sobre a alavanca."
+                    },
+                    {
+                        title: "Tolerância Mecânica e Guias",
+                        desc: "Ajustes de folga e centro de rotação da caixa para evitar atrito desnecessário durante os deslocamentos circulares."
+                    }
+                ],
+                metric: "3 Posições de interruptor atendidas por 1 único braço"
+            },
+            {
+                category: "Engenharia de Projetos & Metodologia",
+                title: "Trabalho em Equipe & Gestão de Projeto",
+                subtitle: "Aplicação prática das metodologias 5W2H, Gantt e documentação técnica.",
+                icon: '<i class="fa-solid fa-users text-emerald-400"></i>',
+                badgeBg: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400',
+                overview: "Garantia do cumprimento dos prazos e distribuição de papéis através de métodos estruturados de engenharia de projetos.",
+                highlights: [
+                    {
+                        title: "Planejamento 5W2H",
+                        desc: "Definição clara do que seria feito, responsabilidades da equipe, custos detalhados de componentes e prazos de conclusão."
+                    },
+                    {
+                        title: "Cronograma em Gantt",
+                        desc: "Acompanhamento sequencial: Pesquisa preliminar -> Montagem do circuito -> Código C++ -> Modelagem física -> Testes Finais."
+                    },
+                    {
+                        title: "Testes de Bancada e Documentação",
+                        desc: "Registros contínuos em esquemáticos, diagramas de blocos, fluxogramas de lógica e código aberto documentado."
+                    }
+                ],
+                metric: "100% dos requisitos entregues no prazo acordado"
+            }
+        ];
+
+        let currentSlideIndex = 0;
+
+        function openSlide(index) {
+            currentSlideIndex = index;
+            renderSlide('animate-slide-right');
+            
+            const container = document.getElementById('modal-container');
+            container.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function renderSlide(animationClass = '') {
+            const data = slides[currentSlideIndex];
+            if (!data) return;
+
+            const card = document.getElementById('slide-card');
+            card.className = `space-y-6 max-w-4xl mx-auto ${animationClass}`;
+
+            const colorClasses = {
+                amber: { badge: 'bg-amber-500/10 text-amber-400 border-amber-500/20', accent: 'text-amber-400' },
+                indigo: { badge: 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20', accent: 'text-indigo-400' },
+                purple: { badge: 'bg-purple-500/10 text-purple-400 border-purple-500/20', accent: 'text-purple-400' },
+                emerald: { badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20', accent: 'text-emerald-400' }
+            }[data.themeColor] || { badge: 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20', accent: 'text-indigo-400' };
+
+            let highlightsHtml = '';
+            data.highlights.forEach((item, idx) => {
+                highlightsHtml += `
+                    <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-800 space-y-2 hover:border-slate-700 transition">
+                        <div class="flex items-center gap-2 font-bold text-white text-sm">
+                            <span class="w-6 h-6 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-xs ${colorClasses.accent}">0${idx+1}</span>
+                            ${item.title}
+                        </div>
+                        <p class="text-slate-400 text-xs sm:text-sm leading-relaxed pl-8">${item.desc}</p>
+                    </div>
+                `;
+            });
+
+            card.innerHTML = `
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
+                    <div>
+                        <span class="text-xs uppercase tracking-widest font-semibold text-slate-400">${data.category}</span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-white flex items-center gap-3 mt-1">
+                            ${data.icon} ${data.title}
+                        </h2>
+                    </div>
+                    <span class="px-3 py-1.5 rounded-xl text-xs font-semibold border ${colorClasses.badge}">
+                        ${data.badgeText}
+                    </span>
+                </div>
+
+                <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                    ${data.overview}
+                </p>
+
+                <div class="space-y-4 pt-2">
+                    <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                        <i class="fa-solid fa-list-check ${colorClasses.accent}"></i> Pilares de Implementação Técnica
+                    </h4>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        ${highlightsHtml}
+                    </div>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-indigo-950/40 border border-indigo-900/50 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div class="flex items-center gap-3 text-xs text-indigo-200">
+                        <i class="fa-solid fa-chart-line text-lg text-indigo-400"></i>
+                        <span><strong>Métrica de Sucesso:</strong> ${data.metric}</span>
+                    </div>
+                    <span class="text-[11px] text-slate-400 font-mono">Projeto MarS - Módulo ${currentSlideIndex + 1}</span>
+                </div>
+            `;
+
+            // Atualiza indicadores do rodapé
+            document.getElementById('slide-indicator-top').innerText = `Slide ${currentSlideIndex + 1} de ${slides.length}`;
+            document.getElementById('btn-prev').disabled = currentSlideIndex === 0;
+            document.getElementById('btn-next').disabled = currentSlideIndex === slides.length - 1;
+
+            const dots = document.getElementById('slide-dots').children;
+            for (let i = 0; i < dots.length; i++) {
+                if (i === currentSlideIndex) {
+                    dots[i].className = 'w-8 h-3 rounded-full bg-indigo-500 transition-all duration-300';
+                } else {
+                    dots[i].className = 'w-3 h-3 rounded-full bg-slate-700 hover:bg-slate-600 transition-all duration-300';
+                }
+            }
+        }
+
+        function nextSlide() {
+            if (currentSlideIndex < slides.length - 1) {
+                currentSlideIndex++;
+                renderSlide('animate-slide-right');
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlideIndex > 0) {
+                currentSlideIndex--;
+                renderSlide('animate-slide-left');
+            }
+        }
+
+        function goToSlide(index) {
+            const anim = index > currentSlideIndex ? 'animate-slide-right' : 'animate-slide-left';
+            currentSlideIndex = index;
+            renderSlide(anim);
+        }
+
+        function closeModal() {
+            const container = document.getElementById('modal-container');
+            container.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function closeModalOnBackdrop(e) {
+            if (e.target.id === 'modal-container') {
+                closeModal();
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            const container = document.getElementById('modal-container');
+            if (container.classList.contains('hidden')) return;
+
+            if (e.key === 'Escape') closeModal();
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+    </script>
 </body>
 </html>
