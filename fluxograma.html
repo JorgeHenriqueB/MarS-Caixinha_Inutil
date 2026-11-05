@@ -3,21 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Fluxograma do código da Caixinha do Tchauzinho MarS com Arduino Uno, sensor ultrassônico e dois servos.">
-    <title>MarS - Caixinha do Tchauzinho | Fluxograma</title>
+    <meta name="description" content="Fluxograma visual da Caixinha do Tchauzinho em desenho, com Arduino Uno, sensor e servos.">
+    <title>MarS - Caixinha do Tchauzinho | Fluxograma Visual</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         html { scroll-behavior: smooth; }
-        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .flow-svg { width: 100%; height: auto; min-width: 720px; }
-        .flow-line { fill: none; stroke: #64748b; stroke-width: 3; marker-end: url(#arrow); }
-        .flow-node { stroke-width: 2; }
-        .flow-label { font: 600 16px Inter, Arial, sans-serif; fill: #f8fafc; text-anchor: middle; }
-        .flow-small { font: 500 13px Inter, Arial, sans-serif; fill: #cbd5e1; text-anchor: middle; }
-        .flow-branch { font: 700 13px Inter, Arial, sans-serif; fill: #fbbf24; }
-        @media (max-width: 640px) { .flow-svg { min-width: 680px; } }
+        .glass-card { background: rgba(30,41,59,.78); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.08); }
+        .diagram-wrap { overflow: auto; }
+        .flow-svg { width: 100%; min-width: 980px; height: auto; display: block; }
+        .node { stroke: #3dd9c1; stroke-width: 2.5; }
+        .decision { stroke: #fbbf24; stroke-width: 2.5; }
+        .arrow { stroke: #95a6c7; stroke-width: 3; fill: none; marker-end: url(#arrowhead); }
+        .text-main { font: 700 16px 'Inter', sans-serif; fill: #e2e8f0; }
+        .text-small { font: 600 12px 'Inter', sans-serif; fill: #cbd5e1; }
+        .text-yes { font: 700 12px 'Inter', sans-serif; fill: #34d399; }
+        .text-no { font: 700 12px 'Inter', sans-serif; fill: #fbbf24; }
         @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
     </style>
 </head>
@@ -44,127 +46,119 @@
         </div>
     </nav>
 
-    <main class="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 flex-grow">
-        <header class="text-center max-w-3xl mx-auto">
-            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-300 border border-amber-500/20 mb-4"><i class="fa-solid fa-diagram-project"></i> Lógica do firmware Arduino Uno</span>
-            <h1 class="text-3xl sm:text-4xl font-extrabold text-white mb-3">Fluxograma do tchauzinho</h1>
-            <p class="text-slate-400 text-sm sm:text-base">Fluxo desenvolvido a partir do código fornecido: leitura do sensor, detecção a até 15 cm, movimento dos servos e rearme quando a distância chega a 25 cm ou mais.</p>
+    <main class="py-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex-grow w-full">
+        <header class="text-center max-w-3xl mx-auto mb-6">
+            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 mb-4"><i class="fa-solid fa-diagram-project"></i> Fluxograma visual</span>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Fluxograma do sistema</h1>
+            <p class="text-slate-400 text-sm sm:text-base mt-2">Diagrama do funcionamento do robô com detecção por sensor, movimento da base e tchau do braço.</p>
         </header>
 
-        <section class="glass-card p-5 sm:p-8 rounded-2xl border border-slate-800 space-y-5">
-            <div class="flex flex-wrap justify-between items-center gap-3">
-                <h2 class="text-lg font-bold text-white"><i class="fa-solid fa-code-branch text-amber-400 mr-2"></i>Decisões do programa</h2>
-                <span class="text-xs text-slate-400">Arduino Uno · HC-SR04 · servos D2 / D3</span>
-            </div>
-            <p class="text-sm text-slate-300">No início, o Arduino configura os pinos e posiciona os servos em 0°. Depois, repete a leitura da distância. Se uma pessoa for detectada entre 1 e 15 cm e ainda não tiver sido registrada, a base se move e o braço faz dois acenos. O sistema só rearma quando uma leitura válida alcança 25 cm ou mais.</p>
-            <div class="overflow-x-auto rounded-xl border border-slate-800 bg-slate-950/70" role="region" aria-label="Fluxograma do funcionamento; deslize horizontalmente em telas pequenas" tabindex="0">
-                <svg class="flow-svg" viewBox="0 0 1000 1540" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="flow-title flow-desc">
-                    <title id="flow-title">Fluxograma do código da Caixinha do Tchauzinho</title>
-                    <desc id="flow-desc">O Arduino configura os componentes e mede a distância. Se detectar de 1 a 15 centímetros e ainda não houver detecção registrada, move a base a 90 graus e executa o tchau com o braço. Se a distância for 25 centímetros ou mais e a pessoa estiver marcada como detectada, retorna os servos a zero e rearma. Nos demais casos, mantém o estado e mede novamente.</desc>
+        <section class="glass-card rounded-2xl border border-slate-800 p-3 sm:p-5">
+            <div class="diagram-wrap rounded-xl bg-slate-950/80 border border-slate-800">
+                <svg class="flow-svg" viewBox="0 0 1180 1280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Fluxograma visual da Caixinha do Tchauzinho">
                     <defs>
-                        <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L10,5 L0,10 z" fill="#64748b"/></marker>
-                        <linearGradient id="startFill" x1="0" x2="1"><stop offset="0" stop-color="#4338ca"/><stop offset="1" stop-color="#4f46e5"/></linearGradient>
+                        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+                            <path d="M0,0 L10,5 L0,10 z" fill="#99a9c6"></path>
+                        </marker>
+                        <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+                            <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#020617" flood-opacity="0.45"/>
+                        </filter>
                     </defs>
 
-                    <!-- Main spine -->
-                    <path class="flow-line" d="M500 105 V150"/>
-                    <path class="flow-line" d="M500 230 V270"/>
-                    <path class="flow-line" d="M500 365 V415"/>
-                    <path class="flow-line" d="M500 500 V555"/>
-                    <path class="flow-line" d="M500 665 V720"/>
+                    <g>
+                        <path class="arrow" d="M590 90 L590 150"/>
+                        <path class="arrow" d="M590 210 L590 270"/>
+                        <path class="arrow" d="M590 340 L590 380"/>
+                        <path class="arrow" d="M590 470 L590 530"/>
 
-                    <!-- Start and setup -->
-                    <rect class="flow-node" x="370" y="35" width="260" height="70" rx="35" fill="url(#startFill)" stroke="#818cf8"/>
-                    <text class="flow-label" x="500" y="78">INÍCIO / LIGAR</text>
-                    <rect class="flow-node" x="300" y="150" width="400" height="80" rx="14" fill="#1e293b" stroke="#6366f1"/>
-                    <text class="flow-label" x="500" y="183">Configurar Arduino Uno</text>
-                    <text class="flow-small" x="500" y="207">TRIG D7 · ECHO D8 · servos D2 e D3</text>
-                    <rect class="flow-node" x="300" y="270" width="400" height="95" rx="14" fill="#1e293b" stroke="#6366f1"/>
-                    <text class="flow-label" x="500" y="305">Inicializar sistema</text>
-                    <text class="flow-small" x="500" y="331">Base = 0° · braço = 0°</text>
-                    <text class="flow-small" x="500" y="351">pessoaDetectada = false</text>
-                    <rect class="flow-node" x="330" y="415" width="340" height="85" rx="14" fill="#164e63" stroke="#22d3ee"/>
-                    <text class="flow-label" x="500" y="450">Medir distância</text>
-                    <text class="flow-small" x="500" y="476">Disparar sensor e ler eco (timeout 30 ms)</text>
+                        <path class="arrow" d="M450 585 L300 585 L300 700"/>
+                        <path class="arrow" d="M730 585 L930 585 L930 700"/>
 
-                    <!-- Decision 1 -->
-                    <polygon class="flow-node" points="500,555 650,610 500,665 350,610" fill="#422006" stroke="#f59e0b"/>
-                    <text class="flow-label" x="500" y="604">Distância válida</text>
-                    <text class="flow-small" x="500" y="627">entre 1 e 15 cm?</text>
-                    <text class="flow-branch" x="670" y="602">SIM</text>
-                    <text class="flow-branch" x="510" y="700">NÃO</text>
+                        <path class="arrow" d="M300 770 L300 860"/>
+                        <path class="arrow" d="M930 770 L930 860"/>
 
-                    <!-- Decision 2, yes branch right -->
-                    <path class="flow-line" d="M650 610 H790 V750"/>
-                    <polygon class="flow-node" points="790,750 920,805 790,860 660,805" fill="#422006" stroke="#f59e0b"/>
-                    <text class="flow-label" x="790" y="800">Já detectada?</text>
-                    <text class="flow-small" x="790" y="823">pessoaDetectada</text>
-                    <text class="flow-branch" x="810" y="888">SIM · não repete o gesto</text>
-                    <path class="flow-line" d="M790 860 V1015 H500 V1115"/>
+                        <path class="arrow" d="M300 945 L300 1020 L590 1020"/>
+                        <path class="arrow" d="M930 945 L930 1020 L590 1020"/>
+                        <path class="arrow" d="M590 1080 L590 1150"/>
+                    </g>
 
-                    <!-- No branch from decision 1, check reset -->
-                    <path class="flow-line" d="M500 665 V750"/>
-                    <polygon class="flow-node" points="500,750 650,805 500,860 350,805" fill="#422006" stroke="#f59e0b"/>
-                    <text class="flow-label" x="500" y="800">Distância ≥ 25 cm?</text>
-                    <text class="flow-small" x="500" y="823">e pessoaDetectada?</text>
-                    <text class="flow-branch" x="662" y="797">SIM</text>
-                    <text class="flow-branch" x="510" y="892">NÃO</text>
-                    <path class="flow-line" d="M650 805 H720 V930"/>
-                    <rect class="flow-node" x="610" y="930" width="360" height="85" rx="14" fill="#064e3b" stroke="#34d399"/>
-                    <text class="flow-label" x="790" y="965">Rearmar sistema</text>
-                    <text class="flow-small" x="790" y="990">pessoaDetectada = false · base e braço = 0°</text>
-                    <path class="flow-line" d="M790 1015 V1070 H700 V1160"/>
+                    <g filter="url(#shadow)">
+                        <ellipse class="node" cx="590" cy="60" rx="120" ry="38" fill="#164e63"/>
+                        <text class="text-main" x="590" y="66" text-anchor="middle">INÍCIO</text>
 
-                    <!-- Wave sequence -->
-                    <path class="flow-line" d="M350 805 H230 V930"/>
-                    <rect class="flow-node" x="40" y="930" width="380" height="85" rx="14" fill="#1e293b" stroke="#6366f1"/>
-                    <text class="flow-label" x="230" y="965">Registrar detecção e mover base</text>
-                    <text class="flow-small" x="230" y="990">pessoaDetectada = true · base = 90°</text>
-                    <path class="flow-line" d="M230 1015 V1060"/>
-                    <rect class="flow-node" x="40" y="1060" width="380" height="110" rx="14" fill="#164e63" stroke="#22d3ee"/>
-                    <text class="flow-label" x="230" y="1095">Executar tchau do braço</text>
-                    <text class="flow-small" x="230" y="1122">Levantar 0° → 90°</text>
-                    <text class="flow-small" x="230" y="1146">Oscilar 2 vezes · abaixar 90° → 0°</text>
-                    <path class="flow-line" d="M230 1170 V1270 H500 V1350"/>
+                        <rect class="node" x="470" y="150" width="240" height="60" rx="18" fill="#1e293b"/>
+                        <text class="text-main" x="590" y="188" text-anchor="middle">Inicializar sistema</text>
 
-                    <!-- Rejoin / loop -->
-                    <path class="flow-line" d="M500 1160 V1350"/>
-                    <rect class="flow-node" x="330" y="1350" width="340" height="80" rx="14" fill="#1e293b" stroke="#38bdf8"/>
-                    <text class="flow-label" x="500" y="1384">Manter estado quando necessário</text>
-                    <text class="flow-small" x="500" y="1408">16–24 cm, sem eco ou já detectada</text>
-                    <path class="flow-line" d="M500 1430 V1480 H80 V457 H330"/>
-                    <text class="flow-small" x="130" y="1468">Repetir loop</text>
+                        <rect class="node" x="430" y="270" width="320" height="70" rx="18" fill="#1e293b"/>
+                        <text class="text-main" x="590" y="300" text-anchor="middle">Configurar pinos</text>
+                        <text class="text-small" x="590" y="322" text-anchor="middle">TRIG D7 · ECHO D8 · Servo D2 · Servo D3</text>
 
-                    <!-- Explicit explanation -->
-                    <text class="flow-small" x="785" y="925">SIM só rearma se já estava detectada;</text>
-                    <text class="flow-small" x="785" y="945">distância ≥25 cm sem detecção mantém o estado.</text>
+                        <rect class="node" x="470" y="380" width="240" height="90" rx="18" fill="#1e293b"/>
+                        <text class="text-main" x="590" y="416" text-anchor="middle">Medir distância</text>
+                        <text class="text-small" x="590" y="437" text-anchor="middle">Sensor ultrassônico</text>
+
+                        <polygon class="decision" points="590,530 730,585 590,640 450,585" fill="#312e81"/>
+                        <text class="text-main" x="590" y="575" text-anchor="middle">Distância</text>
+                        <text class="text-small" x="590" y="598" text-anchor="middle">1 a 15 cm?</text>
+                        <text class="text-yes" x="745" y="560" text-anchor="middle">SIM</text>
+                        <text class="text-no" x="590" y="670" text-anchor="middle">NÃO</text>
+
+                        <polygon class="decision" points="300,700 420,770 300,840 180,770" fill="#0f172a" stroke="#a78bfa" stroke-width="2.5"/>
+                        <text class="text-main" x="300" y="760" text-anchor="middle">Pessoa</text>
+                        <text class="text-small" x="300" y="782" text-anchor="middle">já detectada?</text>
+                        <text class="text-no" x="240" y="850" text-anchor="middle">SIM</text>
+
+                        <polygon class="decision" points="930,700 1050,770 930,840 810,770" fill="#0f172a" stroke="#a78bfa" stroke-width="2.5"/>
+                        <text class="text-main" x="930" y="760" text-anchor="middle">Distância</text>
+                        <text class="text-small" x="930" y="782" text-anchor="middle">≥ 25 cm?</text>
+                        <text class="text-yes" x="1000" y="850" text-anchor="middle">SIM</text>
+
+                        <rect class="node" x="150" y="860" width="300" height="85" rx="18" fill="#1e293b"/>
+                        <text class="text-main" x="300" y="898" text-anchor="middle">Não repetir o tchau</text>
+                        <text class="text-small" x="300" y="918" text-anchor="middle">manter o estado atual</text>
+
+                        <rect class="node" x="820" y="860" width="220" height="85" rx="18" fill="#064e3b"/>
+                        <text class="text-main" x="930" y="898" text-anchor="middle">Rearmar</text>
+                        <text class="text-small" x="930" y="918" text-anchor="middle">base = 0° · braço = 0°</text>
+
+                        <rect class="node" x="370" y="1020" width="440" height="60" rx="18" fill="#1e293b"/>
+                        <text class="text-main" x="590" y="1058" text-anchor="middle">Realizar movimento do tchau</text>
+
+                        <rect class="node" x="465" y="1150" width="250" height="70" rx="18" fill="#1e293b"/>
+                        <text class="text-main" x="590" y="1188" text-anchor="middle">Retornar ao início</text>
+                    </g>
+
+                    <g>
+                        <text class="text-small" x="355" y="620" text-anchor="middle">NÃO</text>
+                        <text class="text-yes" x="670" y="690" text-anchor="middle">SIM</text>
+                        <text class="text-no" x="860" y="860" text-anchor="middle">NÃO</text>
+                        <text class="text-yes" x="990" y="558" text-anchor="middle">SIM</text>
+                    </g>
                 </svg>
             </div>
-            <div class="grid sm:grid-cols-3 gap-3 text-xs">
-                <div class="rounded-xl bg-indigo-950/40 border border-indigo-900/50 p-4"><span class="font-bold text-indigo-300">Ativação</span><p class="mt-1 text-slate-400">1–15 cm e pessoa ainda não registrada.</p></div>
-                <div class="rounded-xl bg-slate-900 border border-slate-800 p-4"><span class="font-bold text-cyan-300">Manutenção</span><p class="mt-1 text-slate-400">16–24 cm, sem eco ou pessoa já detectada: o programa não repete o tchau.</p></div>
-                <div class="rounded-xl bg-emerald-950/30 border border-emerald-900/50 p-4"><span class="font-bold text-emerald-300">Rearme</span><p class="mt-1 text-slate-400">≥25 cm enquanto pessoaDetectada é true: sinaliza ausência e retorna os servos.</p></div>
-            </div>
         </section>
 
-        <section class="glass-card p-6 rounded-2xl border border-slate-800">
-            <h2 class="text-lg font-bold text-white mb-3"><i class="fa-solid fa-circle-info text-cyan-400 mr-2"></i>Observação sobre o fluxo</h2>
-            <p class="text-sm text-slate-300 leading-relaxed">O código fornecido usa `delay()` nas rotinas dos servos. Portanto, enquanto a base e o braço executam movimentos, o Arduino não mede novamente a distância. Um eco com duração zero retorna distância 0; essa leitura não satisfaz as condições de ativação nem de afastamento, então o estado atual é mantido.</p>
-        </section>
-
-        <section class="glass-card p-6 rounded-2xl border border-slate-800 space-y-4">
-            <div><h2 class="text-base font-bold text-white flex items-center gap-2"><i class="fa-solid fa-compass text-indigo-400"></i> Navegação rápida</h2><p class="text-slate-400 text-xs mt-1">Acesse qualquer outra seção do projeto:</p></div>
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
-                <a href="index.html" class="px-3 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800">Início</a>
-                <a href="sobre.html" class="px-3 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800">Simulador</a>
-                <a href="gestao.html" class="px-3 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800">Gestão & 5W2H</a>
-                <a href="circuito.html" class="px-3 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800">Circuito</a>
-                <a href="codigo.html" class="px-3 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800">Código</a>
-                <a href="equipe.html" class="px-3 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800">Equipe</a>
+        <section class="mt-6 glass-card rounded-2xl border border-slate-800 p-5 sm:p-6">
+            <h2 class="text-lg font-bold text-white mb-3"><i class="fa-solid fa-circle-info text-cyan-400 mr-2"></i>Resumo da lógica</h2>
+            <div class="grid sm:grid-cols-3 gap-3 text-sm text-slate-300">
+                <div class="rounded-xl bg-slate-900/60 border border-slate-800 p-4">
+                    <div class="font-bold text-indigo-300 mb-1">Ativação</div>
+                    <p>Se a distância estiver entre 1 e 15 cm, o sistema inicia a sequência do tchau.</p>
+                </div>
+                <div class="rounded-xl bg-slate-900/60 border border-slate-800 p-4">
+                    <div class="font-bold text-cyan-300 mb-1">Controle</div>
+                    <p>Se a leitura for intermediária, o sistema mantém o último estado e não repete o movimento.</p>
+                </div>
+                <div class="rounded-xl bg-slate-900/60 border border-slate-800 p-4">
+                    <div class="font-bold text-emerald-300 mb-1">Rearme</div>
+                    <p>Quando a pessoa se afasta e a distância atinge 25 cm ou mais, o sistema retorna ao início.</p>
+                </div>
             </div>
         </section>
     </main>
 
-    <footer class="border-t border-slate-800 bg-slate-950 py-6 text-xs text-slate-500 text-center"><p>© 2026 Projeto MarS - Caixinha do Tchauzinho | Fluxograma</p></footer>
+    <footer class="border-t border-slate-800 bg-slate-950 py-6 text-xs text-slate-500 text-center">
+        <p>© 2026 Projeto MarS - Caixinha do Tchauzinho | Fluxograma visual</p>
+    </footer>
 </body>
 </html>
