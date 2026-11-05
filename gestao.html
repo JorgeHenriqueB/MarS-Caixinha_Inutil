@@ -8,16 +8,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        html { scroll-behavior: smooth; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
         .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col justify-between">
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between">
 
+    <!-- Navbar -->
     <nav class="sticky top-0 z-50 glass-card border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <a href="index.html" class="flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-xl bg-indigo-600/30 flex items-center justify-center border border-indigo-500/30 overflow-hidden">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-600/30 flex items-center justify-center border border-indigo-500/30 overflow-hidden shadow-lg shadow-indigo-500/20">
                         <img src="logo.jpg" alt="Logo MarS" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\'font-extrabold text-indigo-400 font-mono\'>M</span>';">
                     </div>
                     <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
@@ -41,19 +46,43 @@
         <div class="text-center max-w-2xl mx-auto">
             <h1 class="text-3xl sm:text-4xl font-extrabold text-white mb-3">Gestão & Planejamento do Projeto</h1>
             <p class="text-slate-400 text-sm sm:text-base">
-                Acompanhamento das diretrizes de controle de ação (5W2H) e cronograma temporal de execução (Gráfico de Gantt).
+                Acompanhamento completo das diretrizes de controle de ação (5W2H), orçamento consolidado e cronograma temporal de execução (Gráfico de Gantt).
             </p>
         </div>
 
-        <!-- Tabela 5W2H -->
+        <!-- Cards de Resumo Executivo da Planilha -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="glass-card p-4 rounded-xl border border-slate-800 text-center">
+                <span class="text-slate-400 text-xs block mb-1">Total de Atividades</span>
+                <span class="text-2xl font-extrabold text-indigo-400 font-mono">10</span>
+            </div>
+            <div class="glass-card p-4 rounded-xl border border-slate-800 text-center">
+                <span class="text-slate-400 text-xs block mb-1">Duração Total</span>
+                <span class="text-2xl font-extrabold text-cyan-400 font-mono">6 Semanas</span>
+            </div>
+            <div class="glass-card p-4 rounded-xl border border-slate-800 text-center">
+                <span class="text-slate-400 text-xs block mb-1">Investimento Insumos</span>
+                <span class="text-2xl font-extrabold text-emerald-400 font-mono">R$ 145,00</span>
+            </div>
+            <div class="glass-card p-4 rounded-xl border border-slate-800 text-center">
+                <span class="text-slate-400 text-xs block mb-1">Status de Conclusão</span>
+                <span class="text-2xl font-extrabold text-purple-400 font-mono">100%</span>
+            </div>
+        </div>
+
+        <!-- Tabela 5W2H Completa com Todos os Dados da Planilha -->
         <div class="glass-card p-6 sm:p-8 rounded-2xl border border-slate-800 space-y-4">
-            <h2 class="text-xl font-bold text-indigo-400 flex items-center gap-2">
-                <i class="fa-solid fa-list-check text-indigo-500"></i> Matriz de Ação 5W2H
-            </h2>
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800 pb-4">
+                <h2 class="text-xl font-bold text-indigo-400 flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-indigo-500"></i> Matriz Completa de Ação 5W2H
+                </h2>
+                <span class="text-xs text-slate-400 font-mono">Planilha de Gestão MarS — Atualizada</span>
+            </div>
+            
             <div class="overflow-x-auto">
                 <table class="w-full text-left text-xs sm:text-sm">
                     <thead>
-                        <tr class="border-b border-slate-800 text-slate-400 font-mono">
+                        <tr class="border-b border-slate-800 text-slate-400 font-mono bg-slate-900/60">
                             <th class="py-3 px-3">O quê? (What)</th>
                             <th class="py-3 px-3">Por quê? (Why)</th>
                             <th class="py-3 px-3">Onde? (Where)</th>
@@ -65,143 +94,219 @@
                     </thead>
                     <tbody class="divide-y divide-slate-800/60 text-slate-300">
                         <tr>
-                            <td class="py-3 px-3 font-semibold text-white">Especificação do Hardware</td>
-                            <td class="py-3 px-3">Definir componentes e dimensionar atuadores.</td>
-                            <td class="py-3 px-3">Laboratório</td>
-                            <td class="py-3 px-3 text-indigo-400">Toda Equipe</td>
-                            <td class="py-3 px-3">Etapa 1</td>
-                            <td class="py-3 px-3">Pesquisa de componentes e cálculo de torque/corrente.</td>
-                            <td class="py-3 px-3 font-mono text-emerald-400">R$ 0,00</td>
+                            <td class="py-3.5 px-3 font-semibold text-white">1. Definição do Escopo & Conceito</td>
+                            <td class="py-3.5 px-3">Estabelecer o sistema de 2 eixos e 3 chaves alavancas.</td>
+                            <td class="py-3.5 px-3">Laboratório</td>
+                            <td class="py-3.5 px-3 text-indigo-400 font-medium">Toda Equipe</td>
+                            <td class="py-3.5 px-3 font-mono text-slate-400">Semana 1</td>
+                            <td class="py-3.5 px-3">Brainstorming, reuniões e alinhamento com os professores orientadores.</td>
+                            <td class="py-3.5 px-3 font-mono text-emerald-400 font-semibold">R$ 0,00</td>
                         </tr>
                         <tr>
-                            <td class="py-3 px-3 font-semibold text-white">Aquisição de Materiais</td>
-                            <td class="py-3 px-3">Garantir peças (Arduino Nano, Servos, Fonte 5V/2A).</td>
-                            <td class="py-3 px-3">Fornecedores</td>
-                            <td class="py-3 px-3 text-cyan-400">Matheus & Stephane</td>
-                            <td class="py-3 px-3">Etapa 1</td>
-                            <td class="py-3 px-3">Compra de componentes homologados.</td>
-                            <td class="py-3 px-3 font-mono text-emerald-400">R$ 130,00</td>
+                            <td class="py-3.5 px-3 font-semibold text-white">2. Especificação do Hardware & Desenho 3D</td>
+                            <td class="py-3.5 px-3">Dimensionar servos SG90, suporte de eixos e tolerâncias físicas.</td>
+                            <td class="py-3.5 px-3">Lab. Mecatrônica</td>
+                            <td class="py-3.5 px-3 text-indigo-400 font-medium">Toda Equipe</td>
+                            <td class="py-3.5 px-3 font-mono text-slate-400">Semanas 1 - 2</td>
+                            <td class="py-3.5 px-3">Modelagem CAD de prototipagem e cálculo de torque/consumo (5V/2A).</td>
+                            <td class="py-3.5 px-3 font-mono text-emerald-400 font-semibold">R$ 0,00</td>
                         </tr>
                         <tr>
-                            <td class="py-3 px-3 font-semibold text-white">Desenvolvimento do Código .ino</td>
-                            <td class="py-3 px-3">Criar rotina de movimentação em 2 eixos e prioridade.</td>
-                            <td class="py-3 px-3">IDE Arduino</td>
-                            <td class="py-3 px-3 text-purple-400">Bruno & Jorge</td>
-                            <td class="py-3 px-3">Etapa 2</td>
-                            <td class="py-3 px-3">Escrita em C++ utilizando a biblioteca Servo.h.</td>
-                            <td class="py-3 px-3 font-mono text-emerald-400">R$ 0,00</td>
+                            <td class="py-3.5 px-3 font-semibold text-white">3. Aquisição de Componentes Principais</td>
+                            <td class="py-3.5 px-3">Garantir placa Arduino Nano, 2x servos SG90, 3x chaves alavancas e fonte.</td>
+                            <td class="py-3.5 px-3">Fornecedores</td>
+                            <td class="py-3.5 px-3 text-cyan-400 font-medium">Matheus & Stephane</td>
+                            <td class="py-3.5 px-3 font-mono text-slate-400">Semana 2</td>
+                            <td class="py-3.5 px-3">Compra de componentes eletrônicos e homologação das especificações.</td>
+                            <td class="py-3.5 px-3 font-mono text-emerald-400 font-semibold">R$ 130,00</td>
                         </tr>
                         <tr>
-                            <td class="py-3 px-3 font-semibold text-white">Montagem em Vector Board</td>
-                            <td class="py-3 px-3">Conectar o circuito de forma sólida e sem mau contato.</td>
-                            <td class="py-3 px-3">Bancada de Solda</td>
-                            <td class="py-3 px-3 text-amber-400">Gabrielly & Matheus</td>
-                            <td class="py-3 px-3">Etapa 2</td>
-                            <td class="py-3 px-3">Soldagem na vector board e fixação das chaves.</td>
-                            <td class="py-3 px-3 font-mono text-emerald-400">R$ 15,00</td>
+                            <td class="py-3.5 px-3 font-semibold text-white">4. Aquisição de Insumos de Estrutura & Solda</td>
+                            <td class="py-3.5 px-3">Disponibilizar placa perfurada, fios, estanho e elementos de fixação.</td>
+                            <td class="py-3.5 px-3">Fornecedores</td>
+                            <td class="py-3.5 px-3 text-cyan-400 font-medium">Matheus & Stephane</td>
+                            <td class="py-3.5 px-3 font-mono text-slate-400">Semana 2</td>
+                            <td class="py-3.5 px-3">Aquisição de vector board, conectores de bancada e parafusos de montagem.</td>
+                            <td class="py-3.5 px-3 font-mono text-emerald-400 font-semibold">R$ 15,00</td>
                         </tr>
                         <tr>
-                            <td class="py-3 px-3 font-semibold text-white">Validação & Testes de Bancada</td>
-                            <td class="py-3 px-3">Ajustar os ângulos de alcance da base e do braço.</td>
-                            <td class="py-3 px-3">Laboratório</td>
-                            <td class="py-3 px-3 text-indigo-400">Toda Equipe</td>
-                            <td class="py-3 px-3">Etapa 3</td>
-                            <td class="py-3 px-3">Ajuste de atrasos (delays) e calibração de limites.</td>
-                            <td class="py-3 px-3 font-mono text-emerald-400">R$ 0,00</td>
+                            <td class="py-3.5 px-3 font-semibold text-white">5. Desenho do Esquemático Elétrico</td>
+                            <td class="py-3.5 px-3">Mapear conexões digitais e barramento de alimentação isolado dos servos.</td>
+                            <td class="py-3.5 px-3">Softwares EDA</td>
+                            <td class="py-3.5 px-3 text-purple-400 font-medium">Bruno & Jorge</td>
+                            <td class="py-3.5 px-3 font-mono text-slate-400">Semanas 2 - 3</td>
+                            <td class="py-3.5 px-3">Diagramação de entradas/saídas, barramento GND comum e pinout D2-D6.</td>
+                            <td class="py-3.5 px-3 font-mono text-emerald-400 font-semibold">R$ 0,00</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3.5 px-3 font-semibold text-white">6. Desenvolvimento do Código C++ (.ino)</td>
+                            <td class="py-3.5 px-3">Programar interpolação angular e tratamento de prioridades das chaves.</td>
+                            <td class="py-3.5 px-3">IDE Arduino</td>
+                            <td class="py-3.5 px-3 text-purple-400 font-medium">Bruno & Jorge</td>
+                            <td class="py-3.5 px-3 font-mono text-slate-400">Semanas 2 - 4</td>
+                            <td class="py-3.5 px-3">Escrita das funções <code class="text-indigo-300 bg-indigo-950/60 px-1 py-0.5 rounded">mover_base()</code> e <code class="text-indigo-300 bg-indigo-950/60 px-1 py-0.5 rounded">ativar_braco()</code> com temporização suave.</td>
+                            <td class="py-3.5 px-3 font-mono text-emerald-400 font-semibold">R$ 0,00</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3.5 px-3 font-semibold text-white">7. Montagem Elétrica & Soldagem na Vector Board</td>
+                            <td class="py-3.5 px-3">Fixar circuito sem protoboard para evitar mau contato mecânico.</td>
+                            <td class="py-3.5 px-3">Bancada Solda</td>
+                            <td class="py-3.5 px-3 text-amber-400 font-medium">Gabrielly & Matheus</td>
+                            <td class="py-3.5 px-3 font-mono text-slate-400">Semanas 4 - 5</td>
+                            <td class="py-3.5 px-3">Soldagem na placa perfurada, organização de chicotes e acionamento <code class="text-amber-300 bg-amber-950/60 px-1 py-0.5 rounded">INPUT_PULLUP</code>.</td>
+                            <td class="py-3.5 px-3 font-mono text-emerald-400 font-semibold">R$ 0,00</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3.5 px-3 font-semibold text-white">8. Montagem da Estrutura Física & Eixos</td>
+                            <td class="py-3.5 px-3">Acoplar servomotores ao chassi e braço mecânico articulado.</td>
+                            <td class="py-3.5 px-3">Oficina / Lab</td>
+                            <td class="py-3.5 px-3 text-amber-400 font-medium">Gabrielly & Matheus</td>
+                            <td class="py-3.5 px-3 font-mono text-slate-400">Semana 5</td>
+                            <td class="py-3.5 px-3">Montagem dos eixos de rotação da base e ajuste de folgas da haste.</td>
+                            <td class="py-3.5 px-3 font-mono text-emerald-400 font-semibold">R$ 0,00</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3.5 px-3 font-semibold text-white">9. Calibração Angular & Testes Finais</td>
+                            <td class="py-3.5 px-3">Validar alcance dos eixos (45°, 90°, 135°) e força de desligamento físico.</td>
+                            <td class="py-3.5 px-3">Laboratório</td>
+                            <td class="py-3.5 px-3 text-indigo-400 font-medium">Toda Equipe</td>
+                            <td class="py-3.5 px-3 font-mono text-slate-400">Semanas 5 - 6</td>
+                            <td class="py-3.5 px-3">Ajustes de limites no código, calibração de delays e validação de carga contínua.</td>
+                            <td class="py-3.5 px-3 font-mono text-emerald-400 font-semibold">R$ 0,00</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3.5 px-3 font-semibold text-white">10. Documentação Técnica & Portal Web</td>
+                            <td class="py-3.5 px-3">Registrar os manuais, fluxogramas, simulação interativa e relatórios.</td>
+                            <td class="py-3.5 px-3">Ambiente Web</td>
+                            <td class="py-3.5 px-3 text-indigo-400 font-medium">Toda Equipe</td>
+                            <td class="py-3.5 px-3 font-mono text-slate-400">Semanas 5 - 6</td>
+                            <td class="py-3.5 px-3">Elaboração dos relatórios finais, gráficos de gestão e simulador web do mecanismo.</td>
+                            <td class="py-3.5 px-3 font-mono text-emerald-400 font-semibold">R$ 0,00</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- Cronograma Gantt -->
+        <!-- Cronograma Gantt Detalhado -->
         <div class="glass-card p-6 sm:p-8 rounded-2xl border border-slate-800 space-y-6">
-            <h2 class="text-xl font-bold text-cyan-400 flex items-center gap-2">
-                <i class="fa-solid fa-chart-gantt text-cyan-500"></i> Cronograma de Tempo (Método Gantt)
-            </h2>
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800 pb-4">
+                <h2 class="text-xl font-bold text-cyan-400 flex items-center gap-2">
+                    <i class="fa-solid fa-chart-gantt text-cyan-500"></i> Cronograma Completo de Execução (Gráfico de Gantt)
+                </h2>
+                <span class="text-xs text-slate-400 font-mono">6 Semanas de Desenvolvimento</span>
+            </div>
             
-            <div class="space-y-4 text-xs sm:text-sm">
+            <div class="space-y-6 text-xs sm:text-sm">
                 <!-- Linha 1 -->
                 <div>
-                    <div class="flex justify-between text-slate-300 font-semibold mb-1">
-                        <span>1. Concepção & Pesquisa de Hardware</span>
-                        <span class="text-slate-500 font-mono">Semanas 1 - 2</span>
+                    <div class="flex justify-between text-slate-300 font-semibold mb-1.5">
+                        <span class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                            1. Definição do Escopo, Conceito & Especificação 3D
+                        </span>
+                        <span class="text-slate-400 font-mono">Semanas 1 - 2</span>
                     </div>
-                    <div class="w-full bg-slate-900 rounded-full h-3 overflow-hidden border border-slate-800">
-                        <div class="bg-indigo-500 h-full rounded-full" style="width: 25%"></div>
+                    <div class="w-full bg-slate-900 rounded-full h-3.5 overflow-hidden border border-slate-800">
+                        <div class="bg-indigo-500 h-full rounded-full" style="width: 33%"></div>
                     </div>
                 </div>
 
                 <!-- Linha 2 -->
                 <div>
-                    <div class="flex justify-between text-slate-300 font-semibold mb-1">
-                        <span>2. Esquemático Elétrico & Código Base (.ino)</span>
-                        <span class="text-slate-500 font-mono">Semanas 2 - 4</span>
+                    <div class="flex justify-between text-slate-300 font-semibold mb-1.5">
+                        <span class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
+                            2. Aquisição de Componentes & Insumos de Solda
+                        </span>
+                        <span class="text-slate-400 font-mono">Semana 2</span>
                     </div>
-                    <div class="w-full bg-slate-900 rounded-full h-3 overflow-hidden border border-slate-800 flex">
-                        <div class="w-[20%]"></div>
-                        <div class="bg-cyan-500 h-full rounded-full" style="width: 35%"></div>
+                    <div class="w-full bg-slate-900 rounded-full h-3.5 overflow-hidden border border-slate-800 flex">
+                        <div class="w-[17%]"></div>
+                        <div class="bg-cyan-500 h-full rounded-full" style="width: 17%"></div>
                     </div>
                 </div>
 
                 <!-- Linha 3 -->
                 <div>
-                    <div class="flex justify-between text-slate-300 font-semibold mb-1">
-                        <span>3. Montagem na Vector Board & Soldagem</span>
-                        <span class="text-slate-500 font-mono">Semanas 4 - 5</span>
+                    <div class="flex justify-between text-slate-300 font-semibold mb-1.5">
+                        <span class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                            3. Esquemático Elétrico & Desenvolvimento do Código C++ (.ino)
+                        </span>
+                        <span class="text-slate-400 font-mono">Semanas 2 - 4</span>
                     </div>
-                    <div class="w-full bg-slate-900 rounded-full h-3 overflow-hidden border border-slate-800 flex">
-                        <div class="w-[50%]"></div>
-                        <div class="bg-purple-500 h-full rounded-full" style="width: 25%"></div>
+                    <div class="w-full bg-slate-900 rounded-full h-3.5 overflow-hidden border border-slate-800 flex">
+                        <div class="w-[17%]"></div>
+                        <div class="bg-blue-500 h-full rounded-full" style="width: 50%"></div>
                     </div>
                 </div>
 
                 <!-- Linha 4 -->
                 <div>
-                    <div class="flex justify-between text-slate-300 font-semibold mb-1">
-                        <span>4. Calibração Angular & Testes Finais</span>
-                        <span class="text-slate-500 font-mono">Semanas 5 - 6</span>
+                    <div class="flex justify-between text-slate-300 font-semibold mb-1.5">
+                        <span class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                            4. Montagem Elétrica (Vector Board) & Estrutura Física
+                        </span>
+                        <span class="text-slate-400 font-mono">Semanas 4 - 5</span>
                     </div>
-                    <div class="w-full bg-slate-900 rounded-full h-3 overflow-hidden border border-slate-800 flex">
-                        <div class="w-[70%]"></div>
-                        <div class="bg-emerald-500 h-full rounded-full" style="width: 30%"></div>
+                    <div class="w-full bg-slate-900 rounded-full h-3.5 overflow-hidden border border-slate-800 flex">
+                        <div class="w-[50%]"></div>
+                        <div class="bg-purple-500 h-full rounded-full" style="width: 33%"></div>
+                    </div>
+                </div>
+
+                <!-- Linha 5 -->
+                <div>
+                    <div class="flex justify-between text-slate-300 font-semibold mb-1.5">
+                        <span class="flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                            5. Calibração Angular, Testes Finais & Documentação / Portal Web
+                        </span>
+                        <span class="text-slate-400 font-mono">Semanas 5 - 6</span>
+                    </div>
+                    <div class="w-full bg-slate-900 rounded-full h-3.5 overflow-hidden border border-slate-800 flex">
+                        <div class="w-[67%]"></div>
+                        <div class="bg-emerald-500 h-full rounded-full" style="width: 33%"></div>
                     </div>
                 </div>
             </div>
         </div>
-    <!-- Seção de Navegação Rápida (Adicionada ao final do main) -->
-<section class="glass-card p-6 rounded-2xl border border-slate-800 mt-12 space-y-4">
-    <div class="text-center sm:text-left">
-        <h3 class="text-base font-bold text-white flex items-center justify-center sm:justify-start gap-2">
-            <i class="fa-solid fa-compass text-indigo-400"></i> Navegação Rápida
-        </h3>
-        <p class="text-slate-400 text-xs mt-1">Acesse qualquer outra seção do projeto diretamente por aqui:</p>
-    </div>
-    
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2.5 pt-2">
-        <a href="index.html" class="px-3 py-2.5 rounded-xl bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-200 text-xs font-semibold border border-indigo-500/30 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
-            <i class="fa-solid fa-house"></i> Início
-        </a>
-        <a href="sobre.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
-            <i class="fa-solid fa-circle-info text-indigo-400"></i> Simulador
-        </a>
-        <a href="gestao.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
-            <i class="fa-solid fa-chart-gantt text-cyan-400"></i> Gestão
-        </a>
-        <a href="circuito.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
-            <i class="fa-solid fa-microchip text-emerald-400"></i> Circuito
-        </a>
-        <a href="fluxograma.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
-            <i class="fa-solid fa-diagram-project text-amber-400"></i> Fluxograma
-        </a>
-        <a href="codigo.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
-            <i class="fa-solid fa-code text-purple-400"></i> Código
-        </a>
-        <a href="equipe.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center col-span-2 sm:col-span-1">
-            <i class="fa-solid fa-users text-rose-400"></i> Equipe
-        </a>
-    </div>
-</section>
+
+        <!-- Seção de Navegação Rápida -->
+        <section class="glass-card p-6 rounded-2xl border border-slate-800 mt-12 space-y-4">
+            <div class="text-center sm:text-left">
+                <h3 class="text-base font-bold text-white flex items-center justify-center sm:justify-start gap-2">
+                    <i class="fa-solid fa-compass text-indigo-400"></i> Navegação Rápida
+                </h3>
+                <p class="text-slate-400 text-xs mt-1">Acesse qualquer outra seção do projeto diretamente por aqui:</p>
+            </div>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2.5 pt-2">
+                <a href="index.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
+                    <i class="fa-solid fa-house"></i> Início
+                </a>
+                <a href="sobre.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
+                    <i class="fa-solid fa-circle-info text-indigo-400"></i> Simulador
+                </a>
+                <a href="gestao.html" class="px-3 py-2.5 rounded-xl bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-200 text-xs font-semibold border border-indigo-500/30 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
+                    <i class="fa-solid fa-chart-gantt text-cyan-400"></i> Gestão
+                </a>
+                <a href="circuito.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
+                    <i class="fa-solid fa-microchip text-emerald-400"></i> Circuito
+                </a>
+                <a href="fluxograma.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
+                    <i class="fa-solid fa-diagram-project text-amber-400"></i> Fluxograma
+                </a>
+                <a href="codigo.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
+                    <i class="fa-solid fa-code text-purple-400"></i> Código
+                </a>
+                <a href="equipe.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center col-span-2 sm:col-span-1">
+                    <i class="fa-solid fa-users text-rose-400"></i> Equipe
+                </a>
+            </div>
+        </section>
     </main>
 
     <footer class="border-t border-slate-800 bg-slate-950 py-6 text-xs text-slate-500 text-center">

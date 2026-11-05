@@ -66,7 +66,7 @@
                         Caixinha Teimosa <span class="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">MarS</span>
                     </h1>
                     <p class="text-slate-400 text-sm sm:text-base mb-6 leading-relaxed">
-                        Mecanismo robótico de 2 eixos controlado por Arduino Nano. Escolha uma das chaves alavancas para ver a base girar (45°, 90° ou 135°) e o braço estender para desligar o interruptor ativado.
+                        Mecanismo robótico de 2 eixos controlado por Arduino Nano. Ative a chave e o braço estender para desligar o interruptor ativado.
                     </p>
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
                         <a href="sobre.html" class="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs sm:text-sm font-semibold transition shadow-lg shadow-indigo-600/30 flex items-center justify-center gap-2 text-center">
@@ -103,7 +103,7 @@
                     </div>
                     <div class="flex justify-between items-center bg-slate-900/60 p-2.5 rounded-lg">
                         <span class="text-slate-400">Interatividade:</span>
-                        <span class="font-mono text-amber-300 font-semibold">3 Chaves Alavancas (S1, S2, S3)</span>
+                        <span class="font-mono text-amber-300 font-semibold">1 Chave Alavancaa (S1)</span>
                     </div>
                 </div>
             </div>
@@ -127,7 +127,11 @@
                     <i class="fa-solid fa-bullseye text-indigo-500"></i> Finalidade do Projeto
                 </h3>
                 <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-                    A proposta central do <strong>MarS - Caixinha Teimosa</strong> é criar uma versão aprimorada da clássica <i>Useless Box</i> ("Caixa Inútil"). Enquanto o conceito tradicional utiliza apenas uma chave e um único atuador direcional, o projeto MarS evolui essa mecânica ao implementar <strong>controle de 2 eixos articulados</strong> (rotação da base e extensão do braço) integrados a um arranjo de <strong>3 chaves alavancas independentes</strong>.
+                    A proposta central do <strong>MarS - Caixinha Teimosa </strong> é criar uma versão aprimorada da clássica <i>Useless Box</i> ("Caixa Inútil"). Enquanto o conceito tradicional utiliza apenas uma chave e um único atuador de movimento simples, o projeto MarS evolui essa mecânica ao implementar um sistema de controle com <strong>2  eixos articulados</strong> (rotação da base e extensão do braço) integrados ao acionamento de uma única chave alavanca.
+
+                    Sua finalidade acadêmica é servir como demonstrador prático de sistemas mecatrônicos, combinando microcontroladores, malha aberta de controle de posição via PWM e coordenação de múltiplos servomotores acionados por lógica de entrada simples.
+
+                    
                 </p>
                 <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
                     Sua finalidade acadêmica é servir como demonstrador prático de sistemas mecatrônicos, combinando microcontroladores, malha aberta de controle de posição via PWM e lógica condicionada por hardware.
@@ -274,7 +278,7 @@
                     },
                     {
                         title: "Resistores de Pull-Up Internos (INPUT_PULLUP)",
-                        desc: "Garantia de leitura estável sem flutuações digitais (*floating state*) nos pinos D4, D5 e D6 conectados às chaves alavancas."
+                        desc: "Garantia de leitura estável sem flutuações digitais (*floating state*) no pino D6 conectado à chave alavanca."
                     },
                     {
                         title: "GND Compartilhado",
@@ -296,10 +300,7 @@
                         title: "Ramping Angular Gradual (Suavização)",
                         desc: "Controle de incremento passo a passo dos ângulos (1° a cada 6ms na base, 3° a cada 8ms no braço) para prevenir desgastes nas engrenagens mecânicas."
                     },
-                    {
-                        title: "Hierarquia de Prioridades (S2 > S1 > S3)",
-                        desc: "Sistema de escolha inteligente: a Chave Central S2 (90°) tem precedência de atuação sobre as extremidades (45° e 135°)."
-                    },
+                   
                     {
                         title: "Arquitetura Não Bloqueante",
                         desc: "Estruturação modular (mover_base e ativar_braco) facilitando a manutenção e adição de novos padrões comportamentais."
@@ -313,13 +314,10 @@
                 subtitle: "Mapeamento polar de trajetória e braço extensor articulado de alta precisão.",
                 icon: '<i class="fa-solid fa-gears text-purple-400"></i>',
                 themeColor: 'purple',
-                badgeText: 'Mapeamento Angular 45° / 90° / 135°',
+                badgeText: 'Mapeamento Angular',
                 overview: "Diferente da Useless Box convencional de 1 pino, a Caixinha Teimosa MarS combina um eixo azimutal de base giratória com um raio de atuação variável de acionamento.",
                 highlights: [
-                    {
-                        title: "Mapeamento Polar de Coordenadas",
-                        desc: "Alinhamento exato do efetuador final do braço nas posições físicas das chaves S1 (45°), S2 (90°) e S3 (135°)."
-                    },
+                    
                     {
                         title: "Braço com Torque de Alavanca Mecânica",
                         desc: "Dimensionamento do comprimento da haste para exercer força de desligamento física perfeita sobre a alavanca."
@@ -336,7 +334,7 @@
                 title: "Trabalho em Equipe & Gestão de Projeto",
                 subtitle: "Aplicação prática das metodologias 5W2H, Gantt e documentação técnica.",
                 icon: '<i class="fa-solid fa-users text-emerald-400"></i>',
-                badgeBg: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400',
+                badgeBg: 'Membros da Equipe MarS',
                 overview: "Garantia do cumprimento dos prazos e distribuição de papéis através de métodos estruturados de engenharia de projetos.",
                 highlights: [
                     {

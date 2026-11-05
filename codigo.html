@@ -55,14 +55,13 @@
             </div>
             <pre class="p-6 text-xs sm:text-sm font-mono text-slate-300 overflow-x-auto leading-relaxed bg-slate-950/80"><code id="code-block">#include &lt;Servo.h&gt;
 
+
 Servo servo_base;
 Servo servo_braco;
 
 int i;
-// Pinos das alavancas (use INPUT_PULLUP para evitar resistores externos)
+// Pino da alavanca (INPUT_PULLUP)
 int pinSwitch1 = 6;
-int pinSwitch2 = 5;
-int pinSwitch3 = 4;
 
 // Pinos dos servos SG90
 int pinServo_base = 2;
@@ -70,80 +69,46 @@ int pinServo_braco = 3;
 
 // Posições padrão 
 //(sistema desativado)
-int posOff_base = 90;
+int posOff_base = 0;
 int posOff_braco = 0;
-
 //(Base)
-int pos_e2 = 90;
-int pos_e1 = 45;
-int pos_e3 = 135;
+int posB_e1 = 90;
+//Variavel de estado do switch
+bool e1;
 
-// Variaveis de estado dos switchs
-bool e1, e2, e3;
-
-// Posição atual do servo base
-int posAtual_base = posOff_base;
-
-// Função de ativação do BRAÇO
+//Função de ativação do BRAÇO
 void ativar_braco(){
-  for(i = posOff_braco; i &lt;= 180; i++){
+  for(i=posOff_braco;i<=90;i++){
     servo_braco.write(i);
     delay(5);
   }
-  for(i = 180; i &gt;= posOff_braco; i--){
+  for(i=90;i>=posOff_braco;i--){
     servo_braco.write(i);
     delay(5);
   }
 }
 
-// Função para mover a base
-void mover_base(int e, int pos){
-  if(e == LOW){
-    if(posAtual_base &gt; pos){
-      for(i = posAtual_base; i &gt;= pos; i--){
-        servo_base.write(i);
-        posAtual_base = i;
-        delay(5);
-      }
-    } else if(posAtual_base &lt; pos){
-       for(i = posAtual_base; i &lt;= pos; i++){
-         servo_base.write(i);
-         posAtual_base = i;
-         delay(5);
-       }
-    }
-  }  
-}
-
+/*---------------------------------*/
 void setup() {
   servo_base.attach(pinServo_base);
   servo_braco.attach(pinServo_braco);
   
   pinMode(pinSwitch1, INPUT_PULLUP);
-  pinMode(pinSwitch2, INPUT_PULLUP);
-  pinMode(pinSwitch3, INPUT_PULLUP);
   
   servo_base.write(posOff_base);
-  servo_braco.write(posOff_braco);
+  servo_braco.write(posOff_braco); 
 }
 
 void loop() {
-  e1 = digitalRead(pinSwitch1);
-  e2 = digitalRead(pinSwitch2);
-  e3 = digitalRead(pinSwitch3);
-  
-  if(e2 == LOW){
-    mover_base(e2, pos_e2);
+  e1 = digitalRead(pinSwitch1); 
+  //Verifica se e está ativo
+  if(e1==LOW){
+    servo_base.write(posB_e1);
     ativar_braco();
-  } else if(e1 == LOW){
-    mover_base(e1, pos_e1);
-    ativar_braco();
-  } else if(e3 == LOW){
-    mover_base(e3, pos_e3);
-    ativar_braco();
-  } else {
+  }else{
     servo_base.write(posOff_base);
-  }
+    servo_braco.write(posOff_braco);
+  } 
 }</code></pre>
         </div>
     <!-- Seção de Navegação Rápida (Adicionada ao final do main) -->
