@@ -3,167 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MarS - Caixinha Teimosa | Circuito & Materiais</title>
+    <meta name="description" content="Esquema elétrico, conexões e materiais da Caixinha do Tchauzinho MarS com Arduino Uno, sensor HC-SR04 e dois servos.">
+    <title>MarS - Caixinha do Tchauzinho | Esquema & Materiais</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        html { scroll-behavior: smooth; }
         .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col justify-between">
-
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col">
     <nav class="sticky top-0 z-50 glass-card border-b border-slate-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
-                <a href="index.html" class="flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-xl bg-indigo-600/30 flex items-center justify-center border border-indigo-500/30 overflow-hidden">
-                        <img src="logo.jpg" alt="Logo MarS" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\'font-extrabold text-indigo-400 font-mono\'>M</span>';">
-                    </div>
-                    <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
-                        MarS <span class="text-xs font-normal text-slate-400">| Caixinha Teimosa</span>
-                    </span>
-                </a>
-                <div class="hidden md:flex space-x-6 text-sm font-medium text-slate-300">
-                    <a href="index.html" class="hover:text-indigo-400 transition">Início & Sobre</a>
-                    <a href="sobre.html" class="hover:text-indigo-400 transition">Simulador</a>
-                    <a href="gestao.html" class="hover:text-indigo-400 transition">Gestão & Planejamento</a>
-                    <a href="circuito.html" class="text-indigo-400 font-semibold border-b-2 border-indigo-500 pb-1">Esquema & Materiais</a>
-                    <a href="fluxograma.html" class="hover:text-indigo-400 transition">Fluxograma</a>
-                    <a href="codigo.html" class="hover:text-indigo-400 transition">Código Arduino</a>
-                    <a href="equipe.html" class="hover:text-indigo-400 transition">Equipe</a>
-                </div>
-            </div>
-        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div class="flex items-center justify-between h-16">
+            <a href="index.html" class="flex items-center space-x-3"><div class="w-10 h-10 rounded-xl bg-indigo-600/30 flex items-center justify-center border border-indigo-500/30 overflow-hidden"><img src="logo.jpg" alt="Logo MarS" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\'font-extrabold text-indigo-400\'>M</span>'"></div><span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">MarS <span class="text-xs font-normal text-slate-400">| Caixinha do Tchauzinho</span></span></a>
+            <div class="hidden md:flex space-x-6 text-sm font-medium text-slate-300"><a href="index.html" class="hover:text-indigo-400 transition">Início & Sobre</a><a href="sobre.html" class="hover:text-indigo-400 transition">Simulador</a><a href="gestao.html" class="hover:text-indigo-400 transition">Gestão & Planejamento</a><a href="circuito.html" class="text-indigo-400 font-semibold border-b-2 border-indigo-500 pb-1">Esquema & Materiais</a><a href="fluxograma.html" class="hover:text-indigo-400 transition">Fluxograma</a><a href="codigo.html" class="hover:text-indigo-400 transition">Código Arduino</a><a href="equipe.html" class="hover:text-indigo-400 transition">Equipe</a></div>
+        </div></div>
     </nav>
 
-    <main class="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 flex-grow">
-        <div class="text-center max-w-2xl mx-auto">
-            <h1 class="text-3xl sm:text-4xl font-extrabold text-white mb-3">Esquema Eletrônico & Materiais</h1>
-            <p class="text-slate-400 text-sm sm:text-base">
-                Mapeamento completo de pinagem, componentes utilizados e o esquematico do circuito.
-            </p>
-        </div>
+    <main class="py-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 flex-grow">
+        <header class="text-center max-w-3xl mx-auto"><span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 mb-4"><i class="fa-solid fa-microchip"></i> Arduino Uno · HC-SR04 · dois servos</span><h1 class="text-3xl sm:text-4xl font-extrabold text-white mb-3">Esquema eletrônico & materiais</h1><p class="text-slate-400 text-sm sm:text-base">Conexões conforme o código atual da Caixinha do Tchauzinho. O diagrama antigo do Tinkercad foi removido e substituído por um mapa de ligações coerente com o hardware descrito.</p></header>
 
-        <!-- Lista de Materiais -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="glass-card p-5 rounded-2xl border border-slate-800">
-                <div class="text-indigo-400 text-2xl mb-2"><i class="fa-solid fa-microchip"></i></div>
-                <h3 class="text-base font-bold text-white">1x Arduino Nano</h3>
-                <p class="text-slate-400 text-xs mt-1">Microcontrolador central do sistema.</p>
-            </div>
+        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5" aria-label="Materiais usados">
+            <article class="glass-card p-5 rounded-2xl"><div class="text-indigo-400 text-2xl mb-2"><i class="fa-solid fa-microchip"></i></div><h2 class="text-base font-bold">1× Arduino Uno</h2><p class="text-slate-400 text-xs mt-2">Microcontrolador que lê o sensor e controla os dois servos.</p></article>
+            <article class="glass-card p-5 rounded-2xl"><div class="text-amber-400 text-2xl mb-2"><i class="fa-solid fa-satellite-dish"></i></div><h2 class="text-base font-bold">1× Sensor HC-SR04</h2><p class="text-slate-400 text-xs mt-2">Detecta a aproximação usando TRIG no D7 e ECHO no D8.</p></article>
+            <article class="glass-card p-5 rounded-2xl"><div class="text-cyan-400 text-2xl mb-2"><i class="fa-solid fa-gears"></i></div><h2 class="text-base font-bold">2× Servomotores</h2><p class="text-slate-400 text-xs mt-2">Servo da base no D2 e servo do braço no D3. O modelo exato não está definido no código.</p></article>
+            <article class="glass-card p-5 rounded-2xl"><div class="text-emerald-400 text-2xl mb-2"><i class="fa-solid fa-plug"></i></div><h2 class="text-base font-bold">Fonte e jumpers</h2><p class="text-slate-400 text-xs mt-2">Fonte regulada apropriada para a corrente exigida pelos servos e fios de conexão.</p></article>
+        </section>
 
-            <div class="glass-card p-5 rounded-2xl border border-slate-800">
-                <div class="text-amber-400 text-2xl mb-2"><i class="fa-solid fa-toggle-off"></i></div>
-                <h3 class="text-base font-bold text-white">1x Chave ON/OFF</h3>
-                <p class="text-slate-400 text-xs mt-1">Conectada no pino D6</p>
-            </div>
-
-            <div class="glass-card p-5 rounded-2xl border border-slate-800">
-                <div class="text-purple-400 text-2xl mb-2"><i class="fa-solid fa-grip"></i></div>
-                <h3 class="text-base font-bold text-white">1x Vector Board</h3>
-                <p class="text-slate-400 text-xs mt-1">Placa perfurada para soldagem.</p>
-            </div>
-
-            <div class="glass-card p-5 rounded-2xl border border-slate-800">
-                <div class="text-cyan-400 text-2xl mb-2"><i class="fa-solid fa-gears"></i></div>
-                <h3 class="text-base font-bold text-white">2x Servos SG90 9g</h3>
-                <p class="text-slate-400 text-xs mt-1">Atuadores da base (D2) e braço (D3).</p>
-            </div>
-
-            <div class="glass-card p-5 rounded-2xl border border-slate-800">
-                <div class="text-emerald-400 text-2xl mb-2"><i class="fa-solid fa-plug"></i></div>
-                <h3 class="text-base font-bold text-white">1x Fonte 5V 2A</h3>
-                <p class="text-slate-400 text-xs mt-1">Alimentação dedicada para servos.</p>
-            </div>
-
-            <div class="glass-card p-5 rounded-2xl border border-slate-800">
-                <div class="text-rose-400 text-2xl mb-2"><i class="fa-solid fa-power-off"></i></div>
-                <h3 class="text-base font-bold text-white">1x Chave Liga/Desliga</h3>
-                <p class="text-slate-400 text-xs mt-1">Interruptor geral da fonte.</p>
-            </div>
-
-            <div class="glass-card p-5 rounded-2xl border border-slate-800 md:col-span-2">
-                <div class="text-blue-400 text-2xl mb-2"><i class="fa-solid fa-bolt"></i></div>
-                <h3 class="text-base font-bold text-white">Fios Diversos</h3>
-                <p class="text-slate-400 text-xs mt-1">Jumpers e cabos para conexões no circuito.</p>
-            </div>
-        </div>
-
-        <!-- Mapeamento e Imagem -->
-        <div class="grid lg:grid-cols-2 gap-8 items-center">
-            <div class="glass-card p-6 rounded-2xl border border-slate-800">
-                <h3 class="text-lg font-bold text-white mb-4">Tabela de Pinagem</h3>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left text-xs sm:text-sm font-mono">
-                        <tr class="border-b border-slate-800 text-slate-400">
-                            <th class="py-2">Componente</th>
-                            <th class="py-2">Pino / Conexão</th>
-                        </tr>
-                        <tr class="border-b border-slate-800/60">
-                            <td class="py-2 text-white">Chave S1</td>
-                            <td class="py-2 text-amber-400">D6 (INPUT_PULLUP)</td>
-                        </tr>
-                        <tr class="border-b border-slate-800/60">
-                            <td class="py-2 text-white">Servo Base</td>
-                            <td class="py-2 text-cyan-400">D2 (PWM)</td>
-                        </tr>
-                        <tr class="border-b border-slate-800/60">
-                            <td class="py-2 text-white">Servo Braço</td>
-                            <td class="py-2 text-cyan-400">D3 (PWM)</td>
-                        </tr>
-                        <tr>
-                            <td class="py-2 text-white">Alimentação VCC</td>
-                            <td class="py-2 text-emerald-400">Fonte Externa 5V/2A</td>
-                        </tr>
-                    </table>
+        <section class="glass-card p-6 sm:p-8 rounded-2xl space-y-6">
+            <div><h2 class="text-xl font-bold text-white"><i class="fa-solid fa-diagram-project text-indigo-400 mr-2"></i>Esquema de ligações</h2><p class="text-slate-400 text-sm mt-2">Use a tabela e o diagrama lógico abaixo para conferir as ligações dos sinais e da alimentação.</p></div>
+            <div class="grid lg:grid-cols-2 gap-8 items-start">
+                <div class="overflow-x-auto rounded-xl border border-slate-800"><table class="w-full text-left text-xs sm:text-sm"><thead class="bg-slate-900 text-slate-400"><tr><th class="py-3 px-3">Componente / terminal</th><th class="py-3 px-3">Conexão</th><th class="py-3 px-3">Função</th></tr></thead><tbody class="divide-y divide-slate-800 text-slate-300">
+                    <tr><td class="py-3 px-3">HC-SR04 TRIG</td><td class="py-3 px-3 font-mono text-amber-300">Arduino D7</td><td class="py-3 px-3">Disparo de medição</td></tr>
+                    <tr><td class="py-3 px-3">HC-SR04 ECHO</td><td class="py-3 px-3 font-mono text-amber-300">Arduino D8</td><td class="py-3 px-3">Retorno do eco</td></tr>
+                    <tr><td class="py-3 px-3">HC-SR04 VCC</td><td class="py-3 px-3 font-mono text-rose-300">5V do Uno</td><td class="py-3 px-3">Alimentação do sensor</td></tr>
+                    <tr><td class="py-3 px-3">HC-SR04 GND</td><td class="py-3 px-3 font-mono">GND do Uno</td><td class="py-3 px-3">Referência comum</td></tr>
+                    <tr><td class="py-3 px-3">Servo da base — sinal</td><td class="py-3 px-3 font-mono text-cyan-300">Arduino D2</td><td class="py-3 px-3">Controle pela biblioteca Servo</td></tr>
+                    <tr><td class="py-3 px-3">Servo do braço — sinal</td><td class="py-3 px-3 font-mono text-cyan-300">Arduino D3</td><td class="py-3 px-3">Controle pela biblioteca Servo</td></tr>
+                    <tr><td class="py-3 px-3">Servos — alimentação</td><td class="py-3 px-3 font-mono text-rose-300">Fonte adequada +</td><td class="py-3 px-3">Tensão conforme o servo usado</td></tr>
+                    <tr><td class="py-3 px-3">Servos — terra</td><td class="py-3 px-3 font-mono">GND da fonte + GND Uno</td><td class="py-3 px-3">Terra compartilhado</td></tr>
+                </tbody></table></div>
+                <div class="rounded-2xl border border-slate-800 bg-slate-950/80 p-5 space-y-4">
+                    <h3 class="font-bold text-white">Diagrama lógico</h3>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-center text-center">
+                        <div class="rounded-xl border border-indigo-500/40 bg-indigo-950/40 p-4"><i class="fa-solid fa-microchip text-3xl text-indigo-300"></i><div class="font-bold mt-2">Arduino Uno</div><div class="text-[11px] text-slate-400 mt-1">D7 · D8 · D2 · D3</div></div>
+                        <div class="text-[11px] font-mono leading-6"><div class="text-amber-300">D7 → TRIG</div><div class="text-amber-300">D8 ← ECHO</div><div class="text-cyan-300">D2 → sinal base</div><div class="text-cyan-300">D3 → sinal braço</div><div class="text-rose-300">5V → VCC sensor</div><div class="text-slate-300">GND ↔ comum</div></div>
+                        <div class="space-y-3"><div class="rounded-xl border border-amber-500/30 bg-amber-950/30 p-3"><i class="fa-solid fa-satellite-dish text-2xl text-amber-300"></i><div class="font-bold text-sm mt-1">HC-SR04</div><div class="text-[10px] text-slate-400">VCC · GND · TRIG · ECHO</div></div><div class="rounded-xl border border-cyan-500/30 bg-cyan-950/30 p-3"><i class="fa-solid fa-gears text-2xl text-cyan-300"></i><div class="font-bold text-sm mt-1">Servos base e braço</div><div class="text-[10px] text-slate-400">sinais D2 e D3 · alimentação externa adequada</div></div></div>
+                    </div>
+                    <p class="text-[11px] leading-relaxed text-slate-500">Diagrama lógico de sinais, não desenho físico em escala. As cores dos fios variam; identifique sinal, VCC e GND no módulo/servo real.</p>
                 </div>
             </div>
+        </section>
 
-            <div class="glass-card p-6 rounded-2xl border border-slate-800 flex flex-col items-center">
-                <h3 class="text-sm font-semibold text-slate-400 mb-4 self-start">Diagrama do Circuito Tinkercad</h3>
-                <div class="w-full bg-white p-2 rounded-xl border border-slate-700">
-                    <img src="diagrama.jpg" alt="Diagrama Eletrônico" class="w-full h-auto rounded object-contain max-h-[350px]">
-                </div>
-            </div>
-        </div>
-    <!-- Seção de Navegação Rápida (Adicionada ao final do main) -->
-<section class="glass-card p-6 rounded-2xl border border-slate-800 mt-12 space-y-4">
-    <div class="text-center sm:text-left">
-        <h3 class="text-base font-bold text-white flex items-center justify-center sm:justify-start gap-2">
-            <i class="fa-solid fa-compass text-indigo-400"></i> Navegação Rápida
-        </h3>
-        <p class="text-slate-400 text-xs mt-1">Acesse qualquer outra seção do projeto diretamente por aqui:</p>
-    </div>
-    
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2.5 pt-2">
-        <a href="index.html" class="px-3 py-2.5 rounded-xl bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-200 text-xs font-semibold border border-indigo-500/30 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
-            <i class="fa-solid fa-house"></i> Início
-        </a>
-        <a href="sobre.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
-            <i class="fa-solid fa-circle-info text-indigo-400"></i> Simulador
-        </a>
-        <a href="gestao.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
-            <i class="fa-solid fa-chart-gantt text-cyan-400"></i> Gestão
-        </a>
-        <a href="circuito.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
-            <i class="fa-solid fa-microchip text-emerald-400"></i> Circuito
-        </a>
-        <a href="fluxograma.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
-            <i class="fa-solid fa-diagram-project text-amber-400"></i> Fluxograma
-        </a>
-        <a href="codigo.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
-            <i class="fa-solid fa-code text-purple-400"></i> Código
-        </a>
-        <a href="equipe.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center col-span-2 sm:col-span-1">
-            <i class="fa-solid fa-users text-rose-400"></i> Equipe
-        </a>
-    </div>
-</section>
+        <section class="grid lg:grid-cols-2 gap-6">
+            <article class="glass-card p-6 rounded-2xl space-y-3"><h2 class="text-lg font-bold text-cyan-300"><i class="fa-solid fa-code mr-2"></i>Compatibilidade com o firmware</h2><p class="text-sm text-slate-300 leading-relaxed">A pinagem corresponde às variáveis do código: `pinTrig = 7`, `pinEcho = 8`, `pinServo_base = 2` e `pinServo_braco = 3`. O programa inicia os servos em 0°, move a base a 90° quando detecta proximidade e executa o gesto com o braço entre 0° e 90°.</p><p class="text-xs text-slate-400">D2 e D3 são pinos de sinal para a biblioteca Servo; o código não depende de PWM de hardware nesses pinos.</p></article>
+            <article class="glass-card p-6 rounded-2xl border border-amber-500/20 space-y-3"><h2 class="text-lg font-bold text-amber-300"><i class="fa-solid fa-triangle-exclamation mr-2"></i>Cuidados com alimentação</h2><ul class="list-disc list-inside text-sm text-slate-300 space-y-2"><li>Não presuma que o pino 5V do Uno suporta a corrente de pico dos dois servos.</li><li>Use fonte regulada compatível com a tensão e corrente dos modelos de servo instalados.</li><li>Ao alimentar os servos por fonte externa, una o GND dessa fonte ao GND do Arduino.</li><li>Não conecte a saída positiva da fonte externa ao 5V do Uno sem um projeto de alimentação adequado.</li><li>Confirme a tensão de sinal do ECHO para a placa e teste os ângulos sem carga antes da montagem final.</li></ul><p class="text-xs text-slate-400">O código não informa modelo dos servos ou especificação da fonte; esses itens devem ser confirmados no protótipo.</p></article>
+        </section>
+
+        <section class="glass-card p-6 rounded-2xl border border-slate-800 space-y-4"><div><h2 class="text-base font-bold text-white flex items-center gap-2"><i class="fa-solid fa-compass text-indigo-400"></i> Navegação rápida</h2><p class="text-slate-400 text-xs mt-1">Acesse as demais seções do projeto:</p></div><div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5"><a href="index.html" class="px-3 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800">Início</a><a href="sobre.html" class="px-3 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800">Simulador</a><a href="gestao.html" class="px-3 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800">Gestão & 5W2H</a><a href="fluxograma.html" class="px-3 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800">Fluxograma</a><a href="codigo.html" class="px-3 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800">Código</a><a href="equipe.html" class="px-3 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800">Equipe</a></div></section>
     </main>
-
-    <footer class="border-t border-slate-800 bg-slate-950 py-6 text-xs text-slate-500 text-center">
-        <p>© 2026 Projeto MarS - Caixinha Teimosa | Engenharia</p>
-    </footer>
+    <footer class="border-t border-slate-800 bg-slate-950 py-6 text-xs text-slate-500 text-center"><p>© 2026 Projeto MarS - Caixinha do Tchauzinho | Esquema e Materiais</p></footer>
 </body>
 </html>
