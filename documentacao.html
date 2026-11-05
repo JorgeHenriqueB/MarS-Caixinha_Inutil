@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Documentação e simulação da Caixinha do Tchauzinho MarS, com Arduino Uno e sensor ultrassônico.">
+  <meta name="description" content="Documentação e simulação da Caixinha do Tchauzinho MarS, com Arduino Uno e sensor de distância.">
   <title>MarS | Caixinha do Tchauzinho — Documentação</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -27,7 +27,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
       <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-300 border border-indigo-500/20"><i class="fa-solid fa-hand"></i> Documentação atualizada · Arduino Uno</span>
       <h1 class="mt-5 text-3xl sm:text-5xl font-extrabold leading-tight">Uma caixinha que percebe você e dá <span class="bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">tchauzinho.</span></h1>
-      <p class="mt-4 max-w-3xl text-slate-300 leading-relaxed">O sensor ultrassônico detecta a aproximação; o Arduino Uno comanda os servos para movimentar a base e o braço. Use os controles do simulador para ver a sequência acontecer sem depender de arrastar uma pessoa na tela.</p>
+      <p class="mt-4 max-w-3xl text-slate-300 leading-relaxed">O sensor de distância detecta a aproximação; o Arduino Uno comanda dois servos para movimentar a base e o bracinho impresso em 3D. A simulação abaixo deixa o movimento visível e pode ser acionada pelos botões.</p>
     </div>
   </header>
 
@@ -35,34 +35,34 @@
     <section class="grid lg:grid-cols-2 gap-6">
       <article class="glass-card rounded-2xl p-6 sm:p-8 space-y-4">
         <h2 class="text-xl font-bold text-indigo-300"><i class="fa-solid fa-bullseye mr-2"></i>Objetivo do projeto</h2>
-        <p class="text-sm text-slate-300 leading-relaxed">A Caixinha do Tchauzinho é um projeto de mecatrônica com comportamento lúdico. Ao perceber algo próximo, ela posiciona a base e faz o braço acenar duas vezes. Quando o objeto se afasta, o sistema volta à posição inicial e pode detectar uma nova aproximação.</p>
-        <p class="text-sm text-slate-300 leading-relaxed">O projeto combina leitura de sensor, lógica condicional, controle de servomotores, alimentação elétrica e construção mecânica, servindo como demonstração didática de integração entre hardware e software.</p>
+        <p class="text-sm text-slate-300 leading-relaxed">A Caixinha do Tchauzinho é um projeto de mecatrônica com comportamento lúdico. Ao detectar alguém próximo, o sistema posiciona a base e movimenta o bracinho para acenar duas vezes. Quando a pessoa se afasta, a base retorna à posição inicial e o sistema fica pronto para outra aproximação.</p>
+        <p class="text-sm text-slate-300 leading-relaxed">O projeto integra leitura de sensor, lógica condicional, controle de servomotores, alimentação elétrica e uma peça mecânica impressa em 3D.</p>
       </article>
       <article class="glass-card rounded-2xl p-6 sm:p-8 space-y-4">
         <h2 class="text-xl font-bold text-cyan-300"><i class="fa-solid fa-list-ol mr-2"></i>Sequência do sistema</h2>
         <ol class="list-decimal list-inside text-sm text-slate-300 space-y-2">
-          <li>O Arduino dispara o HC-SR04 e mede o tempo do eco.</li>
-          <li>Uma distância válida entre 1 e 15 cm dispara a sequência, se a detecção ainda não estiver registrada.</li>
-          <li>A base vai a 90°; o braço levanta, oscila duas vezes e abaixa.</li>
-          <li>De 16 a 24 cm o código mantém o estado atual.</li>
-          <li>A partir de 25 cm, libera nova detecção e comanda base e braço a 0°.</li>
-          <li>Uma leitura igual a 0 (sem eco/timeout) não aciona nem rearma.</li>
+          <li>O Arduino Uno mede a distância com o sensor ultrassônico HC-SR04.</li>
+          <li>Uma leitura válida entre 1 e 15 cm inicia uma única sequência de tchau.</li>
+          <li>A base vai a 90°; o braço levanta, oscila duas vezes entre 90° e 0° e abaixa.</li>
+          <li>Entre 16 e 24 cm, o estado atual é mantido.</li>
+          <li>A partir de 25 cm, a detecção é liberada e a base retorna a 0°.</li>
+          <li>Uma leitura 0 (timeout/sem eco) não ativa nem rearma o sistema.</li>
         </ol>
       </article>
     </section>
 
     <section class="glass-card rounded-2xl p-6 sm:p-8 space-y-5">
-      <div><h2 class="text-xl font-bold text-emerald-300"><i class="fa-solid fa-microchip mr-2"></i>Componentes e conexões</h2><p class="text-sm text-slate-400 mt-2">Arduino Uno, sensor ultrassônico HC-SR04 e dois servos. Confira o esquema atualizado na aba <a class="text-cyan-300 underline" href="circuito.html">Esquema & Materiais</a>.</p></div>
-      <div class="overflow-x-auto"><table class="w-full text-left text-sm"><thead class="text-slate-400"><tr class="border-b border-slate-700"><th class="py-3 pr-4">Componente</th><th class="py-3 pr-4">Pino Uno</th><th class="py-3">Uso</th></tr></thead><tbody class="divide-y divide-slate-800 text-slate-300"><tr><td class="py-3 pr-4">HC-SR04 TRIG</td><td class="py-3 pr-4 font-mono text-amber-300">D7</td><td class="py-3">Pulso de disparo</td></tr><tr><td class="py-3 pr-4">HC-SR04 ECHO</td><td class="py-3 pr-4 font-mono text-amber-300">D8</td><td class="py-3">Pulso de retorno</td></tr><tr><td class="py-3 pr-4">Servo da base</td><td class="py-3 pr-4 font-mono text-cyan-300">D2</td><td class="py-3">0° em repouso; 90° quando detecta</td></tr><tr><td class="py-3 pr-4">Servo do braço</td><td class="py-3 pr-4 font-mono text-cyan-300">D3</td><td class="py-3">Aceno entre 0° e 90°</td></tr></tbody></table></div>
+      <div><h2 class="text-xl font-bold text-emerald-300"><i class="fa-solid fa-microchip mr-2"></i>Componentes e conexões</h2><p class="text-sm text-slate-400 mt-2">A lista e a pinagem detalhadas estão na aba <a class="text-cyan-300 underline" href="circuito.html">Esquema & Materiais</a>.</p></div>
+      <div class="overflow-x-auto"><table class="w-full text-left text-sm"><thead class="text-slate-400"><tr class="border-b border-slate-700"><th class="py-3 pr-4">Componente</th><th class="py-3 pr-4">Pino Uno</th><th class="py-3">Uso</th></tr></thead><tbody class="divide-y divide-slate-800 text-slate-300"><tr><td class="py-3 pr-4">Sensor HC-SR04 · TRIG</td><td class="py-3 pr-4 font-mono text-amber-300">D7</td><td class="py-3">Pulso de disparo</td></tr><tr><td class="py-3 pr-4">Sensor HC-SR04 · ECHO</td><td class="py-3 pr-4 font-mono text-amber-300">D8</td><td class="py-3">Pulso de retorno</td></tr><tr><td class="py-3 pr-4">Servo da base · sinal</td><td class="py-3 pr-4 font-mono text-cyan-300">D2</td><td class="py-3">Posicionamento da base</td></tr><tr><td class="py-3 pr-4">Servo do bracinho · sinal</td><td class="py-3 pr-4 font-mono text-cyan-300">D3</td><td class="py-3">Movimento de tchau</td></tr></tbody></table></div>
     </section>
 
     <section class="glass-card rounded-2xl p-6 sm:p-8 space-y-4">
       <h2 class="text-xl font-bold text-amber-300"><i class="fa-solid fa-bolt mr-2"></i>Alimentação e cuidados</h2>
-      <ul class="list-disc list-inside text-sm text-slate-300 space-y-2"><li>Dimensione a alimentação considerando a corrente de pico dos dois servos; não presuma que o pino 5 V do Uno seja suficiente.</li><li>Com fonte externa para os servos, conecte o GND da fonte ao GND do Arduino para compartilhar a referência elétrica.</li><li>Confirme a tensão permitida no ECHO do HC-SR04 e a compatibilidade com a placa usada.</li><li>Teste sem carga, ajuste os ângulos ao mecanismo e evite que os servos forcem seus batentes.</li><li>Mantenha dedos e cabos fora das partes móveis e desligue a alimentação antes de alterar conexões.</li></ul>
+      <ul class="list-disc list-inside text-sm text-slate-300 space-y-2"><li>O projeto utiliza uma fonte de 5 V; confirme a corrente que ela pode fornecer e os requisitos dos servos instalados.</li><li>Não presuma que o pino 5 V do Uno suporte a corrente de pico dos dois servos. Faça a alimentação conforme a montagem e os componentes.</li><li>Quando a fonte de 5 V alimentar os servos separadamente, una o GND da fonte ao GND do Arduino.</li><li>Teste os limites de movimento sem carga e mantenha dedos e fios fora do curso do bracinho.</li><li>Desligue a alimentação antes de alterar conexões.</li></ul>
     </section>
 
     <section id="simulador" class="space-y-6">
-      <div class="text-center max-w-3xl mx-auto"><h2 class="text-3xl sm:text-4xl font-extrabold">Simulador do tchauzinho</h2><p class="text-slate-400 mt-3">Este simulador usa uma animação desenhada em canvas: o bracinho se move visivelmente de um lado para o outro. Clique em perto para executar o gesto ou em longe para rearmar.</p></div>
+      <div class="text-center max-w-3xl mx-auto"><h2 class="text-3xl sm:text-4xl font-extrabold">Simulador do tchauzinho</h2><p class="text-slate-400 mt-3">O bracinho aparece à esquerda da caixinha, junto ao sensor. Clique em “Pessoa perto” para vê-lo levantar e acenar duas vezes; “Pessoa longe” só rearma e retorna a base depois do gesto.</p></div>
       <div class="grid lg:grid-cols-5 gap-6 items-stretch">
         <div class="lg:col-span-2 glass-card rounded-2xl p-6 space-y-5">
           <h3 class="font-bold text-white"><i class="fa-solid fa-radar text-cyan-400 mr-2"></i>Simular o sensor</h3>
@@ -71,21 +71,21 @@
             <button id="far-button" type="button" class="rounded-xl border border-slate-600 bg-slate-800 hover:bg-slate-700 px-4 py-4 text-sm font-bold text-slate-100 transition"><i class="fa-solid fa-person-walking-arrow-right mr-2"></i>Pessoa longe<span class="block mt-1 text-xs font-normal text-slate-400">Afastou-se a 25 cm ou mais</span></button>
           </div>
           <div class="rounded-xl bg-slate-950/80 border border-slate-800 p-4"><div class="text-[11px] uppercase tracking-wider text-slate-500">Estado do sistema</div><p id="sim-status" aria-live="polite" class="mt-2 min-h-12 font-mono text-xs leading-relaxed text-indigo-200">Aguardando. Clique em “Pessoa perto” para ver o bracinho acenar.</p></div>
-          <div class="grid grid-cols-2 gap-3 text-center text-xs"><div class="rounded-lg bg-slate-950/70 p-3"><span class="text-slate-500">Servo base</span><div id="base-angle" class="font-mono text-indigo-300 mt-1">0°</div></div><div class="rounded-lg bg-slate-950/70 p-3"><span class="text-slate-500">Servo braço</span><div id="arm-angle" class="font-mono text-cyan-300 mt-1">0°</div></div></div>
+          <div class="grid grid-cols-2 gap-3 text-center text-xs"><div class="rounded-lg bg-slate-950/70 p-3"><span class="text-slate-500">Servo base</span><div id="base-angle" class="font-mono text-indigo-300 mt-1">0°</div></div><div class="rounded-lg bg-slate-950/70 p-3"><span class="text-slate-500">Servo do braço</span><div id="arm-angle" class="font-mono text-cyan-300 mt-1">0°</div></div></div>
           <button id="reset-sim" type="button" class="rounded-xl border border-slate-700 bg-slate-800 px-4 py-2 text-xs font-semibold text-slate-200 hover:bg-slate-700">Reiniciar</button>
-          <p class="text-[11px] leading-relaxed text-slate-500">O botão “Pessoa longe” antes de qualquer detecção não inicia movimento. Depois do tchau, ele volta a base para 0° e libera uma nova detecção.</p>
+          <p class="text-[11px] leading-relaxed text-slate-500">Antes de uma detecção, “Pessoa longe” não movimenta nada. Depois do tchau, esse botão retorna a base para 0° e permite uma nova ativação.</p>
         </div>
         <div class="lg:col-span-3 glass-card rounded-2xl p-5 sm:p-7 flex flex-col items-center justify-center">
-          <div class="w-full flex justify-between text-xs text-slate-400"><span><i class="fa-solid fa-satellite-dish text-cyan-400 mr-2"></i>Sensor HC-SR04</span><span>Controlador Arduino Uno</span></div>
-          <div class="w-full max-w-xl mt-4 rounded-xl overflow-hidden border border-slate-800 bg-slate-950"><canvas id="robot-simulation" width="720" height="380" role="img" aria-label="Animação da caixinha e do braço dando tchau"></canvas></div>
-          <p class="mt-3 text-xs text-slate-500 text-center">A imagem do braço é desenhada a cada quadro para tornar o movimento visível.</p>
+          <div class="w-full flex justify-between text-xs text-slate-400"><span><i class="fa-solid fa-satellite-dish text-cyan-400 mr-2"></i>Sensor de distância · HC-SR04</span><span>Arduino Uno</span></div>
+          <div class="w-full max-w-xl mt-4 rounded-xl overflow-hidden border border-slate-800 bg-slate-950"><canvas id="robot-simulation" width="720" height="380" role="img" aria-label="Caixinha com sensor e bracinho à esquerda; animação do gesto de tchau"></canvas></div>
+          <p class="mt-3 text-xs text-slate-500 text-center">A posição do braço no desenho é ilustrativa; o movimento visualiza a sequência dos dois servos.</p>
         </div>
       </div>
     </section>
 
     <section class="glass-card rounded-2xl p-6 sm:p-8 space-y-4">
       <h2 class="text-xl font-bold text-purple-300"><i class="fa-solid fa-vial mr-2"></i>Testes recomendados</h2>
-      <ul class="list-disc list-inside text-sm text-slate-300 space-y-2"><li>Validar o sensor em distâncias conhecidas e verificar o comportamento em timeout (leitura 0).</li><li>Confirmar que a proximidade inicia apenas um gesto até o rearme.</li><li>Confirmar que afastar-se libera uma nova detecção e retorna a base.</li><li>Repetir ciclos e observar aquecimento, travamento, queda de tensão e estabilidade da estrutura.</li></ul>
+      <ul class="list-disc list-inside text-sm text-slate-300 space-y-2"><li>Validar o sensor em distâncias conhecidas e verificar o comportamento em timeout (leitura 0).</li><li>Confirmar que a proximidade inicia apenas um gesto até o rearme.</li><li>Confirmar que o afastamento libera nova detecção e retorna a base.</li><li>Repetir ciclos e observar aquecimento, travamento, queda de tensão e estabilidade da estrutura.</li></ul>
     </section>
   </main>
   <footer class="border-t border-slate-800 bg-slate-950 py-6 text-xs text-slate-500 text-center">© 2026 Projeto MarS | Caixinha do Tchauzinho · Documentação técnica e simulação</footer>
@@ -104,51 +104,51 @@
     let busy = false;
     let baseAngle = 0;
     let armAngle = 0;
-    let animationFrame = 0;
 
     function setStatus(message) { statusText.textContent = message; }
     function drawScene() {
       const w = canvas.width, h = canvas.height;
       ctx.clearRect(0, 0, w, h);
       ctx.fillStyle = '#020617'; ctx.fillRect(0, 0, w, h);
-      // Sensor and echo waves
+      // Sensor at the left of the scene.
       ctx.fillStyle = '#67e8f9'; ctx.font = '26px sans-serif'; ctx.textAlign = 'center';
-      ctx.fillText('◉', 95, 188);
-      ctx.fillStyle = '#94a3b8'; ctx.font = '14px sans-serif'; ctx.fillText('HC-SR04', 95, 220);
-      ctx.strokeStyle = detected ? 'rgba(34,211,238,.65)' : 'rgba(71,85,105,.55)'; ctx.lineWidth = 2;
-      [36, 57, 78].forEach(r => { ctx.beginPath(); ctx.arc(120, 185, r, -Math.PI / 3, Math.PI / 3); ctx.stroke(); });
-      // Floor
-      ctx.strokeStyle = '#334155'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(45, 326); ctx.lineTo(675, 326); ctx.stroke();
-      // Person / presence state
-      ctx.fillStyle = detected ? '#fbbf24' : '#64748b';
-      ctx.beginPath(); ctx.arc(260, 205, 20, 0, Math.PI * 2); ctx.fill();
-      ctx.strokeStyle = detected ? '#fbbf24' : '#64748b'; ctx.lineWidth = 12; ctx.lineCap = 'round';
-      ctx.beginPath(); ctx.moveTo(260, 228); ctx.lineTo(260, 284); ctx.moveTo(260, 242); ctx.lineTo(235, 265); ctx.moveTo(260, 242); ctx.lineTo(282, 263); ctx.moveTo(260, 284); ctx.lineTo(242, 318); ctx.moveTo(260, 284); ctx.lineTo(279, 318); ctx.stroke();
-      ctx.fillStyle = '#94a3b8'; ctx.font = '13px sans-serif'; ctx.textAlign = 'center'; ctx.fillText(detected ? 'PESSOA PERTO' : 'AGUARDANDO', 260, 350);
-      // Box body
-      const bx = 470, by = 218, bw = 150, bh = 105;
+      ctx.beginPath(); ctx.arc(72, 196, 19, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#164e63'; ctx.beginPath(); ctx.arc(72, 196, 9, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#94a3b8'; ctx.font = '13px sans-serif'; ctx.fillText('SENSOR', 72, 232);
+      ctx.fillStyle = '#64748b'; ctx.font = '11px sans-serif'; ctx.fillText('HC-SR04', 72, 249);
+      ctx.strokeStyle = detected ? 'rgba(34,211,238,.55)' : 'rgba(71,85,105,.45)'; ctx.lineWidth = 2;
+      [32, 52].forEach(r => { ctx.beginPath(); ctx.arc(84, 196, r, -Math.PI / 3, Math.PI / 3); ctx.stroke(); });
+
+      // Box on the right, with both the sensor and waving arm on its left side.
+      const bx = 420, by = 210, bw = 210, bh = 115;
+      ctx.strokeStyle = '#334155'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(35, 326); ctx.lineTo(680, 326); ctx.stroke();
       ctx.fillStyle = '#1e293b'; ctx.strokeStyle = '#64748b'; ctx.lineWidth = 4;
       ctx.beginPath(); ctx.roundRect(bx, by, bw, bh, 14); ctx.fill(); ctx.stroke();
-      ctx.fillStyle = '#334155'; ctx.fillRect(bx + 25, by + 18, bw - 50, 9);
-      ctx.fillStyle = '#94a3b8'; ctx.font = '13px sans-serif'; ctx.fillText('CAIXINHA', bx + bw / 2, 350);
-      // Pivot, base and waving arm. The arm angle is drawn directly on canvas.
-      const pivotX = bx + bw / 2, pivotY = by + 25;
+      ctx.fillStyle = '#334155'; ctx.beginPath(); ctx.roundRect(bx + 38, by + 20, bw - 76, 11, 5); ctx.fill();
+      ctx.fillStyle = '#cbd5e1'; ctx.font = 'bold 14px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('CAIXINHA', bx + bw / 2, by + 78);
+
+      // 3D-printed arm is mounted on the left side of the box, beside the distance sensor.
+      const pivotX = bx + 8, pivotY = by + 67;
       ctx.fillStyle = '#818cf8'; ctx.beginPath(); ctx.arc(pivotX, pivotY, 12, 0, Math.PI * 2); ctx.fill();
-      const visualAngle = (-55 + (armAngle / 90) * 110) * Math.PI / 180;
+      const waveRadians = (-55 + (armAngle / 90) * 110) * Math.PI / 180;
       const armLength = 100;
-      const tipX = pivotX + Math.sin(visualAngle) * armLength;
-      const tipY = pivotY - Math.cos(visualAngle) * armLength;
-      ctx.strokeStyle = '#22d3ee'; ctx.lineWidth = 13; ctx.lineCap = 'round';
+      const tipX = pivotX - Math.cos(waveRadians) * armLength;
+      const tipY = pivotY + Math.sin(waveRadians) * armLength;
+      ctx.strokeStyle = '#22d3ee'; ctx.lineWidth = 14; ctx.lineCap = 'round';
       ctx.beginPath(); ctx.moveTo(pivotX, pivotY); ctx.lineTo(tipX, tipY); ctx.stroke();
       ctx.fillStyle = '#fbbf24'; ctx.beginPath(); ctx.arc(tipX, tipY, 13, 0, Math.PI * 2); ctx.fill();
-      ctx.fillStyle = '#a5b4fc'; ctx.font = '12px monospace'; ctx.fillText(`BASE ${baseAngle}°`, pivotX, by - 15);
-      ctx.fillStyle = '#67e8f9'; ctx.fillText(`BRAÇO ${armAngle}°`, pivotX, by + bh + 24);
-      // Highlight arm while the waving animation is running.
-      if (busy && detected) { ctx.fillStyle = '#fef3c7'; ctx.font = 'bold 16px sans-serif'; ctx.fillText('👋 TCHAU!', pivotX, 42); }
-      if (animationFrame) animationFrame = 0;
+      ctx.fillStyle = '#67e8f9'; ctx.font = '11px monospace'; ctx.fillText(`BRAÇO ${Math.round(armAngle)}°`, pivotX - 42, by + bh + 24);
+      ctx.fillStyle = '#a5b4fc'; ctx.fillText(`BASE ${Math.round(baseAngle)}°`, bx + bw / 2, by - 15);
+
+      if (detected) {
+        ctx.fillStyle = '#fbbf24'; ctx.font = 'bold 13px sans-serif'; ctx.fillText('PESSOA PERTO', 225, 85);
+      } else {
+        ctx.fillStyle = '#64748b'; ctx.font = '13px sans-serif'; ctx.fillText('AGUARDANDO', 225, 85);
+      }
+      if (busy && detected) { ctx.fillStyle = '#fef3c7'; ctx.font = 'bold 18px sans-serif'; ctx.fillText('👋 TCHAU!', 285, 55); }
     }
-    function drawLoop() { drawScene(); animationFrame = requestAnimationFrame(drawLoop); }
-    function setAngles(base, arm) {
+    function drawLoop() { drawScene(); requestAnimationFrame(drawLoop); }
+    function updateAngles(base, arm) {
       baseAngle = base; armAngle = arm;
       baseAngleText.textContent = `${Math.round(base)}°`;
       armAngleText.textContent = `${Math.round(arm)}°`;
@@ -156,9 +156,9 @@
     function animateValue(from, to, duration, update) {
       return new Promise(resolve => {
         if (reducedMotion) { update(to); resolve(); return; }
-        const start = performance.now();
+        const started = performance.now();
         function step(now) {
-          const progress = Math.min(1, (now - start) / duration);
+          const progress = Math.min(1, (now - started) / duration);
           const eased = progress * progress * (3 - 2 * progress);
           update(from + (to - from) * eased);
           if (progress < 1) requestAnimationFrame(step); else resolve();
@@ -166,44 +166,43 @@
         requestAnimationFrame(step);
       });
     }
-    async function moveServo(which, to, duration = 500) {
-      const from = which === 'base' ? baseAngle : armAngle;
-      await animateValue(from, to, duration, value => setAngles(which === 'base' ? value : baseAngle, which === 'arm' ? value : armAngle));
+    async function moveServo(which, target, duration) {
+      const start = which === 'base' ? baseAngle : armAngle;
+      await animateValue(start, target, duration, value => updateAngles(which === 'base' ? value : baseAngle, which === 'arm' ? value : armAngle));
+    }
+    function setButtonsDisabled(disabled) {
+      nearButton.disabled = disabled; farButton.disabled = disabled; resetButton.disabled = disabled;
     }
     async function simulateNear() {
       if (busy) return;
-      if (detected) { setStatus('A caixinha já detectou a pessoa. Clique em “Pessoa longe” para rearmar.'); return; }
-      detected = true; busy = true;
-      nearButton.disabled = true; farButton.disabled = true; resetButton.disabled = true;
+      if (detected) { setStatus('A detecção já foi registrada. Clique em “Pessoa longe” para rearmar.'); return; }
+      detected = true; busy = true; setButtonsDisabled(true);
       setStatus('Pessoa detectada! A base se posiciona e o bracinho começa a levantar…');
       await moveServo('base', 90, 450);
       await moveServo('arm', 90, 500);
-      for (let n = 1; n <= 2; n++) {
-        setStatus(`Tchauzinho ${n} de 2: veja o braço balançar de um lado para o outro!`);
-        await moveServo('arm', 0, 360);
-        await moveServo('arm', 90, 360);
+      for (let wave = 1; wave <= 2; wave++) {
+        setStatus(`Tchauzinho ${wave} de 2: o bracinho está balançando ao lado do sensor!`);
+        await moveServo('arm', 0, 450);
+        await moveServo('arm', 90, 450);
       }
-      setStatus('O bracinho está voltando para a posição inicial…');
+      setStatus('O bracinho está voltando à posição inicial…');
       await moveServo('arm', 0, 450);
-      busy = false;
-      nearButton.disabled = false; farButton.disabled = false; resetButton.disabled = false;
-      setStatus('Tchau concluído! A base permanece em 90°. Clique em “Pessoa longe” para retornar e rearmar.');
+      busy = false; setButtonsDisabled(false);
+      setStatus('Tchau concluído! A base fica em 90°. Clique em “Pessoa longe” para retornar e rearmar.');
     }
     async function simulateFar() {
       if (busy) return;
       if (!detected) { setStatus('Pessoa longe: nenhuma ação. A caixinha permanece parada e não dá tchau.'); return; }
-      busy = true; farButton.disabled = true; nearButton.disabled = true; resetButton.disabled = true;
-      setStatus('Pessoa afastada. A base e o braço estão retornando ao repouso…');
+      busy = true; setButtonsDisabled(true);
+      setStatus('Pessoa afastada. A base está retornando ao repouso…');
       await moveServo('arm', 0, 250);
       await moveServo('base', 0, 450);
-      detected = false; busy = false;
-      nearButton.disabled = false; farButton.disabled = false; resetButton.disabled = false;
+      detected = false; busy = false; setButtonsDisabled(false);
       setStatus('Sistema rearmado. Aguardando aproximação. Base 0° · braço 0°.');
     }
     function resetSimulation() {
       if (busy) return;
-      detected = false; setAngles(0, 0);
-      nearButton.disabled = false; farButton.disabled = false; resetButton.disabled = false;
+      detected = false; updateAngles(0, 0); setButtonsDisabled(false);
       setStatus('Simulação reiniciada. Clique em “Pessoa perto” para ver o tchauzinho.');
     }
     nearButton.addEventListener('click', simulateNear);
