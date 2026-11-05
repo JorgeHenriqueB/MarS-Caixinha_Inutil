@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MarS - Caixinha Teimosa | Código Arduino</title>
+    <meta name="description" content="Código Arduino C++ da Caixinha do Tchauzinho com Arduino Uno, sensor ultrassônico e dois servos.">
+    <title>MarS - Caixinha do Tchauzinho | Código Arduino</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -11,18 +12,15 @@
         .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col justify-between">
-
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col">
     <nav class="sticky top-0 z-50 glass-card border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <a href="index.html" class="flex items-center space-x-3">
                     <div class="w-10 h-10 rounded-xl bg-indigo-600/30 flex items-center justify-center border border-indigo-500/30 overflow-hidden">
-                        <img src="logo.jpg" alt="Logo MarS" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\'font-extrabold text-indigo-400 font-mono\'>M</span>';">
+                        <img src="logo.jpg" alt="Logo MarS" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\'font-extrabold text-indigo-400\'>M</span>'">
                     </div>
-                    <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
-                        MarS <span class="text-xs font-normal text-slate-400">| Caixinha Teimosa</span>
-                    </span>
+                    <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">MarS <span class="text-xs font-normal text-slate-400">| Caixinha do Tchauzinho</span></span>
                 </a>
                 <div class="hidden md:flex space-x-6 text-sm font-medium text-slate-300">
                     <a href="index.html" class="hover:text-indigo-400 transition">Início & Sobre</a>
@@ -40,122 +38,188 @@
     <main class="py-12 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 flex-grow">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-                <h1 class="text-3xl font-bold text-white">Código Fonte C++ (.ino)</h1>
-                <p class="text-slate-400 text-sm mt-1">Código original mantido integralmente sem alterações de lógica.</p>
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 mb-3"><i class="fa-solid fa-microchip"></i> Arduino Uno · HC-SR04 · dois servos</span>
+                <h1 class="text-3xl font-bold text-white">Código-fonte C++ (.ino)</h1>
+                <p class="text-slate-400 text-sm mt-1">Firmware atual da Caixinha do Tchauzinho: detecta proximidade e movimenta os servos.</p>
             </div>
-            <button onclick="copyCode()" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold transition flex items-center gap-2 self-start">
-                <i class="fa-regular fa-copy"></i> <span id="copy-text">Copiar Código</span>
+            <button type="button" onclick="copyCode()" class="px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold transition flex items-center gap-2 self-start">
+                <i class="fa-regular fa-copy"></i> <span id="copy-text">Copiar código</span>
             </button>
         </div>
 
         <div class="glass-card rounded-2xl border border-slate-800 overflow-hidden">
             <div class="bg-slate-900 px-6 py-3 border-b border-slate-800 flex items-center justify-between">
-                <span class="text-xs font-mono text-slate-400">code_MarS.ino</span>
+                <span class="text-xs font-mono text-slate-400">MarS_Tchauzinho.ino</span>
                 <span class="text-xs text-slate-500 font-mono">Arduino C++</span>
             </div>
             <pre class="p-6 text-xs sm:text-sm font-mono text-slate-300 overflow-x-auto leading-relaxed bg-slate-950/80"><code id="code-block">#include &lt;Servo.h&gt;
-
 
 Servo servo_base;
 Servo servo_braco;
 
 int i;
-// Pino da alavanca (INPUT_PULLUP)
-int pinSwitch1 = 6;
 
-// Pinos dos servos SG90
+// Pinos do sensor ultrassônico
+int pinTrig = 7;
+int pinEcho = 8;
+
+// Pinos dos servos
 int pinServo_base = 2;
 int pinServo_braco = 3;
 
-// Posições padrão 
-//(sistema desativado)
+// Posições dos servos
 int posOff_base = 0;
 int posOff_braco = 0;
-//(Base)
 int posB_e1 = 90;
-//Variavel de estado do switch
-bool e1;
 
-//Função de ativação do BRAÇO
+// Distância medida pelo sensor
+long duracao;
+int distancia;
+
+// Estado da detecção
+bool pessoaDetectada = false;
+
+//---------------------------------
+// Medir distância
+//---------------------------------
+int medir_distancia(){
+  digitalWrite(pinTrig, LOW);
+  delayMicroseconds(2);
+
+  digitalWrite(pinTrig, HIGH);
+  delayMicroseconds(10);
+
+  digitalWrite(pinTrig, LOW);
+
+  duracao = pulseIn(pinEcho, HIGH, 30000);
+
+  if(duracao == 0){
+    return 0;
+  }
+
+  distancia = duracao * 0.034 / 2;
+  return distancia;
+}
+
+//---------------------------------
+// Sequência do tchauzinho
+//---------------------------------
 void ativar_braco(){
-  for(i=posOff_braco;i<=90;i++){
+  // Levanta o braço
+  for(i = posOff_braco; i &lt;= 90; i++){
     servo_braco.write(i);
     delay(5);
   }
-  for(i=90;i>=posOff_braco;i--){
+
+  // Primeiro aceno
+  for(i = 90; i &gt;= 0; i--){
+    servo_braco.write(i);
+    delay(10);
+  }
+  for(i = 0; i &lt;= 90; i++){
+    servo_braco.write(i);
+    delay(10);
+  }
+
+  // Segundo aceno
+  for(i = 90; i &gt;= 0; i--){
+    servo_braco.write(i);
+    delay(10);
+  }
+  for(i = 0; i &lt;= 90; i++){
+    servo_braco.write(i);
+    delay(10);
+  }
+
+  // Abaixa o braço
+  for(i = 90; i &gt;= posOff_braco; i--){
     servo_braco.write(i);
     delay(5);
   }
 }
 
-/*---------------------------------*/
-void setup() {
+//---------------------------------
+// SETUP
+//---------------------------------
+void setup(){
   servo_base.attach(pinServo_base);
   servo_braco.attach(pinServo_braco);
-  
-  pinMode(pinSwitch1, INPUT_PULLUP);
-  
+
+  pinMode(pinTrig, OUTPUT);
+  pinMode(pinEcho, INPUT);
+
   servo_base.write(posOff_base);
-  servo_braco.write(posOff_braco); 
+  servo_braco.write(posOff_braco);
 }
 
-void loop() {
-  e1 = digitalRead(pinSwitch1); 
-  //Verifica se e está ativo
-  if(e1==LOW){
+//---------------------------------
+// LOOP PRINCIPAL
+//---------------------------------
+void loop(){
+  distancia = medir_distancia();
+
+  // Pessoa detectada a até 15 cm
+  if(distancia &gt; 0 &amp;&amp; distancia &lt;= 15 &amp;&amp; pessoaDetectada == false){
+    pessoaDetectada = true;
+
+    // Posiciona a base e dá tchau
     servo_base.write(posB_e1);
     ativar_braco();
-  }else{
+  }
+
+  // Faixa intermediária: mantém o estado atual
+  else if(distancia &gt; 15 &amp;&amp; distancia &lt; 25){
+    // Não faz absolutamente nada.
+  }
+
+  // Pessoa afastada: rearma o sistema
+  else if(distancia &gt;= 25 &amp;&amp; pessoaDetectada == true){
+    pessoaDetectada = false;
+
     servo_base.write(posOff_base);
     servo_braco.write(posOff_braco);
-  } 
+  }
 }</code></pre>
         </div>
-    <!-- Seção de Navegação Rápida (Adicionada ao final do main) -->
-<section class="glass-card p-6 rounded-2xl border border-slate-800 mt-12 space-y-4">
-    <div class="text-center sm:text-left">
-        <h3 class="text-base font-bold text-white flex items-center justify-center sm:justify-start gap-2">
-            <i class="fa-solid fa-compass text-indigo-400"></i> Navegação Rápida
-        </h3>
-        <p class="text-slate-400 text-xs mt-1">Acesse qualquer outra seção do projeto diretamente por aqui:</p>
-    </div>
-    
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2.5 pt-2">
-        <a href="index.html" class="px-3 py-2.5 rounded-xl bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-200 text-xs font-semibold border border-indigo-500/30 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
-            <i class="fa-solid fa-house"></i> Início
-        </a>
-        <a href="sobre.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
-            <i class="fa-solid fa-circle-info text-indigo-400"></i> Simulador
-        </a>
-        <a href="gestao.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
-            <i class="fa-solid fa-chart-gantt text-cyan-400"></i> Gestão
-        </a>
-        <a href="circuito.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
-            <i class="fa-solid fa-microchip text-emerald-400"></i> Circuito
-        </a>
-        <a href="fluxograma.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
-            <i class="fa-solid fa-diagram-project text-amber-400"></i> Fluxograma
-        </a>
-        <a href="codigo.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
-            <i class="fa-solid fa-code text-purple-400"></i> Código
-        </a>
-        <a href="equipe.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center col-span-2 sm:col-span-1">
-            <i class="fa-solid fa-users text-rose-400"></i> Equipe
-        </a>
-    </div>
-</section>
+
+        <section class="glass-card rounded-2xl border border-slate-800 p-6 space-y-3">
+            <h2 class="text-lg font-bold text-cyan-300"><i class="fa-solid fa-circle-info mr-2"></i>Resumo do código</h2>
+            <ul class="list-disc list-inside text-sm text-slate-300 space-y-2">
+                <li>Sensor HC-SR04: TRIG no D7 e ECHO no D8.</li>
+                <li>Servo da base no D2; servo do braço no D3.</li>
+                <li>Distância de 1 a 15 cm inicia o gesto uma vez.</li>
+                <li>O braço levanta, faz dois acenos e abaixa; a base fica em 90°.</li>
+                <li>Distância de 25 cm ou mais rearma o sistema e retorna os servos a 0°.</li>
+                <li>Uma leitura sem eco (0) não inicia nem rearma o sistema.</li>
+            </ul>
+            <p class="text-xs text-slate-400">A rotina usa `delay()`, então o sensor não é lido novamente enquanto os servos executam o movimento. Confirme a alimentação e os limites mecânicos dos servos no protótipo.</p>
+        </section>
+
+        <section class="glass-card p-6 rounded-2xl border border-slate-800 space-y-4">
+            <div class="text-center sm:text-left"><h2 class="text-base font-bold text-white flex items-center gap-2"><i class="fa-solid fa-compass text-indigo-400"></i> Navegação rápida</h2><p class="text-slate-400 text-xs mt-1">Acesse qualquer outra seção do projeto:</p></div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
+                <a href="index.html" class="px-3 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800">Início</a>
+                <a href="sobre.html" class="px-3 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800">Simulador</a>
+                <a href="gestao.html" class="px-3 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800">Gestão & Planejamento</a>
+                <a href="circuito.html" class="px-3 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800">Circuito</a>
+                <a href="fluxograma.html" class="px-3 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800">Fluxograma</a>
+                <a href="equipe.html" class="px-3 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800">Equipe</a>
+            </div>
+        </section>
     </main>
 
-    <footer class="border-t border-slate-800 bg-slate-950 py-6 text-xs text-slate-500 text-center">
-        <p>© 2026 Projeto MarS - Caixinha Teimosa | Engenharia</p>
-    </footer>
-
+    <footer class="border-t border-slate-800 bg-slate-950 py-6 text-xs text-slate-500 text-center"><p>© 2026 Projeto MarS - Caixinha do Tchauzinho | Código Arduino</p></footer>
     <script>
-        function copyCode() {
+        async function copyCode() {
             const codeText = document.getElementById('code-block').innerText;
-            navigator.clipboard.writeText(codeText);
-            document.getElementById('copy-text').innerText = 'Copiado!';
-            setTimeout(() => { document.getElementById('copy-text').innerText = 'Copiar Código'; }, 2000);
+            const label = document.getElementById('copy-text');
+            try {
+                await navigator.clipboard.writeText(codeText);
+                label.innerText = 'Copiado!';
+            } catch (error) {
+                label.innerText = 'Não foi possível copiar';
+            }
+            setTimeout(() => { label.innerText = 'Copiar código'; }, 2000);
         }
     </script>
 </body>
