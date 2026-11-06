@@ -3,32 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MarS - Caixinha Teimosa | Simulador</title>
+    <meta name="description" content="Simulador interativo do tchauzinho da Caixinha MarS.">
+    <title>MarS - Caixinha do Tchauzinho | Simulador</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        html { scroll-behavior: smooth; }
+        .glass-card { background: rgba(30, 41, 59, .72); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.08); }
+        #robot-simulation { width: 100%; height: auto; display: block; }
+        @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col justify-between">
-
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col">
     <nav class="sticky top-0 z-50 glass-card border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <a href="index.html" class="flex items-center space-x-3">
                     <div class="w-10 h-10 rounded-xl bg-indigo-600/30 flex items-center justify-center border border-indigo-500/30 overflow-hidden">
-                        <img src="logo.jpg" alt="Logo MarS" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\'font-extrabold text-indigo-400 font-mono\'>M</span>';">
+                        <img src="logo.jpg" alt="Logo MarS" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerHTML='<span class=\'font-extrabold text-indigo-400\'>M</span>'">
                     </div>
                     <span class="font-extrabold text-xl tracking-tight bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
                         MarS <span class="text-xs font-normal text-slate-400">| Caixinha Teimosa</span>
                     </span>
                 </a>
                 <div class="hidden md:flex space-x-6 text-sm font-medium text-slate-300">
-                    <a href="index.html" class="hover:text-indigo-400 transition">Início & Sobre</a>
-                    <a href="sobre.html" class="text-indigo-400 font-semibold border-b-2 border-indigo-500 pb-1">Simulador</a>
-                    <a href="gestao.html" class="hover:text-indigo-400 transition">Gestão & Planejamento</a>
-                    <a href="circuito.html" class="hover:text-indigo-400 transition">Esquema & Materiais</a>
+                    <a href="index.html" class="hover:text-indigo-400 transition">Início &amp; Sobre</a>
+                    <a href="sobre.html" aria-current="page" class="text-indigo-400 font-semibold border-b-2 border-indigo-500 pb-1">Simulador</a>
+                    <a href="gestao.html" class="hover:text-indigo-400 transition">Gestão &amp; Planejamento</a>
+                    <a href="circuito.html" class="hover:text-indigo-400 transition">Esquema &amp; Materiais</a>
                     <a href="fluxograma.html" class="hover:text-indigo-400 transition">Fluxograma</a>
                     <a href="codigo.html" class="hover:text-indigo-400 transition">Código Arduino</a>
                     <a href="equipe.html" class="hover:text-indigo-400 transition">Equipe</a>
@@ -37,251 +40,169 @@
         </div>
     </nav>
 
-    <!-- 2. Simulador Interativo (Posicionado onde o Sobre ficava) -->
-        <section class="space-y-6">
-            <div class="text-center max-w-2xl mx-auto">
-                <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-3">Simulador Interativo</h2>
-                <p class="text-slate-400 text-sm sm:text-base">
-                    Interaja com a mecânica em tempo real acionando as alavancas do painel abaixo.
-                </p>
+    <main class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow space-y-12">
+        <section id="simulador" class="space-y-6">
+            <div class="text-center max-w-3xl mx-auto">
+                <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Simulador do tchauzinho</h1>
+                <p class="text-slate-400 mt-3">Simule a aproximação de uma pessoa e veja a caixinha executar o gesto de despedida com os servos.</p>
             </div>
 
-            <div class="grid lg:grid-cols-3 gap-8 items-start">
-                <div class="glass-card p-6 rounded-2xl border border-slate-800">
-                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                        <i class="fa-solid fa-toggle-on text-indigo-400"></i> Painel de Chaves
-                    </h3>
-                    <p class="text-xs text-slate-400 mb-6">
-                        Acione as alavancas para interagir com o robô (Entradas digitais com <code>INPUT_PULLUP</code>).
-                    </p>
-
-                    <div class="space-y-4">
-                        <div class="flex items-center justify-between p-4 bg-slate-900/80 rounded-xl border border-slate-800">
-                            <div>
-                                <div class="font-semibold text-sm text-slate-200">Chave S1 (Pino D6)</div>
-                                <div class="text-xs text-slate-400">Ângulo da Base: 45°</div>
-                            </div>
-                            <button id="toggle-s1" onclick="toggleSwitch(1)" class="w-14 h-8 rounded-full bg-slate-700 transition-colors p-1 flex items-center relative focus:outline-none">
-                                <div id="dot-s1" class="w-6 h-6 rounded-full bg-slate-300 transition-transform transform translate-x-0"></div>
-                            </button>
-                        </div>
-
-                        <div class="flex items-center justify-between p-4 bg-slate-900/80 rounded-xl border border-slate-800">
-                            <div>
-                                <div class="font-semibold text-sm text-slate-200">Chave S2 (Pino D5)</div>
-                                <div class="text-xs text-slate-400">Ângulo da Base: 90° (Centro)</div>
-                            </div>
-                            <button id="toggle-s2" onclick="toggleSwitch(2)" class="w-14 h-8 rounded-full bg-slate-700 transition-colors p-1 flex items-center relative focus:outline-none">
-                                <div id="dot-s2" class="w-6 h-6 rounded-full bg-slate-300 transition-transform transform translate-x-0"></div>
-                            </button>
-                        </div>
-
-                        <div class="flex items-center justify-between p-4 bg-slate-900/80 rounded-xl border border-slate-800">
-                            <div>
-                                <div class="font-semibold text-sm text-slate-200">Chave S3 (Pino D4)</div>
-                                <div class="text-xs text-slate-400">Ângulo da Base: 135°</div>
-                            </div>
-                            <button id="toggle-s3" onclick="toggleSwitch(3)" class="w-14 h-8 rounded-full bg-slate-700 transition-colors p-1 flex items-center relative focus:outline-none">
-                                <div id="dot-s3" class="w-6 h-6 rounded-full bg-slate-300 transition-transform transform translate-x-0"></div>
-                            </button>
-                        </div>
+            <div class="grid lg:grid-cols-5 gap-6 items-stretch">
+                <div class="lg:col-span-2 glass-card rounded-2xl p-6 space-y-5">
+                    <h2 class="font-bold text-white"><i class="fa-solid fa-radar text-cyan-400 mr-2"></i>Simular o sensor</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <button id="near-button" type="button" class="rounded-xl bg-indigo-600 hover:bg-indigo-500 px-4 py-4 text-sm font-bold text-white transition disabled:opacity-50 disabled:cursor-not-allowed"><i class="fa-solid fa-person-circle-exclamation mr-2"></i>Pessoa perto</button>
+                        <button id="far-button" type="button" class="rounded-xl border border-slate-600 bg-slate-800 hover:bg-slate-700 px-4 py-4 text-sm font-bold text-slate-100 transition disabled:opacity-50 disabled:cursor-not-allowed"><i class="fa-solid fa-person-walking-arrow-right mr-2"></i>Pessoa longe</button>
                     </div>
-
-                    <div class="mt-6 p-4 rounded-xl bg-indigo-950/40 border border-indigo-900/50">
-                        <div class="text-xs font-semibold text-indigo-300 mb-1">Status do Arduino:</div>
-                        <div id="sim-status" class="font-mono text-xs text-indigo-200">Sistema em repouso. Aguardando alavanca...</div>
+                    <div class="rounded-xl bg-slate-950/80 border border-slate-800 p-4">
+                        <div class="text-[11px] uppercase tracking-wider text-slate-500">Estado do sistema</div>
+                        <p id="sim-status" aria-live="polite" class="mt-2 text-sm text-indigo-200">Simulação pronta. Clique em “Pessoa perto” para ver o tchauzinho.</p>
                     </div>
+                    <div class="grid grid-cols-2 gap-3 text-center text-xs">
+                        <div class="rounded-lg bg-slate-950/70 p-3"><span class="text-slate-500">Servo base</span><div id="base-angle" class="font-mono text-lg text-indigo-300 mt-1">0°</div></div>
+                        <div class="rounded-lg bg-slate-950/70 p-3"><span class="text-slate-500">Servo braço</span><div id="arm-angle" class="font-mono text-lg text-cyan-300 mt-1">0°</div></div>
+                    </div>
+                    <button id="reset-sim" type="button" class="rounded-xl border border-slate-700 bg-slate-800 px-4 py-2 text-xs font-semibold text-slate-200 hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed">Reiniciar</button>
+                    <p class="text-[11px] leading-relaxed text-slate-500">Depois do tchau, clique em “Pessoa longe” para retornar a base e rearmar o sistema.</p>
                 </div>
 
-                <div class="lg:col-span-2 glass-card p-6 rounded-2xl border border-slate-800 flex flex-col items-center justify-center min-h-[400px]">
-                    <div class="w-full flex justify-between items-center mb-4">
-                        <span class="text-sm font-semibold text-slate-300 flex items-center gap-2">
-                            <i class="fa-solid fa-cube text-cyan-400"></i> Visualização do Mecanismo em Tempo Real
-                        </span>
-                        <span id="angle-display" class="font-mono text-xs text-slate-400 bg-slate-800 px-3 py-1 rounded-full">
-                            Base: 90° | Braço: 0°
-                        </span>
-                    </div>
-
-                    <div class="relative w-full max-w-lg aspect-square sm:aspect-[4/3] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center p-2">
-                        <canvas id="simCanvas" class="w-full h-full block"></canvas>
-                    </div>
+                <div class="lg:col-span-3 glass-card rounded-2xl p-5 sm:p-7 flex flex-col items-center justify-center">
+                    <div class="w-full flex justify-between gap-3 text-xs text-slate-400"><span><i class="fa-solid fa-satellite-dish text-cyan-400 mr-2"></i>Sensor de distância · HC-SR04</span><span>Arduino Uno · 2 servos</span></div>
+                    <div class="w-full max-w-2xl mt-4 rounded-xl overflow-hidden border border-slate-800 bg-slate-950"><canvas id="robot-simulation" width="720" height="380" role="img" aria-label="Caixinha com sensor e braço robótico fazendo tchau"></canvas></div>
+                    <p class="mt-3 text-xs text-slate-500 text-center">A posição do braço é ilustrativa; a animação mostra a sequência dos dois servos.</p>
                 </div>
             </div>
         </section>
-         <script>
-        const switches = { 1: false, 2: false, 3: false };
-        let currentBaseAngle = 90, targetBaseAngle = 90, currentArmAngle = 0;
-        let isBusy = false, activeSwitchNum = null;
 
-        const canvas = document.getElementById('simCanvas');
-        const ctx = canvas.getContext('2d');
-
-        function resizeCanvas() {
-            canvas.width = canvas.parentElement.clientWidth;
-            canvas.height = canvas.parentElement.clientHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        function toggleSwitch(num) {
-            if (isBusy) return;
-            switches[num] = !switches[num];
-            const dot = document.getElementById(`dot-s${num}`);
-            const btn = document.getElementById(`toggle-s${num}`);
-            if (switches[num]) {
-                btn.classList.replace('bg-slate-700', 'bg-indigo-600');
-                dot.classList.add('translate-x-6');
-            } else {
-                btn.classList.replace('bg-indigo-600', 'bg-slate-700');
-                dot.classList.remove('translate-x-6');
-            }
-            processLogic();
-        }
-
-        async function processLogic() {
-            if (isBusy) return;
-            if (switches[2]) { activeSwitchNum = 2; targetBaseAngle = 90; }
-            else if (switches[1]) { activeSwitchNum = 1; targetBaseAngle = 45; }
-            else if (switches[3]) { activeSwitchNum = 3; targetBaseAngle = 135; }
-            else {
-                activeSwitchNum = null; targetBaseAngle = 90;
-                document.getElementById('sim-status').innerText = 'Sistema em repouso. Aguardando alavanca...';
-                return;
-            }
-
-            isBusy = true;
-            document.getElementById('sim-status').innerText = `Girando base para Chave S${activeSwitchNum} (${targetBaseAngle}°)...`;
-            await animateBaseTo(targetBaseAngle);
-
-            document.getElementById('sim-status').innerText = `Estendendo braço em ${targetBaseAngle}°...`;
-            await animateArmTo(180);
-
-            if (activeSwitchNum !== null) {
-                switches[activeSwitchNum] = false;
-                const dot = document.getElementById(`dot-s${activeSwitchNum}`);
-                const btn = document.getElementById(`toggle-s${activeSwitchNum}`);
-                btn.classList.replace('bg-indigo-600', 'bg-slate-700');
-                dot.classList.remove('translate-x-6');
-            }
-
-            document.getElementById('sim-status').innerText = `Recolhendo braço...`;
-            await animateArmTo(0);
-
-            isBusy = false;
-            activeSwitchNum = null;
-            document.getElementById('sim-status').innerText = 'Chave desligada! Pronto.';
-            processLogic();
-        }
-
-        function animateBaseTo(target) {
-            return new Promise((resolve) => {
-                const interval = setInterval(() => {
-                    if (currentBaseAngle < target) currentBaseAngle++;
-                    else if (currentBaseAngle > target) currentBaseAngle--;
-                    else { clearInterval(interval); resolve(); }
-                    updateAngleDisplay();
-                }, 6);
-            });
-        }
-
-        function animateArmTo(target) {
-            return new Promise((resolve) => {
-                const interval = setInterval(() => {
-                    if (currentArmAngle < target) currentArmAngle += 3;
-                    else if (currentArmAngle > target) currentArmAngle -= 3;
-                    else { clearInterval(interval); resolve(); }
-                    updateAngleDisplay();
-                }, 8);
-            });
-        }
-
-        function updateAngleDisplay() {
-            document.getElementById('angle-display').innerText = `Base: ${Math.round(currentBaseAngle)}° | Braço: ${Math.round(currentArmAngle)}°`;
-        }
-
-        function drawSimulation() {
-            const w = canvas.width, h = canvas.height;
-            const centerX = w / 2, centerY = h / 2 + 50;
-
-            ctx.clearRect(0, 0, w, h);
-            ctx.fillStyle = '#0f172a'; ctx.strokeStyle = '#334155'; ctx.lineWidth = 3;
-            ctx.beginPath(); ctx.roundRect(centerX - 160, centerY - 150, 320, 220, 16); ctx.fill(); ctx.stroke();
-
-            const switchPos = [
-                { id: 1, x: centerX - 90, y: centerY - 120 },
-                { id: 2, x: centerX, y: centerY - 130 },
-                { id: 3, x: centerX + 90, y: centerY - 120 }
-            ];
-
-            switchPos.forEach(sw => {
-                const isActive = switches[sw.id];
-                ctx.fillStyle = '#334155'; ctx.beginPath(); ctx.arc(sw.x, sw.y, 9, 0, Math.PI * 2); ctx.fill();
-                ctx.strokeStyle = isActive ? '#6366f1' : '#94a3b8'; ctx.lineWidth = 4;
-                ctx.beginPath(); ctx.moveTo(sw.x, sw.y);
-                ctx.lineTo(sw.x + (isActive ? 0 : 6), sw.y - (isActive ? 18 : 10));
-                ctx.stroke();
-                ctx.fillStyle = isActive ? '#818cf8' : '#64748b'; ctx.font = '11px Inter, sans-serif'; ctx.textAlign = 'center';
-                ctx.fillText(`S${sw.id}`, sw.x, sw.y + 22);
-            });
-
-            ctx.save();
-            ctx.translate(centerX, centerY);
-            ctx.fillStyle = '#1e293b'; ctx.strokeStyle = '#475569'; ctx.lineWidth = 2;
-            ctx.beginPath(); ctx.arc(0, 0, 32, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-
-            const radBase = (currentBaseAngle - 180) * (Math.PI / 180) - (Math.PI / 2);
-            ctx.rotate(radBase);
-
-            ctx.fillStyle = '#4f46e5'; ctx.beginPath(); ctx.roundRect(-10, -10, 20, 45, 4); ctx.fill();
-
-            const armReach = (currentArmAngle / 180) * 85;
-            ctx.fillStyle = '#22d3ee'; ctx.beginPath(); ctx.roundRect(-6, 0, 12, 35 + armReach, 4); ctx.fill();
-            ctx.fillStyle = '#f59e0b'; ctx.beginPath(); ctx.arc(0, 35 + armReach, 7, 0, Math.PI * 2); ctx.fill();
-
-            ctx.restore();
-            requestAnimationFrame(drawSimulation);
-        }
-
-        window.onload = function() { drawSimulation(); };
-    </script>
-    <!-- Seção de Navegação Rápida (Adicionada ao final do main) -->
-<section class="glass-card p-6 rounded-2xl border border-slate-800 mt-12 space-y-4">
-    <div class="text-center sm:text-left">
-        <h3 class="text-base font-bold text-white flex items-center justify-center sm:justify-start gap-2">
-            <i class="fa-solid fa-compass text-indigo-400"></i> Navegação Rápida
-        </h3>
-        <p class="text-slate-400 text-xs mt-1">Acesse qualquer outra seção do projeto diretamente por aqui:</p>
-    </div>
-    
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2.5 pt-2">
-        <a href="index.html" class="px-3 py-2.5 rounded-xl bg-indigo-600/30 hover:bg-indigo-600/50 text-indigo-200 text-xs font-semibold border border-indigo-500/30 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
-            <i class="fa-solid fa-house"></i> Início
-        </a>
-        <a href="sobre.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
-            <i class="fa-solid fa-circle-info text-indigo-400"></i> Simulador
-        </a>
-        <a href="gestao.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
-            <i class="fa-solid fa-chart-gantt text-cyan-400"></i> Gestão
-        </a>
-        <a href="circuito.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
-            <i class="fa-solid fa-microchip text-emerald-400"></i> Circuito
-        </a>
-        <a href="fluxograma.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
-            <i class="fa-solid fa-diagram-project text-amber-400"></i> Fluxograma
-        </a>
-        <a href="codigo.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
-            <i class="fa-solid fa-code text-purple-400"></i> Código
-        </a>
-        <a href="equipe.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition flex flex-col sm:flex-row items-center justify-center gap-2 text-center col-span-2 sm:col-span-1">
-            <i class="fa-solid fa-users text-rose-400"></i> Equipe
-        </a>
-    </div>
-</section>
+        <section class="glass-card p-6 rounded-2xl space-y-4">
+            <h2 class="text-base font-bold text-white flex items-center gap-2"><i class="fa-solid fa-compass text-indigo-400"></i>Navegação rápida</h2>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2.5">
+                <a href="index.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition text-center"><i class="fa-solid fa-house mr-1"></i>Início</a>
+                <a href="sobre.html" class="px-3 py-2.5 rounded-xl bg-indigo-600/30 text-indigo-200 text-xs font-semibold border border-indigo-500/30 transition text-center"><i class="fa-solid fa-play mr-1"></i>Simulador</a>
+                <a href="gestao.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition text-center"><i class="fa-solid fa-chart-gantt mr-1"></i>Gestão</a>
+                <a href="circuito.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition text-center"><i class="fa-solid fa-microchip mr-1"></i>Circuito</a>
+                <a href="fluxograma.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition text-center"><i class="fa-solid fa-diagram-project mr-1"></i>Fluxograma</a>
+                <a href="codigo.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition text-center"><i class="fa-solid fa-code mr-1"></i>Código</a>
+                <a href="equipe.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition text-center"><i class="fa-solid fa-users mr-1"></i>Equipe</a>
+            </div>
+        </section>
     </main>
 
-    <footer class="border-t border-slate-800 bg-slate-950 py-6 text-xs text-slate-500 text-center">
-        <p>© 2026 Projeto MarS - Caixinha Teimosa | Engenharia</p>
-    </footer>
+    <footer class="border-t border-slate-800 bg-slate-950 py-6 text-xs text-slate-500 text-center">© 2026 Projeto MarS - Caixinha do Tchauzinho</footer>
+
+    <script>
+        const canvas = document.getElementById('robot-simulation');
+        const ctx = canvas.getContext('2d');
+        const nearButton = document.getElementById('near-button');
+        const farButton = document.getElementById('far-button');
+        const resetButton = document.getElementById('reset-sim');
+        const statusText = document.getElementById('sim-status');
+        const baseAngleText = document.getElementById('base-angle');
+        const armAngleText = document.getElementById('arm-angle');
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let detected = false;
+        let busy = false;
+        let baseAngle = 0;
+        let armAngle = 0;
+
+        function setStatus(message) { statusText.textContent = message; }
+        function drawScene() {
+            const w = canvas.width, h = canvas.height;
+            ctx.clearRect(0, 0, w, h);
+            ctx.fillStyle = '#020617'; ctx.fillRect(0, 0, w, h);
+            ctx.fillStyle = '#67e8f9'; ctx.font = '26px sans-serif'; ctx.textAlign = 'center';
+            ctx.beginPath(); ctx.arc(72, 196, 19, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#164e63'; ctx.beginPath(); ctx.arc(72, 196, 9, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#94a3b8'; ctx.font = '13px sans-serif'; ctx.fillText('SENSOR', 72, 232);
+            ctx.fillStyle = '#64748b'; ctx.font = '11px sans-serif'; ctx.fillText('HC-SR04', 72, 249);
+            ctx.strokeStyle = detected ? 'rgba(34,211,238,.55)' : 'rgba(71,85,105,.45)'; ctx.lineWidth = 2;
+            [32, 52].forEach(r => { ctx.beginPath(); ctx.arc(84, 196, r, -Math.PI / 3, Math.PI / 3); ctx.stroke(); });
+
+            const bx = 420, by = 210, bw = 210, bh = 115;
+            ctx.strokeStyle = '#334155'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(35, 326); ctx.lineTo(680, 326); ctx.stroke();
+            ctx.fillStyle = '#1e293b'; ctx.strokeStyle = '#64748b'; ctx.lineWidth = 4;
+            ctx.beginPath(); ctx.roundRect(bx, by, bw, bh, 14); ctx.fill(); ctx.stroke();
+            ctx.fillStyle = '#334155'; ctx.beginPath(); ctx.roundRect(bx + 38, by + 20, bw - 76, 11, 5); ctx.fill();
+            ctx.fillStyle = '#cbd5e1'; ctx.font = 'bold 14px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('CAIXINHA', bx + bw / 2, by + 78);
+
+            const pivotX = bx + 8, pivotY = by + 67;
+            ctx.fillStyle = '#818cf8'; ctx.beginPath(); ctx.arc(pivotX, pivotY, 12, 0, Math.PI * 2); ctx.fill();
+            const waveRadians = (-55 + (armAngle / 90) * 110) * Math.PI / 180;
+            const armLength = 100;
+            const tipX = pivotX - Math.cos(waveRadians) * armLength;
+            const tipY = pivotY + Math.sin(waveRadians) * armLength;
+            ctx.strokeStyle = '#22d3ee'; ctx.lineWidth = 14; ctx.lineCap = 'round';
+            ctx.beginPath(); ctx.moveTo(pivotX, pivotY); ctx.lineTo(tipX, tipY); ctx.stroke();
+            ctx.fillStyle = '#fbbf24'; ctx.beginPath(); ctx.arc(tipX, tipY, 13, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#67e8f9'; ctx.font = '11px monospace'; ctx.fillText(`BRAÇO ${Math.round(armAngle)}°`, pivotX - 42, by + bh + 24);
+            ctx.fillStyle = '#a5b4fc'; ctx.fillText(`BASE ${Math.round(baseAngle)}°`, bx + bw / 2, by - 15);
+
+            ctx.fillStyle = detected ? '#fbbf24' : '#64748b'; ctx.font = detected ? 'bold 13px sans-serif' : '13px sans-serif';
+            ctx.fillText(detected ? 'PESSOA PERTO' : 'AGUARDANDO', 225, 85);
+            if (busy && detected) { ctx.fillStyle = '#fef3c7'; ctx.font = 'bold 18px sans-serif'; ctx.fillText('👋 TCHAU!', 285, 55); }
+        }
+        function drawLoop() { drawScene(); requestAnimationFrame(drawLoop); }
+        function updateAngles(base, arm) {
+            baseAngle = base; armAngle = arm;
+            baseAngleText.textContent = `${Math.round(base)}°`;
+            armAngleText.textContent = `${Math.round(arm)}°`;
+        }
+        function animateValue(from, to, duration, update) {
+            return new Promise(resolve => {
+                if (reducedMotion) { update(to); resolve(); return; }
+                const started = performance.now();
+                function step(now) {
+                    const progress = Math.min(1, (now - started) / duration);
+                    const eased = progress * progress * (3 - 2 * progress);
+                    update(from + (to - from) * eased);
+                    if (progress < 1) requestAnimationFrame(step); else resolve();
+                }
+                requestAnimationFrame(step);
+            });
+        }
+        async function moveServo(which, target, duration) {
+            const start = which === 'base' ? baseAngle : armAngle;
+            await animateValue(start, target, duration, value => updateAngles(which === 'base' ? value : baseAngle, which === 'arm' ? value : armAngle));
+        }
+        function setButtonsDisabled(disabled) {
+            nearButton.disabled = disabled; farButton.disabled = disabled; resetButton.disabled = disabled;
+        }
+        async function simulateNear() {
+            if (busy) return;
+            if (detected) { setStatus('A detecção já foi registrada. Clique em “Pessoa longe” para rearmar.'); return; }
+            detected = true; busy = true; setButtonsDisabled(true);
+            setStatus('Pessoa detectada! A base se posiciona e o bracinho começa a levantar…');
+            await moveServo('base', 90, 450);
+            await moveServo('arm', 90, 500);
+            for (let wave = 1; wave <= 2; wave++) {
+                setStatus(`Tchauzinho ${wave} de 2: o bracinho está balançando ao lado do sensor!`);
+                await moveServo('arm', 0, 450);
+                await moveServo('arm', 90, 450);
+            }
+            setStatus('O bracinho está voltando à posição inicial…');
+            await moveServo('arm', 0, 450);
+            busy = false; setButtonsDisabled(false);
+            setStatus('Tchau concluído! A base fica em 90°. Clique em “Pessoa longe” para retornar e rearmar.');
+        }
+        async function simulateFar() {
+            if (busy) return;
+            if (!detected) { setStatus('Pessoa longe: nenhuma ação. A caixinha permanece parada e não dá tchau.'); return; }
+            busy = true; setButtonsDisabled(true);
+            setStatus('Pessoa afastada. A base está retornando ao repouso…');
+            await moveServo('arm', 0, 250);
+            await moveServo('base', 0, 450);
+            detected = false; busy = false; setButtonsDisabled(false);
+            setStatus('Sistema rearmado. Aguardando aproximação. Base 0° · braço 0°.');
+        }
+        function resetSimulation() {
+            if (busy) return;
+            detected = false; updateAngles(0, 0); setButtonsDisabled(false);
+            setStatus('Simulação reiniciada. Clique em “Pessoa perto” para ver o tchauzinho.');
+        }
+        nearButton.addEventListener('click', simulateNear);
+        farButton.addEventListener('click', simulateFar);
+        resetButton.addEventListener('click', resetSimulation);
+        drawLoop();
+    </script>
 </body>
 </html>
