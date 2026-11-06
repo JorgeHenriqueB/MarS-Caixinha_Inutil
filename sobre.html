@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Simulador interativo do tchauzinho da Caixinha MarS.">
-    <title>MarS - Caixinha do Tchauzinho | Simulador</title>
+    <title>MarS - Caixinha Teimosa | Simulador</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         html { scroll-behavior: smooth; }
-        .glass-card { background: rgba(30, 41, 59, .72); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.08); }
-        #robot-simulation { width: 100%; height: auto; display: block; }
-        @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+        .glass-card { background: rgba(30, 41, 59, .7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, .08); }
+        .servo-arm { transform-origin: 50% 100%; transition: transform 120ms linear; }
+        .pulse-ring { animation: pulse 1.5s ease-out infinite; }
+        @keyframes pulse { 0% { transform: scale(.85); opacity: .8; } 100% { transform: scale(1.35); opacity: 0; } }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+        }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col">
@@ -43,42 +46,75 @@
     <main class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow space-y-12">
         <section id="simulador" class="space-y-6">
             <div class="text-center max-w-3xl mx-auto">
-                <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Simulador do tchauzinho</h1>
-                <p class="text-slate-400 mt-3">Simule a aproximação de uma pessoa e veja a caixinha executar o gesto de despedida com os servos.</p>
+                <h1 class="text-3xl sm:text-4xl font-extrabold text-white">Simulação interativa</h1>
+                <p class="text-slate-400 mt-3">Mova o controle de distância para simular o sensor ultrassônico e acompanhar a resposta da Caixinha do Tchauzinho.</p>
             </div>
 
             <div class="grid lg:grid-cols-5 gap-6 items-stretch">
                 <div class="lg:col-span-2 glass-card rounded-2xl p-6 space-y-5">
-                    <h2 class="font-bold text-white"><i class="fa-solid fa-radar text-cyan-400 mr-2"></i>Simular o sensor</h2>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        <button id="near-button" type="button" class="rounded-xl bg-indigo-600 hover:bg-indigo-500 px-4 py-4 text-sm font-bold text-white transition disabled:opacity-50 disabled:cursor-not-allowed"><i class="fa-solid fa-person-circle-exclamation mr-2"></i>Pessoa perto</button>
-                        <button id="far-button" type="button" class="rounded-xl border border-slate-600 bg-slate-800 hover:bg-slate-700 px-4 py-4 text-sm font-bold text-slate-100 transition disabled:opacity-50 disabled:cursor-not-allowed"><i class="fa-solid fa-person-walking-arrow-right mr-2"></i>Pessoa longe</button>
+                    <div>
+                        <label for="distance" class="font-semibold text-sm">Distância simulada: <span id="distance-value" class="font-mono text-cyan-300">40 cm</span></label>
+                        <input id="distance" type="range" min="0" max="60" value="40" class="mt-4 w-full accent-cyan-400" aria-label="Distância simulada do sensor em centímetros">
+                        <div class="flex justify-between text-[11px] text-slate-500"><span>0 cm · sem eco</span><span>15 cm · ativa</span><span>25 cm · rearma</span><span>60 cm</span></div>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 text-center text-xs">
+                        <div class="rounded-xl bg-indigo-950/50 border border-indigo-900/60 p-3"><div class="text-slate-400">Ativa</div><div class="mt-1 font-semibold text-indigo-300">1–15 cm</div></div>
+                        <div class="rounded-xl bg-slate-900/70 border border-slate-800 p-3"><div class="text-slate-400">Mantém</div><div class="mt-1 font-semibold text-slate-300">16–24 cm</div></div>
+                        <div class="rounded-xl bg-cyan-950/40 border border-cyan-900/60 p-3"><div class="text-slate-400">Rear­ma</div><div class="mt-1 font-semibold text-cyan-300">≥ 25 cm</div></div>
                     </div>
                     <div class="rounded-xl bg-slate-950/80 border border-slate-800 p-4">
                         <div class="text-[11px] uppercase tracking-wider text-slate-500">Estado do sistema</div>
-                        <p id="sim-status" aria-live="polite" class="mt-2 text-sm text-indigo-200">Simulação pronta. Clique em “Pessoa perto” para ver o tchauzinho.</p>
+                        <p id="sim-status" aria-live="polite" class="mt-2 text-sm text-indigo-200">Aguardando aproximação. Base 0° · braço 0°.</p>
                     </div>
-                    <div class="grid grid-cols-2 gap-3 text-center text-xs">
+                    <button id="reset-sim" type="button" class="rounded-xl border border-slate-700 bg-slate-800 px-4 py-2 text-xs font-semibold text-slate-200 hover:bg-slate-700">Reiniciar simulação</button>
+                    <p class="text-[11px] leading-relaxed text-slate-500">Entre 1 e 15 cm, a caixinha dá um tchau. A partir de 25 cm, ela retorna à posição inicial e fica pronta para detectar novamente. Uma leitura de 0 cm representa ausência de eco.</p>
+                </div>
+
+                <div class="lg:col-span-3 glass-card rounded-2xl p-5 sm:p-7 flex flex-col items-center justify-center min-h-[360px]">
+                    <div class="w-full flex justify-between text-xs text-slate-400"><span><i class="fa-solid fa-satellite-dish text-cyan-400 mr-2"></i>HC-SR04</span><span>Arduino Uno · D7 / D8</span></div>
+                    <div class="relative w-full max-w-lg h-64 mt-4 rounded-2xl bg-slate-950/80 border border-slate-800 overflow-hidden">
+                        <div class="absolute left-7 top-1/2 -translate-y-1/2 flex flex-col items-center z-10">
+                            <div class="relative flex items-center justify-center w-12 h-12 rounded-full bg-cyan-950 border border-cyan-700">
+                                <span id="sensor-pulse" class="absolute inset-0 rounded-full bg-cyan-400/30 pulse-ring"></span>
+                                <i class="fa-solid fa-satellite-dish relative text-cyan-300"></i>
+                            </div>
+                            <span class="mt-2 text-[10px] text-slate-400">SENSOR</span>
+                        </div>
+                        <div id="person" class="absolute left-[58%] bottom-7 flex flex-col items-center transition-all duration-300 opacity-70" style="left: 58%">
+                            <i class="fa-solid fa-person text-4xl text-amber-300"></i>
+                            <span class="text-[10px] text-slate-400">PESSOA</span>
+                        </div>
+                        <div class="absolute right-8 bottom-7 flex flex-col items-center">
+                            <div class="relative w-36 h-32 rounded-t-2xl border-2 border-slate-600 bg-slate-800/90 flex items-center justify-center">
+                                <div class="absolute top-3 left-1/2 -translate-x-1/2 w-16 h-2 rounded-full bg-slate-700"></div>
+                                <span class="text-[10px] font-bold tracking-wider text-slate-400 mt-5">MARs</span>
+                                <div id="base-arm" class="absolute left-1/2 bottom-0 w-1 h-10 bg-indigo-400 rounded-full servo-arm" style="transform: translateX(-50%) rotate(-24.75deg)">
+                                    <div id="wave-arm" class="absolute left-1/2 bottom-full w-2 h-12 bg-cyan-400 rounded-full servo-arm" style="transform: translateX(-50%) rotate(-45deg)">
+                                        <span class="absolute -top-1 left-1/2 -translate-x-1/2 w-3 h-3 rounded-full bg-amber-300"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="mt-2 text-[10px] text-slate-400">CAIXINHA</span>
+                        </div>
+                        <div id="distance-line" class="absolute bottom-14 left-[24%] right-[37%] border-t border-dashed border-cyan-500/50"></div>
+                        <div class="absolute top-4 left-1/2 -translate-x-1/2 rounded-full bg-slate-900/80 border border-slate-800 px-3 py-1 text-[10px] text-slate-400">Distância: <span id="scene-distance" class="font-mono text-cyan-300">40 cm</span></div>
+                    </div>
+                    <div class="mt-4 grid grid-cols-2 gap-3 w-full max-w-lg text-center text-xs">
                         <div class="rounded-lg bg-slate-950/70 p-3"><span class="text-slate-500">Servo base</span><div id="base-angle" class="font-mono text-lg text-indigo-300 mt-1">0°</div></div>
                         <div class="rounded-lg bg-slate-950/70 p-3"><span class="text-slate-500">Servo braço</span><div id="arm-angle" class="font-mono text-lg text-cyan-300 mt-1">0°</div></div>
                     </div>
-                    <button id="reset-sim" type="button" class="rounded-xl border border-slate-700 bg-slate-800 px-4 py-2 text-xs font-semibold text-slate-200 hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed">Reiniciar</button>
-                    <p class="text-[11px] leading-relaxed text-slate-500">Depois do tchau, clique em “Pessoa longe” para retornar a base e rearmar o sistema.</p>
-                </div>
-
-                <div class="lg:col-span-3 glass-card rounded-2xl p-5 sm:p-7 flex flex-col items-center justify-center">
-                    <div class="w-full flex justify-between gap-3 text-xs text-slate-400"><span><i class="fa-solid fa-satellite-dish text-cyan-400 mr-2"></i>Sensor de distância · HC-SR04</span><span>Arduino Uno · 2 servos</span></div>
-                    <div class="w-full max-w-2xl mt-4 rounded-xl overflow-hidden border border-slate-800 bg-slate-950"><canvas id="robot-simulation" width="720" height="380" role="img" aria-label="Caixinha com sensor e braço robótico fazendo tchau"></canvas></div>
-                    <p class="mt-3 text-xs text-slate-500 text-center">A posição do braço é ilustrativa; a animação mostra a sequência dos dois servos.</p>
                 </div>
             </div>
         </section>
 
-        <section class="glass-card p-6 rounded-2xl space-y-4">
-            <h2 class="text-base font-bold text-white flex items-center gap-2"><i class="fa-solid fa-compass text-indigo-400"></i>Navegação rápida</h2>
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2.5">
+        <section class="glass-card p-6 rounded-2xl border border-slate-800 space-y-4">
+            <div class="text-center sm:text-left">
+                <h2 class="text-base font-bold text-white flex items-center justify-center sm:justify-start gap-2"><i class="fa-solid fa-compass text-indigo-400"></i>Navegação rápida</h2>
+                <p class="text-slate-400 text-xs mt-1">Acesse qualquer outra seção do projeto:</p>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2.5 pt-2">
                 <a href="index.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition text-center"><i class="fa-solid fa-house mr-1"></i>Início</a>
-                <a href="sobre.html" class="px-3 py-2.5 rounded-xl bg-indigo-600/30 text-indigo-200 text-xs font-semibold border border-indigo-500/30 transition text-center"><i class="fa-solid fa-play mr-1"></i>Simulador</a>
+                <a href="sobre.html" aria-current="page" class="px-3 py-2.5 rounded-xl bg-indigo-600/30 text-indigo-200 text-xs font-semibold border border-indigo-500/30 transition text-center"><i class="fa-solid fa-play mr-1"></i>Simulador</a>
                 <a href="gestao.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition text-center"><i class="fa-solid fa-chart-gantt mr-1"></i>Gestão</a>
                 <a href="circuito.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition text-center"><i class="fa-solid fa-microchip mr-1"></i>Circuito</a>
                 <a href="fluxograma.html" class="px-3 py-2.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-slate-200 text-xs font-semibold border border-slate-800 transition text-center"><i class="fa-solid fa-diagram-project mr-1"></i>Fluxograma</a>
@@ -88,121 +124,122 @@
         </section>
     </main>
 
-    <footer class="border-t border-slate-800 bg-slate-950 py-6 text-xs text-slate-500 text-center">© 2026 Projeto MarS - Caixinha do Tchauzinho</footer>
+    <footer class="border-t border-slate-800 bg-slate-950 py-6 text-xs text-slate-500 text-center">© 2026 Projeto MarS - Caixinha Teimosa | Engenharia</footer>
 
     <script>
-        const canvas = document.getElementById('robot-simulation');
-        const ctx = canvas.getContext('2d');
-        const nearButton = document.getElementById('near-button');
-        const farButton = document.getElementById('far-button');
-        const resetButton = document.getElementById('reset-sim');
+        const slider = document.getElementById('distance');
+        const distanceValue = document.getElementById('distance-value');
+        const sceneDistance = document.getElementById('scene-distance');
         const statusText = document.getElementById('sim-status');
+        const baseArm = document.getElementById('base-arm');
+        const waveArm = document.getElementById('wave-arm');
         const baseAngleText = document.getElementById('base-angle');
         const armAngleText = document.getElementById('arm-angle');
+        const person = document.getElementById('person');
+        const sensorPulse = document.getElementById('sensor-pulse');
+        const distanceLine = document.getElementById('distance-line');
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         let detected = false;
         let busy = false;
-        let baseAngle = 0;
-        let armAngle = 0;
+        let currentBase = 0;
+        let currentArm = 0;
+        let animationToken = 0;
 
         function setStatus(message) { statusText.textContent = message; }
-        function drawScene() {
-            const w = canvas.width, h = canvas.height;
-            ctx.clearRect(0, 0, w, h);
-            ctx.fillStyle = '#020617'; ctx.fillRect(0, 0, w, h);
-            ctx.fillStyle = '#67e8f9'; ctx.font = '26px sans-serif'; ctx.textAlign = 'center';
-            ctx.beginPath(); ctx.arc(72, 196, 19, 0, Math.PI * 2); ctx.fill();
-            ctx.fillStyle = '#164e63'; ctx.beginPath(); ctx.arc(72, 196, 9, 0, Math.PI * 2); ctx.fill();
-            ctx.fillStyle = '#94a3b8'; ctx.font = '13px sans-serif'; ctx.fillText('SENSOR', 72, 232);
-            ctx.fillStyle = '#64748b'; ctx.font = '11px sans-serif'; ctx.fillText('HC-SR04', 72, 249);
-            ctx.strokeStyle = detected ? 'rgba(34,211,238,.55)' : 'rgba(71,85,105,.45)'; ctx.lineWidth = 2;
-            [32, 52].forEach(r => { ctx.beginPath(); ctx.arc(84, 196, r, -Math.PI / 3, Math.PI / 3); ctx.stroke(); });
-
-            const bx = 420, by = 210, bw = 210, bh = 115;
-            ctx.strokeStyle = '#334155'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(35, 326); ctx.lineTo(680, 326); ctx.stroke();
-            ctx.fillStyle = '#1e293b'; ctx.strokeStyle = '#64748b'; ctx.lineWidth = 4;
-            ctx.beginPath(); ctx.roundRect(bx, by, bw, bh, 14); ctx.fill(); ctx.stroke();
-            ctx.fillStyle = '#334155'; ctx.beginPath(); ctx.roundRect(bx + 38, by + 20, bw - 76, 11, 5); ctx.fill();
-            ctx.fillStyle = '#cbd5e1'; ctx.font = 'bold 14px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('CAIXINHA', bx + bw / 2, by + 78);
-
-            const pivotX = bx + 8, pivotY = by + 67;
-            ctx.fillStyle = '#818cf8'; ctx.beginPath(); ctx.arc(pivotX, pivotY, 12, 0, Math.PI * 2); ctx.fill();
-            const waveRadians = (-55 + (armAngle / 90) * 110) * Math.PI / 180;
-            const armLength = 100;
-            const tipX = pivotX - Math.cos(waveRadians) * armLength;
-            const tipY = pivotY + Math.sin(waveRadians) * armLength;
-            ctx.strokeStyle = '#22d3ee'; ctx.lineWidth = 14; ctx.lineCap = 'round';
-            ctx.beginPath(); ctx.moveTo(pivotX, pivotY); ctx.lineTo(tipX, tipY); ctx.stroke();
-            ctx.fillStyle = '#fbbf24'; ctx.beginPath(); ctx.arc(tipX, tipY, 13, 0, Math.PI * 2); ctx.fill();
-            ctx.fillStyle = '#67e8f9'; ctx.font = '11px monospace'; ctx.fillText(`BRAÇO ${Math.round(armAngle)}°`, pivotX - 42, by + bh + 24);
-            ctx.fillStyle = '#a5b4fc'; ctx.fillText(`BASE ${Math.round(baseAngle)}°`, bx + bw / 2, by - 15);
-
-            ctx.fillStyle = detected ? '#fbbf24' : '#64748b'; ctx.font = detected ? 'bold 13px sans-serif' : '13px sans-serif';
-            ctx.fillText(detected ? 'PESSOA PERTO' : 'AGUARDANDO', 225, 85);
-            if (busy && detected) { ctx.fillStyle = '#fef3c7'; ctx.font = 'bold 18px sans-serif'; ctx.fillText('👋 TCHAU!', 285, 55); }
+        function updateDistance() {
+            const distance = Number(slider.value);
+            distanceValue.textContent = distance === 0 ? '0 cm · sem eco' : `${distance} cm`;
+            sceneDistance.textContent = distance === 0 ? 'sem eco' : `${distance} cm`;
+            const near = distance > 0 && distance <= 15;
+            const personPosition = 58 - (distance / 60) * 32;
+            person.style.left = `${Math.max(28, Math.min(58, personPosition))}%`;
+            person.style.opacity = distance === 0 ? '.35' : near ? '1' : '.7';
+            person.querySelector('i').className = `fa-solid fa-person text-4xl ${near ? 'text-amber-300' : 'text-slate-400'}`;
+            sensorPulse.style.opacity = near ? '1' : '.45';
+            distanceLine.style.opacity = distance === 0 ? '.2' : near ? '1' : '.55';
+            if (busy) {
+                setStatus(`Movimento em andamento. Leitura atual: ${distance === 0 ? 'sem eco' : distance + ' cm'}.`);
+                return;
+            }
+            processDistance(distance);
         }
-        function drawLoop() { drawScene(); requestAnimationFrame(drawLoop); }
-        function updateAngles(base, arm) {
-            baseAngle = base; armAngle = arm;
-            baseAngleText.textContent = `${Math.round(base)}°`;
-            armAngleText.textContent = `${Math.round(arm)}°`;
-        }
-        function animateValue(from, to, duration, update) {
+        function animateAngle(start, end, duration, setter) {
             return new Promise(resolve => {
-                if (reducedMotion) { update(to); resolve(); return; }
-                const started = performance.now();
-                function step(now) {
-                    const progress = Math.min(1, (now - started) / duration);
-                    const eased = progress * progress * (3 - 2 * progress);
-                    update(from + (to - from) * eased);
-                    if (progress < 1) requestAnimationFrame(step); else resolve();
+                if (reducedMotion || duration <= 0) { setter(end); resolve(); return; }
+                const began = performance.now();
+                function frame(now) {
+                    const progress = Math.min(1, (now - began) / duration);
+                    const eased = progress < .5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+                    setter(Math.round(start + (end - start) * eased));
+                    if (progress < 1) requestAnimationFrame(frame); else resolve();
                 }
-                requestAnimationFrame(step);
+                requestAnimationFrame(frame);
             });
         }
-        async function moveServo(which, target, duration) {
-            const start = which === 'base' ? baseAngle : armAngle;
-            await animateValue(start, target, duration, value => updateAngles(which === 'base' ? value : baseAngle, which === 'arm' ? value : armAngle));
+        function setBase(angle) {
+            currentBase = angle;
+            baseArm.style.transform = `translateX(-50%) rotate(${(angle - 45) * .55}deg)`;
+            baseAngleText.textContent = `${angle}°`;
         }
-        function setButtonsDisabled(disabled) {
-            nearButton.disabled = disabled; farButton.disabled = disabled; resetButton.disabled = disabled;
+        function setArm(angle) {
+            currentArm = angle;
+            waveArm.style.transform = `translateX(-50%) rotate(${angle - 45}deg)`;
+            armAngleText.textContent = `${angle}°`;
         }
-        async function simulateNear() {
-            if (busy) return;
-            if (detected) { setStatus('A detecção já foi registrada. Clique em “Pessoa longe” para rearmar.'); return; }
-            detected = true; busy = true; setButtonsDisabled(true);
-            setStatus('Pessoa detectada! A base se posiciona e o bracinho começa a levantar…');
-            await moveServo('base', 90, 450);
-            await moveServo('arm', 90, 500);
+        async function runWave() {
+            const token = ++animationToken;
+            busy = true;
+            detected = true;
+            setStatus('Pessoa detectada! Base girando para 90°…');
+            await animateAngle(currentBase, 90, 450, setBase);
+            if (token !== animationToken) return;
+            setStatus('Braço levantando…');
+            await animateAngle(currentArm, 90, 450, setArm);
             for (let wave = 1; wave <= 2; wave++) {
-                setStatus(`Tchauzinho ${wave} de 2: o bracinho está balançando ao lado do sensor!`);
-                await moveServo('arm', 0, 450);
-                await moveServo('arm', 90, 450);
+                if (token !== animationToken) return;
+                setStatus(`Tchauzinho ${wave} de 2: braço acenando…`);
+                await animateAngle(90, 0, 360, setArm);
+                await animateAngle(0, 90, 360, setArm);
             }
-            setStatus('O bracinho está voltando à posição inicial…');
-            await moveServo('arm', 0, 450);
-            busy = false; setButtonsDisabled(false);
-            setStatus('Tchau concluído! A base fica em 90°. Clique em “Pessoa longe” para retornar e rearmar.');
+            if (token !== animationToken) return;
+            setStatus('Abaixando o braço…');
+            await animateAngle(90, 0, 450, setArm);
+            busy = false;
+            setStatus('Tchau concluído. Aguardando distância de 25 cm ou mais para rearmar.');
+            processDistance(Number(slider.value));
         }
-        async function simulateFar() {
+        async function processDistance(distance) {
             if (busy) return;
-            if (!detected) { setStatus('Pessoa longe: nenhuma ação. A caixinha permanece parada e não dá tchau.'); return; }
-            busy = true; setButtonsDisabled(true);
-            setStatus('Pessoa afastada. A base está retornando ao repouso…');
-            await moveServo('arm', 0, 250);
-            await moveServo('base', 0, 450);
-            detected = false; busy = false; setButtonsDisabled(false);
-            setStatus('Sistema rearmado. Aguardando aproximação. Base 0° · braço 0°.');
+            if (distance > 0 && distance <= 15 && !detected) {
+                runWave();
+            } else if (distance > 15 && distance < 25) {
+                setStatus(detected ? 'Faixa intermediária: mantém o estado, sem repetir o tchau.' : 'Fora da faixa de ativação. Aguardando aproximação.');
+            } else if (distance >= 25 && detected) {
+                detected = false;
+                setStatus('Pessoa afastada. Sistema rearmado; base e braço retornando a 0°…');
+                await animateAngle(currentBase, 0, 350, setBase);
+                await animateAngle(currentArm, 0, 250, setArm);
+                setStatus('Sistema rearmado. Aguardando aproximação. Base 0° · braço 0°.');
+            } else if (distance === 0) {
+                setStatus(detected ? 'Sem eco válido: mantém o estado detectado.' : 'Sem eco válido. Aguardando uma leitura de proximidade.');
+            } else if (distance <= 15 && detected) {
+                setStatus('Detecção já registrada: não repete o gesto até afastar-se a 25 cm ou mais.');
+            } else {
+                setStatus('Aguardando aproximação. Base 0° · braço 0°.');
+            }
         }
-        function resetSimulation() {
-            if (busy) return;
-            detected = false; updateAngles(0, 0); setButtonsDisabled(false);
-            setStatus('Simulação reiniciada. Clique em “Pessoa perto” para ver o tchauzinho.');
-        }
-        nearButton.addEventListener('click', simulateNear);
-        farButton.addEventListener('click', simulateFar);
-        resetButton.addEventListener('click', resetSimulation);
-        drawLoop();
+        slider.addEventListener('input', updateDistance);
+        document.getElementById('reset-sim').addEventListener('click', () => {
+            animationToken++;
+            busy = false;
+            detected = false;
+            setBase(0);
+            setArm(0);
+            slider.value = 40;
+            updateDistance();
+            setStatus('Simulação reiniciada. Aguardando aproximação. Base 0° · braço 0°.');
+        });
+        updateDistance();
     </script>
 </body>
 </html>
